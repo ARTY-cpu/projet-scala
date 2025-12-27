@@ -146,7 +146,8 @@ object Chargeur {
   /**
    * Alias pour chargerMatrice (compatibilité)
    */
-  def charger(chemin: String): Option[MatriceAdjacence] = chargerMatrice(chemin)
+  def charger(chemin: String): Option[Graphe] = 
+    chargerMatrice(chemin).map(m => m: Graphe)
   
   /**
    * Alias pour depuisMatrice (compatibilité)
@@ -162,23 +163,5 @@ object Chargeur {
     val liste = new ListeAdjacence(nbSommets)
     arcs.foreach { case (d, a, p) => liste.set(d, a, p) }
     liste
-  }
-  
-  /**   * Exemple d'évaluation paresseuse avec LazyList
-   * Génère une séquence infinie de matrices
-   */
-  def sequenceLazy(taille: Int): LazyList[MatriceAdjacence] = {
-    def generer(): LazyList[MatriceAdjacence] = {
-      new MatriceAdjacence(taille) #:: generer()
-    }
-    generer()
-  }
-  
-  /**
-   * Exemple de call by name
-   * L'opération n'est évaluée que si nécessaire
-   */
-  def executerSi(condition: Boolean)(operation: => Unit): Unit = {
-    if (condition) operation
   }
 }

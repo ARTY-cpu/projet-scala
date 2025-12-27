@@ -4,9 +4,11 @@
  * Un graphe de Markov valide a la propriété suivante :
  * - La somme des probabilités sortantes de chaque sommet = 1
  * 
+ * Implémente Graphe (abstraction non générique) et Matrice[Double] (générique)
+ * 
  * @param n nombre de sommets
  */
-class MatriceAdjacence(val n: Int) extends Matrice[Double] {
+class MatriceAdjacence(val n: Int) extends Graphe with Matrice[Double] {
   
   private val matrice: Array[Array[Double]] = Array.ofDim[Double](n, n)
   
@@ -36,6 +38,11 @@ class MatriceAdjacence(val n: Int) extends Matrice[Double] {
   }
   
   def taille: Int = n
+  
+  // Implémentation de l'interface Graphe (abstraction non générique)
+  def nbSommets: Int = n
+  def proba(i: Int, j: Int): Double = get(i, j)
+  def setProba(i: Int, j: Int, p: Double): Unit = set(i, j, p)
   
   /** Vérifie si un indice de sommet est valide */
   private def estValide(sommet: Int): Boolean = sommet >= 1 && sommet <= n

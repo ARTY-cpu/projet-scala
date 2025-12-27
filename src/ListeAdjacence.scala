@@ -7,6 +7,8 @@
  * 
  * Structure : Map[sommet -> List[(destination, probabilité)]]
  * 
+ * Implémente Graphe (abstraction non générique) et Matrice[Double] (générique)
+ * 
  * Exemple pour le graphe exemple1.txt :
  *   Sommet 1 : [(1, 0.95), (2, 0.04), (3, 0.01)]
  *   Sommet 2 : [(2, 0.90), (3, 0.05), (4, 0.05)]
@@ -15,7 +17,7 @@
  * 
  * @param n nombre de sommets
  */
-class ListeAdjacence(val n: Int) extends Matrice[Double] {
+class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
   
   // Utilise un Map pour stocker les listes d'adjacence
   // Clé = sommet de départ, Valeur = List de (destination, probabilité)
@@ -64,6 +66,11 @@ class ListeAdjacence(val n: Int) extends Matrice[Double] {
       adjacences = adjacences.updated(i, nouvelleListe)
     }
   }
+  
+  // Implémentation de l'interface Graphe (abstraction non générique)
+  def nbSommets: Int = n
+  def proba(i: Int, j: Int): Double = get(i, j)
+  def setProba(i: Int, j: Int, p: Double): Unit = set(i, j, p)
   
   def taille: Int = n
   
@@ -170,47 +177,5 @@ class ListeAdjacence(val n: Int) extends Matrice[Double] {
   def successeurs(sommet: Int): List[(Int, Double)] = {
     require(estValide(sommet), s"Sommet invalide: $sommet")
     adjacences.getOrElse(sommet, List.empty).sortBy(_._1)
-  }
-  
-  /**
-   * Retourne la liste d'adjacence brute pour un sommet
-   * Utile pour déboguer ou afficher
-   */
-  def getListe(sommet: Int): List[(Int, Double)] = {
-    require(estValide(sommet), s"Sommet invalide: $sommet")
-    adjacences.getOrElse(sommet, List.empty)
-  }
-  
-  /**
-   * Convertit la liste d'adjacence en matrice d'adjacence
-   * Démontre l'interopérabilité entre les deux représentations
-   */
-  def verMatrice(): MatriceAdjacence = {
-    val matrice = new MatriceAdjacence(n)
-    
-    // HOF foreach pour parcourir toutes les adjacences
-    adjacences.foreach { case (sommet, liste) =>
-      liste.foreach { case (dest, proba) =>
-        matrice.set(sommet, dest, proba)
-      }
-    }
-    
-    matrice
-  }
-  
-  /**
-   * Statistiques sur la liste d'adjacence
-   * Utile pour comparer avec la matrice
-   */
-  def stats(): Unit = {
-    val nbTransitions = adjacences.values.map(_.size).sum
-    val nbCasesMatrice = n * n
-    val gainMemoire = ((nbCasesMatrice - nbTransitions).toDouble / nbCasesMatrice * 100).toInt
-    
-    println(s"\n=== Statistiques ===")
-    println(f"Nombre de transitions stockées : $nbTransitions")
-    println(f"Taille matrice équivalente      : $nbCasesMatrice")
-    println(f"Gain de mémoire                 : $gainMemoire%%")
-    println()
   }
 }
