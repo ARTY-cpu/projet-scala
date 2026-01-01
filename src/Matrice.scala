@@ -92,13 +92,13 @@ class MatriceAdjacence(val n: Int) extends Graphe with Matrice[Double] {
       val somme = sommeSortante(sommet)
       if (somme > 0) {
         val ok = math.abs(somme - 1.0) < epsilon
-        val statut = if (ok) "✓" else "✗"
+        val statut = if (ok) "ok" else "ko"
         println(f"Sommet $sommet%2d : somme = $somme%.4f $statut")
         if (!ok) valide = false
       }
     }
     
-    println("\n" + (if (valide) "✓ VALIDE" else "✗ INVALIDE"))
+    println("\n" + (if (valide) "VALIDE" else "INVALIDE"))
     println("=" * 40 + "\n")
   }
   

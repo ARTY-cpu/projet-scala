@@ -28,7 +28,7 @@ object Main extends App {
       }
       
     case None =>
-      println("✗ Échec")
+      println("Échec")
   }
   
   println("\n" + "=" * 50)

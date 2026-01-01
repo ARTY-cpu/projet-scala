@@ -116,7 +116,7 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
       print(s"Sommet $sommet : [head @]")
       
       if (liste.isEmpty) {
-        println(" -> ∅")
+        println(" -> None")
       } else {
         // Trie par destination pour cohérence
         val listeTriee = liste.sortBy(_._1).reverse
@@ -166,7 +166,7 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
       }
     }
     
-    println("\n" + (if (valide) "✓ VALIDE" else "✗ INVALIDE"))
+    println("\n" + (if (valide) "VALIDE" else "INVALIDE"))
     println("=" * 40 + "\n")
   }
   
