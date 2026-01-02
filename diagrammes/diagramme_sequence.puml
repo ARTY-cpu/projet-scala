@@ -1,0 +1,79 @@
+@startuml diag_seq
+
+actor Utilisateur
+participant Main
+participant Chargeur
+participant "matrice:\nMatriceAdjacence" as Matrice
+participant "source:\nSource" as Source
+
+Utilisateur -> Main : Exécution du programme
+activate Main
+
+Main -> Chargeur : charger("exemple1.txt")
+activate Chargeur
+
+Chargeur -> Source : fromFile("exemple1.txt")
+activate Source
+Source --> Chargeur : source
+deactivate Source
+
+Chargeur -> Source : getLines().toList
+activate Source
+Source --> Chargeur : lignes: List[String]
+deactivate Source
+
+Chargeur -> Chargeur : lignes.head.toInt
+note right: Parse nbSommets = 4
+
+Chargeur -> Matrice : new MatriceAdjacence(4)
+activate Matrice
+Matrice --> Chargeur : matrice
+deactivate Matrice
+
+Chargeur -> Chargeur : lireArcs(matrice, lignes.tail)
+note right: Récursion terminale\npour parser les arcs
+
+loop Pour chaque ligne
+  Chargeur -> Chargeur : parse "1 1 0.95"
+  Chargeur -> Matrice : set(1, 1, 0.95)
+  activate Matrice
+  Matrice -> Matrice : matrice(0)(0) = 0.95
+  Matrice --> Chargeur : Unit
+  deactivate Matrice
+end
+
+Chargeur --> Main : Some(matrice: Graphe)
+deactivate Chargeur
+
+Main -> Matrice : nbSommets
+activate Matrice
+Matrice --> Main : 4
+deactivate Matrice
+
+Main -> Matrice : afficher()
+activate Matrice
+Matrice -> Utilisateur : Affichage de la matrice
+deactivate Matrice
+
+Main -> Matrice : afficherValidation()
+activate Matrice
+Matrice -> Matrice : estValide()
+
+loop Pour chaque sommet
+  Matrice -> Matrice : sommeSortante(sommet)
+  Matrice -> Matrice : |somme - 1.0| < epsilon ?
+end
+
+Matrice -> Utilisateur : Rapport de validation
+deactivate Matrice
+
+Main -> Matrice : successeurs(1)
+activate Matrice
+Matrice -> Matrice : (1 to n).map(...).filter(...)
+Matrice --> Main : List((1,0.95), (2,0.04), (3,0.01))
+deactivate Matrice
+
+Main -> Utilisateur : Affichage des successeurs
+deactivate Main
+
+@enduml

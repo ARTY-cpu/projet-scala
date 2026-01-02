@@ -1,0 +1,91 @@
+@startuml diag_class
+
+' Définition des traits (interfaces)
+interface Graphe {
+  + nbSommets: Int
+  + proba(i: Int, j: Int): Double
+  + setProba(i: Int, j: Int, p: Double): Unit
+  + successeurs(sommet: Int): List[(Int, Double)]
+  + sommeSortante(sommet: Int): Double
+  + estValide(epsilon: Double): Boolean
+  + afficher(): Unit
+  + afficherValidation(epsilon: Double): Unit
+}
+
+interface Matrice<T> {
+  + get(i: Int, j: Int): T
+  + set(i: Int, j: Int, valeur: T): Unit
+  + taille: Int
+  + afficher(): Unit
+}
+
+' Implémentations concrètes
+class MatriceAdjacence {
+  - matrice: Array[Array[Double]]
+  - n: Int
+  + MatriceAdjacence(n: Int)
+  + get(i: Int, j: Int): Double
+  + set(i: Int, j: Int, valeur: Double): Unit
+  + nbSommets: Int
+  + successeurs(sommet: Int): List[(Int, Double)]
+  + sommeSortante(sommet: Int): Double
+  + estValide(epsilon: Double): Boolean
+  + afficher(): Unit
+  + afficherValidation(epsilon: Double): Unit
+}
+
+class ListeAdjacence {
+  - adjacences: Map[Int, List[(Int, Double)]]
+  - n: Int
+  + ListeAdjacence(n: Int)
+  + get(i: Int, j: Int): Double
+  + set(i: Int, j: Int, valeur: Double): Unit
+  + nbSommets: Int
+  + successeurs(sommet: Int): List[(Int, Double)]
+  + sommeSortante(sommet: Int): Double
+  + estValide(epsilon: Double): Boolean
+  + afficher(): Unit
+  + afficherValidation(epsilon: Double): Unit
+  + afficherGraphique(): Unit
+}
+
+' Objet singleton pour chargement
+class Chargeur <<object>> {
+  + chargerMatrice(chemin: String): Option[MatriceAdjacence]
+  + chargerListe(chemin: String): Option[ListeAdjacence]
+  + charger(chemin: String): Option[Graphe]
+  + depuisMatrice(n: Int, arcs: List[(Int,Int,Double)]): MatriceAdjacence
+  + depuisListe(n: Int, arcs: List[(Int,Int,Double)]): ListeAdjacence
+  - lireArcs(matrice: MatriceAdjacence, lignes: List[String]): Unit
+  - lireArcsListe(liste: ListeAdjacence, lignes: List[String]): Unit
+}
+
+' Programme principal
+class Main <<object>> {
+  + main(args: Array[String]): Unit
+}
+
+' Relations
+MatriceAdjacence ..|> Graphe : implements
+MatriceAdjacence ..|> Matrice : implements
+ListeAdjacence ..|> Graphe : implements
+ListeAdjacence ..|> Matrice : implements
+
+Chargeur ..> MatriceAdjacence : creates
+Chargeur ..> ListeAdjacence : creates
+Main ..> Chargeur : uses
+Main ..> Graphe : uses
+
+note right of MatriceAdjacence
+  Stockage dense : Array[Array[Double]]
+  Complexité accès : O(1)
+  Mémoire : O(n²)
+end note
+
+note right of ListeAdjacence
+  Stockage sparse : Map + List
+  Complexité accès : O(k)
+  Mémoire : O(m) où m = nb arcs
+end note
+
+@enduml
