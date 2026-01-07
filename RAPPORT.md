@@ -381,7 +381,7 @@ GRAPHES DE MARKOV
 
 Chargement: exemples/exemple1.txt
 --------------------------------------------------
-✓ 4 sommets
+ok 4 sommets
 
 Matrice 4x4:
     1      2      3      4
@@ -770,10 +770,10 @@ Le projet inclut plusieurs fichiers d'exemples dans le dossier `exemples/` :
 
 ```text
 === Validation du graphe de Markov ===
-Sommet  1 : somme = 1.0000 ✓
-Sommet  2 : somme = 1.0000 ✓
-Sommet  3 : somme = 1.0000 ✓
-Sommet  4 : somme = 1.0000 ✓
+Sommet  1 : somme = 1.0000 ok
+Sommet  2 : somme = 1.0000 ok
+Sommet  3 : somme = 1.0000 ok
+Sommet  4 : somme = 1.0000 ok
 
 VALIDE
 ```
@@ -788,8 +788,8 @@ VALIDE
 
 ```text
 === Validation du graphe de Markov ===
-Sommet  1 : somme = 0.9900 ✗
-Sommet  2 : somme = 1.0000 ✓
+Sommet  1 : somme = 0.9900 ko
+Sommet  2 : somme = 1.0000 ok
 ...
 
 INVALIDE
@@ -1047,7 +1047,7 @@ GRAPHES DE MARKOV
 Chargement: exemples/exemple1.txt
 --------------------------------------------------
 Chargement: 4 sommets
-✓ 4 sommets
+ok 4 sommets
 
 Matrice 4x4:
         1      2      3      4

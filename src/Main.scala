@@ -14,7 +14,7 @@ object Main extends App {
   
   Chargeur.charger(fichier) match {
     case Some(graphe) =>
-      println(s"✓ ${graphe.nbSommets} sommets\n")
+      println(s"ok ${graphe.nbSommets} sommets\n")
       
       graphe.afficher()
       graphe.afficherValidation()
