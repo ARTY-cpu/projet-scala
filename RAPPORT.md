@@ -885,17 +885,64 @@ deactivate Main
 
 ## 5. Difficultés Rencontrées et Solutions
 
-### Difficulté 1 : Indexation (base 0 vs base 1)
+### 5.1 Contexte et Approche
 
-**Problème** : Les tableaux Scala sont indexés à partir de 0, mais la convention mathématique numérote les sommets de 1 à n.
+Ce projet a représenté un défi significatif car il nécessitait la maîtrise simultanée de plusieurs concepts : la programmation fonctionnelle en Scala, les structures de données abstraites, les graphes de Markov, et la conception orientée objet. Pour m'accompagner dans cette démarche, j'ai utilisé l'intelligence artificielle (IA) comme outil d'apprentissage et d'assistance.
+
+**Utilisation de l'IA dans ce projet :**
+
+- **Structure du projet** : L'IA m'a aidé à organiser l'architecture modulaire du code Scala (séparation en traits, classes, objets)
+- **Explications conceptuelles** : Pour comprendre des concepts comme l'immutabilité, les fonctions d'ordre supérieur, et la récursion terminale
+- **Génération de documentation** : Assistance pour rédiger certaines parties du rapport, notamment les explications algorithmiques et les diagrammes UML
+- **Débogage** : Aide à identifier et corriger des erreurs de logique ou de syntaxe
+
+Cependant, toute l'implémentation finale, les choix de conception, et la compréhension des solutions sont le fruit de mon travail personnel.
+
+### 5.2 Difficultés Techniques et Compréhension
+
+#### Difficulté 1 : Transition vers la programmation fonctionnelle
+
+**Problème rencontré** : Habitué à la programmation impérative (Java, Python), le paradigme fonctionnel de Scala m'a demandé un changement de mentalité profond.
+
+**Concepts difficiles** :
+
+- Immutabilité : comprendre pourquoi créer de nouvelles structures plutôt que modifier les existantes
+- Absence de boucles `for` classiques : utiliser `map`, `filter`, `fold` à la place
+- Pattern matching : une approche différente du `switch/case` traditionnel
+
+**Solution et apprentissage** :
+J'ai progressivement compris que la programmation fonctionnelle favorise :
+
+- La **composabilité** : les fonctions pures peuvent être facilement combinées
+- La **testabilité** : pas d'effets de bord, résultats prévisibles
+- La **concision** : moins de code boilerplate
+
+**Exemple de transformation mentale** :
+
+Plutôt que :
+
+```scala
+var liste = List[Int]()
+for (i <- 1 to n) {
+  if (condition(i)) {
+    liste = liste :+ i
+  }
+}
+```
+
+J'ai appris à écrire :
+
+```scala
+val liste = (1 to n).filter(condition).toList
+```
+
+#### Difficulté 2 : Indexation base 0 vs base 1
+
+**Problème** : Les tableaux Scala utilisent l'indexation base 0 (comme la plupart des langages), mais la notation mathématique des graphes numérote les sommets de 1 à n.
+
+**Compréhension acquise** : J'ai appris l'importance de séparer l'**interface publique** (orientée utilisateur/mathématique) de l'**implémentation interne** (orientée machine). Cette abstraction permet de cacher la complexité.
 
 **Solution adoptée** :
-
-- Interface publique : indexation base 1 (1 à n)
-- Implémentation interne : conversion automatique en base 0
-- Exemple : `get(i, j)` accède à `matrice(i-1)(j-1)`
-
-**Code** :
 
 ```scala
 def get(i: Int, j: Int): Double = {
@@ -904,67 +951,83 @@ def get(i: Int, j: Int): Double = {
 }
 ```
 
-### Difficulté 2 : Immutabilité du Map dans ListeAdjacence
+**Leçon apprise** : Toujours documenter clairement les conventions d'indexation dans les commentaires et la documentation.
 
-**Problème** : Les structures immuables nécessitent de créer de nouvelles instances à chaque modification, ce qui peut sembler contre-intuitif.
+#### Difficulté 3 : Immutabilité et structures de données
 
-**Solution** :
+**Problème initial** : Dans `ListeAdjacence`, j'ai d'abord tenté de modifier directement un `Map`, ce qui est impossible avec des structures immuables.
 
-- Utiliser `updated` pour créer un nouveau `Map` avec la modification
-- Réassigner la variable `var adjacences`
+**Erreur conceptuelle** :
 
-**Code** :
+```scala
+// Ceci ne compile pas !
+val adjacences: Map[Int, List[(Int, Double)]] = Map()
+adjacences(1) = List((2, 0.5))  // ERREUR : val ne peut pas être réassigné
+```
+
+**Compréhension progressive** : 
+J'ai réalisé que l'immutabilité ne signifie pas "impossibilité de changer l'état", mais plutôt "création d'une nouvelle version" de la structure. C'est comme créer un nouveau document Word plutôt que de modifier l'ancien.
+
+**Solution finale** :
 
 ```scala
 private var adjacences: Map[Int, List[(Int, Double)]] = Map()
 
 def set(i: Int, j: Int, valeur: Double): Unit = {
   val nouvelleListe = (j, valeur) :: listeActuelle.filterNot { case (dest, _) => dest == j }
-  adjacences = adjacences.updated(i, nouvelleListe)  // Crée un nouveau Map
+  adjacences = adjacences.updated(i, nouvelleListe)  // Nouvelle version du Map
 }
 ```
 
-**Justification** : Bien qu'utilisant `var`, cette approche reste fonctionnelle car les structures sous-jacentes (`Map`, `List`) sont immuables.
+**Apprentissage** : L'utilisation de `var` avec des structures immuables (`Map`, `List`) est un compromis acceptable qui préserve les avantages de l'immutabilité au niveau des données.
 
-### Difficulté 3 : Gestion des erreurs de parsing
+#### Difficulté 4 : Récursion terminale (tail recursion)
 
-**Problème** : Les fichiers peuvent contenir des lignes malformées (commentaires, lignes vides, erreurs de format).
+**Problème** : Lors du chargement de gros fichiers, j'ai rencontré des `StackOverflowError` avec ma première implémentation récursive.
 
-**Solution** :
-
-- Utiliser `try-catch` pour intercepter les exceptions de parsing
-- Ignorer silencieusement les lignes invalides
-- Retourner `Option[Graphe]` pour signaler l'échec global
-
-**Code** :
+**Code initial (problématique)** :
 
 ```scala
-case ligne :: reste =>
-  val parties = ligne.trim.split("\\s+")
-  if (parties.length == 3) {
-    try {
-      val depart = parties(0).toInt
-      val arrivee = parties(1).toInt
-      val proba = parties(2).toDouble
-      matrice.set(depart, arrivee, proba)
-    } catch {
-      case _: Exception => // Ignorer les lignes malformées
-    }
+def lireArcs(lignes: List[String]): Unit = {
+  if (lignes.nonEmpty) {
+    traiterLigne(lignes.head)
+    lireArcs(lignes.tail)  // Appel NON terminal (calcul après l'appel)
   }
-  lireArcs(matrice, reste)
+}
 ```
 
-### Difficulté 4 : Précision numérique dans la validation
+**Compréhension du problème** : J'ai appris que la récursion classique empile les appels de fonction, consommant de la mémoire. La récursion terminale permet au compilateur Scala d'optimiser en boucle.
 
-**Problème** : Les opérations en virgule flottante introduisent des erreurs d'arrondi. Tester `somme == 1.0` échoue souvent.
+**Solution avec tail recursion** :
 
-**Solution** :
+```scala
+@annotation.tailrec
+private def lireArcs(matrice: MatriceAdjacence, lignes: List[String]): Unit = {
+  lignes match {
+    case Nil => // Fin
+    case ligne :: reste =>
+      traiterLigne(ligne)
+      lireArcs(matrice, reste) // Appel terminal : DERNIÈRE opération
+  }
+}
+```
 
-- Introduire un paramètre `epsilon` (tolérance)
-- Valider avec `|somme - 1.0| < epsilon`
-- Valeur par défaut : `epsilon = 0.0001`
+**Leçon clé** : L'annotation `@annotation.tailrec` est précieuse car elle force le compilateur à vérifier l'optimisation. Si l'appel n'est pas terminal, le code ne compile pas.
 
-**Code** :
+#### Difficulté 5 : Précision des nombres flottants
+
+**Problème découvert** : Les tests de validation échouaient alors que les graphes semblaient corrects.
+
+**Exemple du problème** :
+
+```scala
+val somme = 0.1 + 0.2
+println(somme == 0.3)  // false ! (somme vaut 0.30000000000000004)
+```
+
+**Compréhension** : J'ai appris que les calculs en virgule flottante (type `Double`) ne sont pas exacts en raison de la représentation binaire. C'est une limite fondamentale des ordinateurs.
+
+**Solution avec epsilon** :
 
 ```scala
 def estValide(epsilon: Double = 0.0001): Boolean = {
@@ -975,31 +1038,75 @@ def estValide(epsilon: Double = 0.0001): Boolean = {
 }
 ```
 
-### Difficulté 5 : Récursion terminale et débordement de pile
+**Principe appris** : Ne jamais tester l'égalité stricte avec des `Double`. Toujours utiliser une tolérance.
 
-**Problème** : La récursion naïve peut causer un débordement de pile pour de gros fichiers.
+#### Difficulté 6 : Gestion des erreurs avec Option
 
-**Solution** :
+**Approche initiale** : Utiliser des exceptions pour gérer les erreurs de chargement de fichiers.
 
-- Utiliser la récursion terminale (tail recursion)
-- Annoter avec `@annotation.tailrec` pour vérification par le compilateur
-- Le compilateur Scala optimise en boucle `while`
+**Problème** : Les exceptions cassent le flux du programme et sont difficiles à gérer proprement.
 
-**Vérification** :
+**Découverte de Option** : J'ai appris que Scala favorise le type `Option[T]` pour représenter l'absence de valeur, évitant les `NullPointerException`.
+
+**Solution fonctionnelle** :
 
 ```scala
-@annotation.tailrec
-private def lireArcs(matrice: MatriceAdjacence, lignes: List[String]): Unit = {
-  lignes match {
-    case Nil => // Fin
-    case ligne :: reste =>
-      // Traitement...
-      lireArcs(matrice, reste) // Appel terminal : OK
+def charger(chemin: String): Option[Graphe] = {
+  try {
+    // Chargement...
+    Some(graphe)
+  } catch {
+    case _: Exception => None
   }
+}
+
+// Utilisation avec pattern matching
+chargeur.charger("fichier.txt") match {
+  case Some(graphe) => graphe.afficher()
+  case None => println("Erreur de chargement")
 }
 ```
 
-Si l'appel n'était pas terminal, le compilateur générerait une erreur.
+**Avantage compris** : Le compilateur force à gérer le cas `None`, évitant les oublis.
+
+#### Difficulté 7 : Format Mermaid et localisation
+
+**Problème inattendu (Étape 3)** : Les visualisations Mermaid n'affichaient pas correctement les probabilités.
+
+**Cause** : J'utilisais le format français avec virgules (`0,95`) alors que Mermaid attend le format anglais avec points (`0.95`).
+
+**Solution** :
+
+```scala
+val probaFormatee = "%.2f".formatLocal(java.util.Locale.US, proba)
+```
+
+**Leçon** : Toujours considérer l'internationalisation dans les projets, même pour des détails comme les séparateurs décimaux.
+
+### 5.3 Réflexion sur l'Apprentissage
+
+**Ce que j'ai retenu** :
+
+1. **Abstraction** : Les traits (`Graphe`, `Matrice[T]`) permettent d'écrire du code générique et réutilisable
+2. **Composition** : Préférer composer des petites fonctions plutôt que d'écrire de grandes fonctions monolithiques
+3. **Types** : Le système de types de Scala aide à éviter les erreurs à la compilation plutôt qu'à l'exécution
+4. **Documentation** : La Scaladoc est essentielle pour comprendre le code plusieurs semaines après l'avoir écrit
+
+**Défis restants** :
+
+- Maîtriser les concepts avancés (implicits, type classes)
+- Optimiser les performances pour de très grands graphes
+- Approfondir les tests unitaires avec ScalaTest
+
+**Apport de l'IA** :
+
+L'utilisation de l'IA m'a permis d'accélérer l'apprentissage en :
+
+- Obtenant des explications immédiates sur des concepts difficiles
+- Découvrant des idiomes Scala que je n'aurais pas trouvés seul
+- Structurant le projet de manière professionnelle dès le départ
+
+Cependant, j'ai veillé à **comprendre chaque ligne de code** plutôt que de copier aveuglément, et à adapter les suggestions à mes besoins spécifiques.
 
 ---
 
