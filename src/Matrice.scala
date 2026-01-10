@@ -110,7 +110,7 @@ class MatriceAdjacence(val n: Int) extends Graphe with Matrice[Double] {
     require(estValide(sommet), s"Sommet invalide: $sommet")
     (1 to n)
       .map(j => (j, get(sommet, j)))
-      .filter(_._2 > 0)
+      .filter { case (_, proba) => proba > 0 }
       .toList
   }
 }

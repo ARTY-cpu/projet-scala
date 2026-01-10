@@ -40,9 +40,9 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
     
     // Recherche dans la liste d'adjacence du sommet i
     adjacences.getOrElse(i, List.empty)
-      .find(_._1 == j)  // HOF find avec lambda
-      .map(_._2)         // HOF map pour extraire la probabilité
-      .getOrElse(0.0)    // 0 si pas de transition
+      .find { case (dest, _) => dest == j }  // HOF find avec lambda
+      .map { case (_, proba) => proba }      // HOF map pour extraire la probabilité
+      .getOrElse(0.0)                        // 0 si pas de transition
   }
   
   /**
@@ -58,11 +58,11 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
     if (valeur > 0) {
       // Ajoute ou remplace la transition
       // Supprime l'ancienne valeur si elle existe, puis ajoute la nouvelle
-      val nouvelleListe = (j, valeur) :: listeActuelle.filterNot(_._1 == j)
+      val nouvelleListe = (j, valeur) :: listeActuelle.filterNot { case (dest, _) => dest == j }
       adjacences = adjacences.updated(i, nouvelleListe)
     } else {
       // Supprime la transition si probabilité = 0
-      val nouvelleListe = listeActuelle.filterNot(_._1 == j)
+      val nouvelleListe = listeActuelle.filterNot { case (dest, _) => dest == j }
       adjacences = adjacences.updated(i, nouvelleListe)
     }
   }
@@ -92,7 +92,7 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
         println(s"Sommet $sommet : []")
       } else {
         // Trie la liste par destination pour un affichage cohérent
-        val listeTriee = liste.sortBy(_._1)
+        val listeTriee = liste.sortBy { case (dest, _) => dest }
         val str = listeTriee.map { case (dest, proba) => 
           f"($dest, $proba%.2f)" 
         }.mkString(", ")
@@ -119,7 +119,7 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
         println(" -> None")
       } else {
         // Trie par destination pour cohérence
-        val listeTriee = liste.sortBy(_._1).reverse
+        val listeTriee = liste.sortBy { case (dest, _) => dest }.reverse
         for ((dest, proba) <- listeTriee) {
           print(f" -> ($dest, $proba%.2f) @")
         }
@@ -136,8 +136,8 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
   def sommeSortante(sommet: Int): Double = {
     require(estValide(sommet), s"Sommet invalide: $sommet")
     adjacences.getOrElse(sommet, List.empty)
-      .map(_._2)  // Extrait les probabilités
-      .sum        // Somme
+      .map { case (_, proba) => proba }  // Extrait les probabilités
+      .sum                                // Somme
   }
   
   /**
@@ -176,6 +176,6 @@ class ListeAdjacence(val n: Int) extends Graphe with Matrice[Double] {
    */
   def successeurs(sommet: Int): List[(Int, Double)] = {
     require(estValide(sommet), s"Sommet invalide: $sommet")
-    adjacences.getOrElse(sommet, List.empty).sortBy(_._1)
+    adjacences.getOrElse(sommet, List.empty).sortBy { case (dest, _) => dest }
   }
 }

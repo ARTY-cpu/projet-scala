@@ -20,7 +20,8 @@
    - 3.3 [Classe MatriceAdjacence](#33-classe-matriceadjacence)
    - 3.4 [Classe ListeAdjacence](#34-classe-listeadjacence)
    - 3.5 [Module Chargeur](#35-module-chargeur)
-   - 3.6 [Programme Principal (Main)](#36-programme-principal-main)
+   - 3.6 [Module Validation (Étape 2)](#36-module-validation-étape-2)
+   - 3.7 [Programme Principal (Main)](#37-programme-principal-main)
 4. [Modélisation UML](#4-modélisation-uml)
    - 4.1 [Diagramme de classes](#41-diagramme-de-classes)
    - 4.2 [Diagramme de séquence](#42-diagramme-de-séquence)
@@ -125,6 +126,8 @@ Implémentations
 
 Utilitaires
     ├── Chargeur : Lecture de fichiers
+    ├── Validation : Vérification des propriétés de Markov (Étape 2)
+    ├── TestValidation : Tests automatisés de validation
     └── Main : Programme de démonstration
 ```
 
@@ -216,10 +219,10 @@ Retourner résultat
 ```scala
 def successeurs(sommet: Int): List[(Int, Double)] = {
   require(estValide(sommet), s"Sommet invalide: $sommet")
-  (1 to n)
-    .map(j => (j, get(sommet, j)))
-    .filter(_._2 > 0)
-    .toList
+    (1 to n)
+      .map(j => (j, get(sommet, j)))
+      .filter { case (_, proba) => proba > 0 }
+      .toList
 }
 ```
 
@@ -283,10 +286,10 @@ def set(i: Int, j: Int, valeur: Double): Unit = {
   val listeActuelle = adjacences.getOrElse(i, List.empty)
   
   if (valeur > 0) {
-    val nouvelleListe = (j, valeur) :: listeActuelle.filterNot(_._1 == j)
+    val nouvelleListe = (j, valeur) :: listeActuelle.filterNot { case (dest, _) => dest == j }
     adjacences = adjacences.updated(i, nouvelleListe)
   } else {
-    val nouvelleListe = listeActuelle.filterNot(_._1 == j)
+    val nouvelleListe = listeActuelle.filterNot { case (dest, _) => dest == j }
     adjacences = adjacences.updated(i, nouvelleListe)
   }
 }
@@ -359,7 +362,81 @@ lireArcs(matrice, lignes) :
 - Format invalide → lignes ignorées
 - Utilisation de `try-catch` pour robustesse
 
-### 3.6 Programme Principal (Main)
+### 3.6 Module Validation (Étape 2)
+
+**Rôle** : Vérifier qu'un graphe respecte les propriétés d'un graphe de Markov, c'est-à-dire que la somme des probabilités sortantes de chaque sommet est dans l'intervalle [0.99, 1].
+
+**Fonctions de validation** :
+
+| Fonction | Signature | Description |
+|----------|-----------|-------------|
+| `sommetsInvalides(MatriceAdjacence)` | `MatriceAdjacence => List[Int]` | Retourne la liste des sommets invalides (matrice) |
+| `sommetsInvalides(ListeAdjacence)` | `ListeAdjacence => List[Int]` | Retourne la liste des sommets invalides (liste) |
+| `testerMatrice(fichier)` | `String => Unit` | Teste un fichier avec MatriceAdjacence |
+| `testerListe(fichier)` | `String => Unit` | Teste un fichier avec ListeAdjacence |
+
+**Algorithme de validation** :
+
+```text
+sommetsInvalides(graphe) :
+    résultat ← liste vide
+    Pour chaque sommet s de 1 à n :
+        somme ← sommeSortante(s)
+        Si somme > 0 ET (somme < 0.99 OU somme > 1.0) alors
+            Ajouter s à résultat
+    Retourner résultat
+```
+
+**Code Scala (HOF)** :
+
+```scala
+def sommetsInvalides(matrice: MatriceAdjacence): List[Int] = {
+  (1 to matrice.nbSommets).filter { sommet =>
+    val somme = matrice.sommeSortante(sommet)
+    somme > 0 && (somme < 0.99 || somme > 1.0)
+  }.toList
+}
+```
+
+**Fonctions de test paramétrées** :
+
+Selon l'énoncé de l'étape 2, deux fonctions de test ont été implémentées, une pour chaque RPI (Représentation Physique Interne) :
+
+```scala
+def testerMatrice(fichier: String): Unit = {
+  Chargeur.chargerMatrice(fichier) match {
+    case Some(matrice) =>
+      val invalides = sommetsInvalides(matrice)
+      if (invalides.isEmpty) {
+        println("[OK] RÉSULTAT : GRAPHE DE MARKOV VALIDE")
+      } else {
+        println("[KO] RÉSULTAT : GRAPHE DE MARKOV INVALIDE")
+        println(s"  Sommets en cause : ${invalides.mkString(", ")}")
+      }
+    case None =>
+      println("[ERREUR] Impossible de charger le fichier")
+  }
+}
+```
+
+**Résultats des tests** :
+
+| Fichier | Statut | Détails |
+|---------|--------|----------|
+| `exemple1.txt` | VALIDE | 4 sommets, toutes sommes dans [0.99, 1] |
+| `exemple2.txt` | VALIDE | 10 sommets, toutes sommes dans [0.99, 1] |
+| `exemple3.txt` | INVALIDE | Sommet 6 : somme = 1.1000 |
+| `exemple_meteo.txt` | VALIDE | 5 sommets, toutes sommes dans [0.99, 1] |
+| `exemple_valid_step3.txt` | VALIDE | 10 sommets, toutes sommes dans [0.99, 1] |
+
+**Avantages de cette approche** :
+
+- **Séparation des responsabilités** : module dédié à la validation
+- **Respect de l'énoncé** : deux fonctions par RPI (validation + test)
+- **Tests automatisés** : tous les fichiers peuvent être testés en une commande
+- **Intervalle [0.99, 1]** : gestion correcte de la précision flottante
+
+### 3.7 Programme Principal (Main)
 
 **Rôle** : Démonstration des fonctionnalités de la bibliothèque.
 
@@ -647,7 +724,7 @@ def get(i: Int, j: Int): Double = {
 private var adjacences: Map[Int, List[(Int, Double)]] = Map()
 
 def set(i: Int, j: Int, valeur: Double): Unit = {
-  val nouvelleListe = (j, valeur) :: listeActuelle.filterNot(_._1 == j)
+  val nouvelleListe = (j, valeur) :: listeActuelle.filterNot { case (dest, _) => dest == j }
   adjacences = adjacences.updated(i, nouvelleListe)  // Crée un nouveau Map
 }
 ```
@@ -778,7 +855,7 @@ Sommet  4 : somme = 1.0000 ok
 VALIDE
 ```
 
-✅ **Test réussi**
+**Test réussi**
 
 #### Test 2 : Graphe invalide
 
@@ -795,7 +872,7 @@ Sommet  2 : somme = 1.0000 ok
 INVALIDE
 ```
 
-✅ **Test réussi** : l'invalidité est correctement détectée
+**Test réussi** : l'invalidité est correctement détectée
 
 #### Test 3 : Comparaison Matrice vs Liste
 
@@ -816,7 +893,7 @@ for (i <- 1 to 4; j <- 1 to 4) {
 }
 ```
 
-✅ **Test réussi** : les deux représentations sont équivalentes
+**Test réussi** : les deux représentations sont équivalentes
 
 ### 6.3 Tests de performance
 
@@ -846,7 +923,7 @@ Pour un graphe de 1000 sommets avec en moyenne 5 successeurs par sommet :
 Chargeur.charger("inexistant.txt") // → None
 ```
 
-✅ **Résultat** : `None` retourné, pas de crash
+**Résultat** : `None` retourné, pas de crash
 
 #### Test avec fichier vide
 
@@ -854,7 +931,7 @@ Chargeur.charger("inexistant.txt") // → None
 Chargeur.charger("vide.txt") // → None + message d'erreur
 ```
 
-✅ **Résultat** : Gestion propre de l'erreur
+**Résultat** : Gestion propre de l'erreur
 
 #### Test avec lignes malformées
 
@@ -868,7 +945,7 @@ invalide ligne
 2 3 0.5
 ```
 
-✅ **Résultat** : Les lignes invalides sont ignorées, les lignes valides sont traitées
+**Résultat** : Les lignes invalides sont ignorées, les lignes valides sont traitées
 
 ---
 
@@ -878,11 +955,11 @@ invalide ligne
 
 Ce projet a permis de concevoir et d'implémenter une bibliothèque complète pour manipuler des graphes de Markov en Scala. Les objectifs initiaux ont été atteints :
 
-✅ **Deux représentations** (matrice et liste d'adjacence) fonctionnelles et validées  
-✅ **Abstraction par traits** permettant le polymorphisme et la réutilisabilité  
-✅ **Programmation fonctionnelle** : HOF, récursion terminale, immutabilité  
-✅ **Validation automatique** des propriétés de Markov avec gestion de la précision  
-✅ **Chargement depuis fichiers** avec gestion robuste des erreurs  
+- **Deux représentations** (matrice et liste d'adjacence) fonctionnelles et validées  
+- **Abstraction par traits** permettant le polymorphisme et la réutilisabilité  
+- **Programmation fonctionnelle** : HOF, récursion terminale, immutabilité  
+- **Validation automatique** des propriétés de Markov avec gestion de la précision  
+- **Chargement depuis fichiers** avec gestion robuste des erreurs  
 
 ### Points forts du projet
 
@@ -993,7 +1070,40 @@ scalac src/*.scala -d bin/
 scala -cp bin/ Main
 ```
 
-### 8.3 Utilisation de la bibliothèque
+### 8.3 Exécution des tests de validation (Étape 2)
+
+Pour exécuter les tests de validation sur tous les fichiers d'exemples :
+
+```bash
+scala-cli run src/TestValidation.scala src/*.scala
+```
+
+Pour tester un fichier spécifique :
+
+```scala
+import Validation._
+
+// Test avec MatriceAdjacence
+testerMatrice("exemples/exemple1.txt")
+
+// Test avec ListeAdjacence
+testerListe("exemples/exemple1.txt")
+```
+
+**Résultat attendu** :
+
+```text
+======================================================================
+TEST MATRICE D'ADJACENCE : exemples/exemple1.txt
+======================================================================
+[OK] Graphe chargé : 4 sommets
+
+[OK] RÉSULTAT : GRAPHE DE MARKOV VALIDE
+  Tous les sommets ont une somme de probabilités dans [0.99, 1]
+======================================================================
+```
+
+### 8.4 Utilisation de la bibliothèque
 
 #### Exemple 1 : Charger un graphe depuis un fichier
 
@@ -1035,7 +1145,7 @@ succ.foreach { case (dest, proba) =>
 }
 ```
 
-### 8.4 Captures d'écran
+### 8.5 Captures d'écran
 
 #### Exécution du programme principal
 
@@ -1242,17 +1352,19 @@ projet-scala/
 │   ├── Matrice.scala        # Classe MatriceAdjacence
 │   ├── ListeAdjacence.scala # Classe ListeAdjacence
 │   ├── Chargeur.scala       # Objet pour lecture de fichiers
+│   ├── Validation.scala     # Module de validation (Étape 2)
+│   ├── TestValidation.scala # Tests automatisés de validation
 │   ├── Main.scala           # Programme principal
 │   └── project.scala        # Configuration Scala-CLI
 ├── exemples/
-│   ├── exemple1.txt         # Graphe simple 4 sommets
-│   ├── exemple2.txt         # Autre exemple
-│   ├── exemple3.txt         # Graphe complexe
-│   ├── exemple_meteo.txt    # Application météo
-│   └── exemple_valid_step3.txt
+│   ├── exemple1.txt         # Graphe simple 4 sommets (VALIDE)
+│   ├── exemple2.txt         # Graphe avec 10 sommets (VALIDE)
+│   ├── exemple3.txt         # Graphe complexe (INVALIDE - sommet 6)
+│   ├── exemple_meteo.txt    # Application météorologique (VALIDE)
+│   └── exemple_valid_step3.txt # Cas de validation (VALIDE)
 └── RAPPORT.md               # Ce document
 
-Taille totale du code source : ~750 lignes (avec documentation)
+Taille totale du code source : ~900 lignes (avec documentation)
 ```
 
 ### Annexe F : Glossaire
