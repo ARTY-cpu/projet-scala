@@ -21,7 +21,8 @@
    - 3.4 [Classe ListeAdjacence](#34-classe-listeadjacence)
    - 3.5 [Module Chargeur](#35-module-chargeur)
    - 3.6 [Module Validation (Étape 2)](#36-module-validation-étape-2)
-   - 3.7 [Programme Principal (Main)](#37-programme-principal-main)
+   - 3.7 [Module Mermaid (Étape 3)](#37-module-mermaid-étape-3)
+   - 3.8 [Programme Principal (Main)](#38-programme-principal-main)
 4. [Modélisation UML](#4-modélisation-uml)
    - 4.1 [Diagramme de classes](#41-diagramme-de-classes)
    - 4.2 [Diagramme de séquence](#42-diagramme-de-séquence)
@@ -128,6 +129,8 @@ Utilitaires
     ├── Chargeur : Lecture de fichiers
     ├── Validation : Vérification des propriétés de Markov (Étape 2)
     ├── TestValidation : Tests automatisés de validation
+    ├── Mermaid : Génération de visualisations (Étape 3)
+    ├── TestMermaid : Tests de génération Mermaid
     └── Main : Programme de démonstration
 ```
 
@@ -436,7 +439,199 @@ def testerMatrice(fichier: String): Unit = {
 - **Tests automatisés** : tous les fichiers peuvent être testés en une commande
 - **Intervalle [0.99, 1]** : gestion correcte de la précision flottante
 
-### 3.7 Programme Principal (Main)
+### 3.7 Module Mermaid (Étape 3)
+
+**Rôle** : Générer des fichiers au format Mermaid pour visualiser les graphes de Markov sur <https://www.mermaidchart.com/>
+
+**Fonctions principales** :
+
+| Fonction | Signature | Description |
+|----------|-----------|-------------|
+| `getID(i)` | `Int => String` | Convertit un numéro en identifiant alphabétique |
+| `genererMermaidMatrice(matrice, fichier)` | `(MatriceAdjacence, String) => Unit` | Génère un fichier Mermaid (matrice) |
+| `genererMermaidListe(liste, fichier)` | `(ListeAdjacence, String) => Unit` | Génère un fichier Mermaid (liste) |
+| `genererDepuisFichier(in, out, useMatrice)` | `(String, String, Boolean) => Unit` | Génère depuis un fichier source |
+| `afficherApercu(graphe)` | `Graphe => Unit` | Affiche un aperçu du contenu |
+
+**Algorithme de conversion getID** :
+
+La fonction `getID` convertit un numéro de sommet en identifiant alphabétique selon le schéma :
+
+```text
+1 → A
+2 → B
+...
+26 → Z
+27 → AA
+28 → AB
+...
+```
+
+**Algorithme récursif** :
+
+```text
+getID(n, acc="") :
+    Si n ≤ 0 alors
+        Retourner acc
+    Sinon
+        reste ← (n - 1) % 26
+        lettre ← 'A' + reste
+        quotient ← (n - 1) / 26
+        Retourner getID(quotient, lettre + acc)
+```
+
+**Code Scala** :
+
+```scala
+def getID(i: Int): String = {
+  require(i > 0, s"Le numéro de sommet doit être positif: $i")
+  
+  @annotation.tailrec
+  def buildID(n: Int, acc: String): String = {
+    if (n <= 0) acc
+    else {
+      val reste = (n - 1) % 26
+      val lettre = ('A' + reste).toChar
+      val quotient = (n - 1) / 26
+      buildID(quotient, lettre + acc)
+    }
+  }
+  
+  buildID(i, "")
+}
+```
+
+**Format Mermaid généré** :
+
+```mermaid
+---
+config:
+   layout: elk
+   theme: neo
+   look: neo
+---
+flowchart LR
+A((1))
+B((2))
+C((3))
+D((4))
+A -->|0.95|A
+A -->|0.04|B
+A -->|0.01|C
+B -->|0.90|B
+B -->|0.05|C
+B -->|0.05|D
+C -->|0.80|C
+C -->|0.20|D
+D -->|1.00|A
+```
+
+**Algorithme de génération** :
+
+```text
+genererContenu(graphe) :
+    contenu ← en-tête de configuration
+    
+    // Déclaration des sommets
+    Pour i de 1 à n :
+        id ← getID(i)
+        Ajouter "id((i))" au contenu
+    
+    // Déclaration des arêtes
+    Pour i de 1 à n :
+        successeurs ← graphe.successeurs(i)
+        Pour chaque (j, proba) dans successeurs :
+            idDepart ← getID(i)
+            idArrivee ← getID(j)
+            Ajouter "idDepart -->|proba|idArrivee" au contenu
+    
+    Retourner contenu
+```
+
+**Code Scala (HOF)** :
+
+```scala
+private def genererAretes(graphe: Graphe): String = {
+  val aretes = for {
+    i <- 1 to graphe.nbSommets
+    successeur <- graphe.successeurs(i)
+    (j, proba) = successeur
+  } yield {
+    val idDepart = getID(i)
+    val idArrivee = getID(j)
+    s"$idDepart -->|${f"$proba%.2f"}|$idArrivee"
+  }
+  aretes.mkString("\n")
+}
+```
+
+**Fonctions de génération paramétrées** :
+
+Selon l'énoncé de l'étape 3, deux fonctions de génération ont été implémentées, une pour chaque RPI :
+
+```scala
+def genererMermaidMatrice(matrice: MatriceAdjacence, fichierSortie: String): Unit = {
+  try {
+    val contenu = genererContenu(matrice)
+    val writer = new PrintWriter(new File(fichierSortie))
+    try {
+      writer.write(contenu)
+      println(s"Fichier Mermaid généré : $fichierSortie")
+      println(s"  ${matrice.nbSommets} sommets")
+      
+      val nbAretes = (1 to matrice.nbSommets).map { i =>
+        matrice.successeurs(i).size
+      }.sum
+      println(s"  $nbAretes arêtes")
+    } finally {
+      writer.close()
+    }
+  } catch {
+    case e: Exception =>
+      println(s"Erreur lors de la génération : ${e.getMessage}")
+  }
+}
+```
+
+**Résultats des tests** :
+
+| Fichier | Sommets | Arêtes | Fichier généré |
+|---------|---------|--------|----------------|
+| `exemple1.txt` | 4 | 9 | `exemple1_matrice.mmd` |
+| `exemple2.txt` | 10 | 17 | `exemple2_matrice.mmd` |
+| `exemple3.txt` | 8 | 15 | `exemple3_matrice.mmd` |
+| `exemple_meteo.txt` | 5 | 18 | `exemple_meteo_matrice.mmd` |
+| `exemple_valid_step3.txt` | 10 | 23 | `exemple_valid_step3_matrice.mmd` |
+
+**Exemple de visualisation** :
+
+Pour le fichier `exemple1.txt` (4 sommets, 9 arêtes), la visualisation Mermaid montre :
+
+- Sommet 1 (A) : boucle avec haute probabilité (0.95) + transitions vers 2 et 3
+- Sommet 2 (B) : boucle (0.90) + transitions vers 3 et 4
+- Sommet 3 (C) : boucle (0.80) + transition vers 4
+- Sommet 4 (D) : retour vers 1 (1.00)
+
+**Avantages de cette approche** :
+
+- **Visualisation interactive** : permet de comprendre rapidement la structure du graphe
+- **Format standard** : Mermaid est un format largement supporté
+- **Deux fonctions par RPI** : respect strict de l'énoncé
+- **Réutilisation du code** : utilise l'interface `Graphe` pour la généricité
+- **Récursion terminale** : fonction `getID` optimisée
+
+**Utilisation** :
+
+```scala
+// Charger et générer
+val matrice = Chargeur.chargerMatrice("exemple1.txt").get
+Mermaid.genererMermaidMatrice(matrice, "exemple1.mmd")
+
+// Ou en une seule étape
+Mermaid.genererDepuisFichier("exemple1.txt", "exemple1.mmd", useMatrice = true)
+```
+
+### 3.8 Programme Principal (Main)
 
 **Rôle** : Démonstration des fonctionnalités de la bibliothèque.
 
@@ -958,7 +1153,8 @@ Ce projet a permis de concevoir et d'implémenter une bibliothèque complète po
 - **Deux représentations** (matrice et liste d'adjacence) fonctionnelles et validées  
 - **Abstraction par traits** permettant le polymorphisme et la réutilisabilité  
 - **Programmation fonctionnelle** : HOF, récursion terminale, immutabilité  
-- **Validation automatique** des propriétés de Markov avec gestion de la précision  
+- **Validation automatique** des propriétés de Markov avec gestion de la précision (Étape 2)
+- **Génération de visualisations** au format Mermaid pour représentation graphique (Étape 3)
 - **Chargement depuis fichiers** avec gestion robuste des erreurs  
 
 ### Points forts du projet
@@ -1075,7 +1271,15 @@ scala -cp bin/ Main
 Pour exécuter les tests de validation sur tous les fichiers d'exemples :
 
 ```bash
-scala-cli run src/TestValidation.scala src/*.scala
+scala-cli run src/TestValidation.scala src/*.scala --main-class testValidation
+```
+
+### 8.4 Génération des visualisations Mermaid (Étape 3)
+
+Pour générer les fichiers Mermaid pour tous les exemples :
+
+```bash
+scala-cli run src/TestMermaid.scala src/*.scala --main-class TestMermaid
 ```
 
 Pour tester un fichier spécifique :
@@ -1103,7 +1307,7 @@ TEST MATRICE D'ADJACENCE : exemples/exemple1.txt
 ======================================================================
 ```
 
-### 8.4 Utilisation de la bibliothèque
+### 8.5 Utilisation de la bibliothèque
 
 #### Exemple 1 : Charger un graphe depuis un fichier
 
@@ -1145,7 +1349,21 @@ succ.foreach { case (dest, proba) =>
 }
 ```
 
-### 8.5 Captures d'écran
+#### Exemple 4 : Générer un fichier Mermaid
+
+```scala
+import Mermaid._
+
+val graphe = Chargeur.charger("exemples/exemple1.txt").get
+
+// Générer le fichier
+genererMermaidMatrice(graphe.asInstanceOf[MatriceAdjacence], "exemple1.mmd")
+
+// Ou afficher un aperçu
+afficherApercu(graphe)
+```
+
+### 8.6 Captures d'écran
 
 #### Exécution du programme principal
 
@@ -1354,6 +1572,8 @@ projet-scala/
 │   ├── Chargeur.scala       # Objet pour lecture de fichiers
 │   ├── Validation.scala     # Module de validation (Étape 2)
 │   ├── TestValidation.scala # Tests automatisés de validation
+│   ├── Mermaid.scala        # Module de génération Mermaid (Étape 3)
+│   ├── TestMermaid.scala    # Tests de génération Mermaid
 │   ├── Main.scala           # Programme principal
 │   └── project.scala        # Configuration Scala-CLI
 ├── exemples/
@@ -1362,9 +1582,10 @@ projet-scala/
 │   ├── exemple3.txt         # Graphe complexe (INVALIDE - sommet 6)
 │   ├── exemple_meteo.txt    # Application météorologique (VALIDE)
 │   └── exemple_valid_step3.txt # Cas de validation (VALIDE)
+├── *.mmd                    # Fichiers Mermaid générés (10 fichiers)
 └── RAPPORT.md               # Ce document
 
-Taille totale du code source : ~900 lignes (avec documentation)
+Taille totale du code source : ~1200 lignes (avec documentation)
 ```
 
 ### Annexe F : Glossaire

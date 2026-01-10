@@ -1,0 +1,206 @@
+Fonction getId
+5 versions générées par ChatGPT
+Fonction qui prend un entier i (1,2,3 …) et renvoie une chaîne de caractères (A, B, …, Z, AA, 
+AB, …)
+VERSION 1    
+: variable mutable 
+def getID(i: Int): String = {
+  val builder = new StringBuilder
+  var x = i
+  // Ajuster pour base 1 
+→
+ 0 interne
+  while (x > 0) {
+    val rem = (x - 1) % 26
+    builder.append(('A' + rem).toChar)
+    x = (x - 1) / 26
+  }
+  builder.reverse.toString
+}
+Explication rapide
+• On décrémente x de 1 pour passer en base 0.
+• À chaque étape, on calcule le reste modulo 26 pour obtenir une lettre.
+• On accumule les lettres dans un StringBuilder.
+• Enfin on inverse la chaîne (reverse) car les lettres sont calculées en sens inverse.
+Exemples
+println(getID(1))   // A
+println(getID(26))  // Z
+println(getID(27))  // AA
+println(getID(52))  // AZ
+println(getID(53))  // BA
+VERSION 2    
+: purement fonctionnelle 
+Voici une version purement fonctionnelle de la fonction getID, sans var ni StringBuilder, en 
+utilisant seulement des expressions et de la récursion :
+def getID(i: Int): String = {
+  def loop(x: Int, acc: List[Char]): List[Char] = {
+    if (x <= 0) acc
+    else {
+      val rem = (x - 1) % 26
+      val letter = ('A' + rem).toChar
+      loop((x - 1) / 26, letter :: acc)
+    }
+  }
+  loop(i, Nil).mkString
+}
+Comment ça marche (version fonctionnelle)
+• La fonction interne loop fait toute la logique par récursion.
+• acc est une liste de caractères accumulés dans l’ordre correct.
+• Quand x <= 0, on a fini et on retourne la liste.
+• On utilise letter :: acc pour ajouter une lettre devant la liste accumulée.
+• Enfin mkString convertit la liste en String.
+Exemples d’utilisation
+println(getID(1))   // A
+println(getID(26))  // Z
+println(getID(27))  // AA
+println(getID(701)) // ZY
+VERSION 3    
+: itérative purement fonctionnelle  avec  Iterator 
+def getID(i: Int): String = {
+  val iter: Iterator[Char] = Iterator.unfold(i) { x =>
+    if (x <= 0) None
+    else {
+      val rem = (x - 1) % 26
+      val letter = ('A' + rem).toChar
+      val next = (x - 1) / 26
+      Some(letter, next)
+    }
+  }
+  iter.toList.reverse.mkString
+}
+Comment ça fonctionne
+• Iterator.unfold(i)(f) génère une séquence à partir d’un état x.
+• À chaque étape, on produit une lettre et un nouvel état (le quotient).
+• Quand x <= 0, l’itération s’arrête.
+• On inverse ensuite la liste avec reverse pour obtenir l’ordre correct.
+Exemples
+println(getID(1))   // A
+println(getID(26))  // Z
+println(getID(27))  // AA
+println(getID(52))  // AZ
+println(getID(703)) // AAA
+VERSION 4    
+: fonctionnelle avec  LazyList  (paresseux) 
+def getID(i: Int): String = {
+  // LazyList qui génère les lettres à partir d’un état
+  lazy val letters: LazyList[(Char, Int)] = LazyList.unfold(i) { x =>
+    if (x <= 0) None
+    else {
+      val rem    = (x - 1) % 26
+      val letter = ('A' + rem).toChar
+      val next   = (x - 1) / 26
+      Some((letter, next))
+    }
+  }
+  letters.map(_._1).reverse.mkString
+}
+Comment ça marche
+• LazyList.unfold(i) part de l’état initial i.
+• À chaque étape, on émet une lettre (Char) et on calcule le nouvel état (next).
+• Quand l’état devient ≤ 0, la génération s’arrête.
+• On prend ensuite les lettres générées, on inverse l’ordre, et on transforme en chaîne.
+Exemples d’utilisation
+println(getID(1))   // A
+println(getID(26))  // Z
+println(getID(27))  // AA
+println(getID(52))  // AZ
+println(getID(703)) // AAA
+✅
+ Cette version est 
+VERSION 5    
+paresseuse et fonctionnelle, sans variables mutables.
+: fonctionnelle avec  tail-recursive optimisée 
+version fonctionnelle optimisée, tail-recursive (sans accumulation de grande structure 
+intermédiaire), tout en restant claire et idiomatique :
+def getID(i: Int): String = {
+  @annotation.tailrec
+  def loop(x: Int, acc: List[Char]): List[Char] = {
+    if (x <= 0) acc
+    else {
+      val rem    = (x - 1) % 26
+      val letter = ('A' + rem).toChar
+      loop((x - 1) / 26, letter :: acc) // ajoute en tête
+    }
+  }
+  loop(i, Nil).mkString
+}
+Pourquoi c’est optimisé
+✅ Tail-recursive : la dernière opération dans la fonction est l’appel récursif 
+optimiser la pile.
+✅ Fonctionnel : pas de var, pas de mutation.
+Exemples
+println(getID(1))   // A
+println(getID(26))  // Z
+println(getID(27))  // AA
+println(getID(52))  // AZ
+println(getID(703)) // AAA
+→
+ Scala peut 
+VERSION 6    
+: fonctionnelle avec  tail-recursive optimisée en base quelconque 
+Généralisation dans une base arbitraire (pas seulement base 26) — par exemple pour base 2, 16, 
+32, 36 ou même une base personnalisée avec n’importe quel alphabet.
+📌 Rappel mathématique : pour représenter un entier dans une base b≥2, on utilise la méthode 
+des divisions successives par la base, en collectant les restes du moins significatif au plus 
+significatif, puis on lit ces restes à rebours pour former la représentation en chaîne. 
+ 1) Conversion vers une base quelconque
+✅
+Voici une fonction Scala générique qui prend :
+• un entier n: BigInt (pour gérer grands nombres),
+• un alphabet personnalisé (String) où chaque caractère représente un “chiffre” de la base,
+et retourne la représentation de n dans cette base :
+def toBase(n: BigInt, alphabet: String): String = {
+  require(alphabet.length >= 2, "La base doit avoir au moins 2 symboles")
+  @annotation.tailrec
+  def loop(x: BigInt, acc: List[Char]): List[Char] = {
+    if (x == 0) acc
+    else {
+      val base = BigInt(alphabet.length)
+      val (q, r) = x /% base
+      loop(q, alphabet(r.toInt) :: acc)
+    }
+  }
+  if (n == 0) alphabet.head.toString
+  else loop(n, Nil).mkString
+}
+🧠
+ Comment ça marche
+• alphabet définit les “chiffres” dans l’ordre, par exemple "0123456789ABCDEF" pour base 16
+ou "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" pour base 36. Reddit
+• On divise n par la taille de l’alphabet (donc la base) et on récupère les restes (r) à 
+chaque étape.
+• Chaque reste donne une position dans l’alphabet 
+→
+ on accumule ces caractères.
+• Puis on inverse la liste de caractères pour obtenir le bon ordre.
+🎯
+ 2) Exemples d’utilisation
+val base2  = "01"
+val base16 = "0123456789ABCDEF"
+val base32 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"  // RFC 4648 Base32
+val base36 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+println(toBase(BigInt(255), base2))   // "11111111"
+println(toBase(BigInt(255), base16))  // "FF"
+println(toBase(BigInt(123456), base32)) 
+println(toBase(BigInt(123456), base36)) 
+�
+�
+ Tu peux définir 
+n’importe quel alphabet personnalisé, tant qu’il contient au moins 2 
+symboles.
+ Personnaliser l’alphabet
+🛠
+️
+Tu veux une base 26 (A…Z) mais sans chiffres 0…9 ? Voici l’alphabet :
+val base26Letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+Alors :
+println(toBase(BigInt(27), base26Letters)) // "AB"
+💡
+ Notes techniques
+• L’algorithme repose sur une conversion positionnelle, identique à celle utilisée pour la 
+conversion de bases en général (par exemple base 10 
+→
+ base 2 ou base 16). 
+digischool
+• En choisissant bien l’alphabet, tu peux couvrir jusqu’à base 36 (0-9 + A-Z) ou bien tout 
+autre encodage (base 62 avec minuscules et majuscules, etc.).
