@@ -47,3 +47,12 @@ bin/
 lib_managed/
 src_managed/
 project/boot/
+scaladoc/
+
+# Scala-CLI specific
+.scala-build/
+
+# Fichiers de sortie générés
+mermaid/*.mmd
+RAPPORT.docx
+*.zip
