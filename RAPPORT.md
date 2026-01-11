@@ -965,7 +965,7 @@ val adjacences: Map[Int, List[(Int, Double)]] = Map()
 adjacences(1) = List((2, 0.5))  // ERREUR : val ne peut pas être réassigné
 ```
 
-**Compréhension progressive** : 
+**Compréhension progressive** :
 J'ai réalisé que l'immutabilité ne signifie pas "impossibilité de changer l'état", mais plutôt "création d'une nouvelle version" de la structure. C'est comme créer un nouveau document Word plutôt que de modifier l'ancien.
 
 **Solution finale** :
