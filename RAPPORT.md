@@ -1,7 +1,7 @@
 # Rapport de Projet : Graphes de Markov en Scala
 
 **Projet de Programmation Fonctionnelle**  
-**Date** : 2 janvier 2026  
+**Date** : 15 janvier 2026  
 **Langage** : Scala 3.7.4
 
 ---
@@ -57,13 +57,6 @@ Ce projet vise à concevoir et implémenter en **Scala** une bibliothèque pour 
 4. **Valider** les propriétés mathématiques des graphes de Markov
 5. **Charger** des graphes depuis des fichiers texte
 
-### Limites et choix
-
-- **Sommets numérotés** : les sommets sont numérotés de 1 à n (indexation base 1, convention mathématique)
-- **Graphes orientés** : seules les transitions dirigées sont supportées
-- **Probabilités fixes** : pas de simulation temporelle dans cette version
-- **Format de fichier simple** : fichiers texte avec format `départ arrivée probabilité`
-
 ---
 
 ## 2. Analyse Fonctionnelle Générale
@@ -72,17 +65,7 @@ Ce projet vise à concevoir et implémenter en **Scala** une bibliothèque pour 
 
 Comment concevoir une bibliothèque flexible et réutilisable permettant de manipuler des graphes de Markov avec différentes représentations internes, tout en garantissant les contraintes mathématiques (somme des probabilités = 1) ?
 
-### 2.2 Objectifs du projet
-
-Le projet doit permettre de :
-
-- **Créer** des graphes de Markov à partir de fichiers ou programmatiquement
-- **Manipuler** les graphes via une interface unifiée (abstraction)
-- **Valider** automatiquement les contraintes de Markov
-- **Afficher** les graphes sous forme lisible
-- **Interroger** les successeurs d'un sommet avec leurs probabilités
-
-### 2.3 Choix de conception principaux
+### 2.2 Choix de conception principaux
 
 #### Choix 1 : Abstraction par traits (interfaces)
 
@@ -90,7 +73,6 @@ Le projet doit permettre de :
 
 - Définir des contrats clairs (`Graphe`, `Matrice[T]`)
 - Permettre le polymorphisme et la substitution de Liskov
-- Faciliter l'ajout de nouvelles représentations sans modifier le code client
 
 #### Choix 2 : Double représentation (Matrice vs Liste)
 
@@ -106,13 +88,13 @@ Le projet doit permettre de :
 - **Immutabilité** : usage de `Map` et `List` immuables
 - **HOF** : `map`, `filter`, `find`, `foreach`, `forall` pour un code concis
 - **Récursion terminale** : optimisée par le compilateur (`@tailrec`)
-- **Pattern matching** : pour la gestion élégante des cas
+- **Pattern matching** : pour la gestion des cas
 
 #### Choix 4 : Gestion des erreurs avec Option
 
-**Justification** : L'utilisation de `Option[T]` permet de gérer les échecs de chargement sans exceptions, dans un style fonctionnel pur.
+**Justification** : L'utilisation de `Option[T]` permet de gérer les échecs de chargement sans exceptions, dans le style fonctionnel.
 
-### 2.4 Architecture globale
+### 2.3 Architecture globale
 
 Le projet est structuré en **modules fonctionnels** :
 
@@ -782,12 +764,6 @@ end note
 @enduml
 ```
 
-**Légende** :
-
-- `--|>` : Héritage/implémentation de trait
-- `..>` : Dépendance (utilisation)
-- `<<object>>` : Objet singleton Scala
-
 ### 4.2 Diagramme de séquence
 
 Scénario : Chargement et validation d'un graphe depuis un fichier.
@@ -874,13 +850,6 @@ deactivate Main
 @enduml
 ```
 
-**Points clés du diagramme** :
-
-1. Le `Chargeur` gère la lecture du fichier et la création du graphe
-2. La récursion terminale `lireArcs` remplit progressivement la matrice
-3. Le polymorphisme permet à `Main` d'utiliser `Graphe` sans connaître le type concret
-4. Les validations sont effectuées automatiquement
-
 ---
 
 ## 5. Difficultés Rencontrées et Solutions
@@ -893,29 +862,20 @@ Ce projet a représenté un défi significatif car il nécessitait la maîtrise 
 
 - **Structure du projet** : L'IA m'a aidé à organiser l'architecture modulaire du code Scala (séparation en traits, classes, objets)
 - **Explications conceptuelles** : Pour comprendre des concepts comme l'immutabilité, les fonctions d'ordre supérieur, et la récursion terminale
-- **Génération de documentation** : Assistance pour rédiger certaines parties du rapport, notamment les explications algorithmiques et les diagrammes UML
-- **Débogage** : Aide à identifier et corriger des erreurs de logique ou de syntaxe
+- **Génération de documentation** : Assistance pour rédiger certaines parties du rapport, notamment les explications algorithmiques et les diagrammes UML, et certaines parties pour l'architecture
+- **Débogage** : Aide à identifier et corriger des erreurs de logique ou de syntaxe dans le code
 
-Cependant, toute l'implémentation finale, les choix de conception, et la compréhension des solutions sont le fruit de mon travail personnel.
+Cependant, toute l'implémentation finale et les choix de conception sont le fruit de mon travail personnel.
 
 ### 5.2 Difficultés Techniques et Compréhension
 
 #### Difficulté 1 : Transition vers la programmation fonctionnelle
 
-**Problème rencontré** : Habitué à la programmation impérative (Java, Python), le paradigme fonctionnel de Scala m'a demandé un changement de mentalité profond.
+**Problème rencontré** : le paradigme fonctionnel de Scala demande un changement de logique à appliquer.
 
 **Concepts difficiles** :
 
-- Immutabilité : comprendre pourquoi créer de nouvelles structures plutôt que modifier les existantes
-- Absence de boucles `for` classiques : utiliser `map`, `filter`, `fold` à la place
-- Pattern matching : une approche différente du `switch/case` traditionnel
-
-**Solution et apprentissage** :
-J'ai progressivement compris que la programmation fonctionnelle favorise :
-
-- La **composabilité** : les fonctions pures peuvent être facilement combinées
-- La **testabilité** : pas d'effets de bord, résultats prévisibles
-- La **concision** : moins de code boilerplate
+- utilisation de `map`, `filter`, `fold` avec une prédictabilité du résultat plus difficile à appréhender comparé à l'approche impérative
 
 **Exemple de transformation mentale** :
 
@@ -951,8 +911,6 @@ def get(i: Int, j: Int): Double = {
 }
 ```
 
-**Leçon apprise** : Toujours documenter clairement les conventions d'indexation dans les commentaires et la documentation.
-
 #### Difficulté 3 : Immutabilité et structures de données
 
 **Problème initial** : Dans `ListeAdjacence`, j'ai d'abord tenté de modifier directement un `Map`, ce qui est impossible avec des structures immuables.
@@ -964,9 +922,6 @@ def get(i: Int, j: Int): Double = {
 val adjacences: Map[Int, List[(Int, Double)]] = Map()
 adjacences(1) = List((2, 0.5))  // ERREUR : val ne peut pas être réassigné
 ```
-
-**Compréhension progressive** :
-J'ai réalisé que l'immutabilité ne signifie pas "impossibilité de changer l'état", mais plutôt "création d'une nouvelle version" de la structure. C'est comme créer un nouveau document Word plutôt que de modifier l'ancien.
 
 **Solution finale** :
 
@@ -1012,7 +967,7 @@ private def lireArcs(matrice: MatriceAdjacence, lignes: List[String]): Unit = {
 }
 ```
 
-**Leçon clé** : L'annotation `@annotation.tailrec` est précieuse car elle force le compilateur à vérifier l'optimisation. Si l'appel n'est pas terminal, le code ne compile pas.
+**Leçon clé** : L'annotation `@annotation.tailrec` est importante car elle force le compilateur à vérifier l'optimisation. Si l'appel n'est pas terminal, le code ne compile pas.
 
 #### Difficulté 5 : Précision des nombres flottants
 
@@ -1088,22 +1043,15 @@ val probaFormatee = "%.2f".formatLocal(java.util.Locale.US, proba)
 **Ce que j'ai retenu** :
 
 1. **Abstraction** : Les traits (`Graphe`, `Matrice[T]`) permettent d'écrire du code générique et réutilisable
-2. **Composition** : Préférer composer des petites fonctions plutôt que d'écrire de grandes fonctions monolithiques
-3. **Types** : Le système de types de Scala aide à éviter les erreurs à la compilation plutôt qu'à l'exécution
-4. **Documentation** : La Scaladoc est essentielle pour comprendre le code plusieurs semaines après l'avoir écrit
-
-**Défis restants** :
-
-- Maîtriser les concepts avancés (implicits, type classes)
-- Optimiser les performances pour de très grands graphes
-- Approfondir les tests unitaires avec ScalaTest
+2. **Types** : Le système de types de Scala aide à éviter les erreurs à la compilation plutôt qu'à l'exécution
+3. **Documentation** : La Scaladoc est essentielle pour comprendre le code et est simple à générer
 
 **Apport de l'IA** :
 
 L'utilisation de l'IA m'a permis d'accélérer l'apprentissage en :
 
 - Obtenant des explications immédiates sur des concepts difficiles
-- Découvrant des idiomes Scala que je n'aurais pas trouvés seul
+- Découvrant des idiomes Scala que je n'aurais pas trouvés seul ainsi que des pistes permettant de résoudre et utiliser certains outils
 - Structurant le projet de manière professionnelle dès le départ
 
 Cependant, j'ai veillé à **comprendre chaque ligne de code** plutôt que de copier aveuglément, et à adapter les suggestions à mes besoins spécifiques.
@@ -1114,15 +1062,7 @@ Cependant, j'ai veillé à **comprendre chaque ligne de code** plutôt que de co
 
 ### 6.1 Fichiers de test
 
-Le projet inclut plusieurs fichiers d'exemples dans le dossier `exemples/` :
-
-| Fichier                   | Description                | Sommets | Arcs |
-| ------------------------- | -------------------------- | ------- | ---- |
-| `exemple1.txt`            | Graphe simple valide       | 4       | 9    |
-| `exemple2.txt`            | Graphe avec boucles        | -       | -    |
-| `exemple3.txt`            | Graphe complexe            | -       | -    |
-| `exemple_meteo.txt`       | Application météorologique | -       | -    |
-| `exemple_valid_step3.txt` | Cas de validation          | -       | -    |
+Le projet inclut plusieurs fichiers d'exemples fournis dans le dossier `exemples/`.
 
 ### 6.2 Tests de validation
 
@@ -1197,27 +1137,7 @@ for (i <- 1 to 4; j <- 1 to 4) {
 
 **Test réussi** : les deux représentations sont équivalentes
 
-### 6.3 Tests de performance
-
-#### Comparaison mémoire
-
-**Graphe creux** (10 sommets, 15 arcs) :
-
-- **Matrice** : 10×10 = 100 doubles = 800 octets
-- **Liste** : 15 arcs × ~40 octets = 600 octets
-
-**Gain** : ~25% pour ce petit graphe, beaucoup plus pour les gros graphes creux.
-
-#### Comparaison temps d'accès
-
-Pour un graphe de 1000 sommets avec en moyenne 5 successeurs par sommet :
-
-- **Matrice.get(i, j)** : O(1) ≈ instantané
-- **Liste.get(i, j)** : O(k) ≈ 5 comparaisons
-
-**Conclusion** : Pour des graphes creux avec peu de successeurs, la différence est négligeable et l'économie mémoire compense largement.
-
-### 6.4 Tests de robustesse
+### 6.3 Tests de robustesse
 
 #### Test avec fichier inexistant
 
@@ -1253,226 +1173,32 @@ invalide ligne
 
 ## 7. Conclusion
 
-### Synthèse du travail accompli
-
-Ce projet a permis de concevoir et d'implémenter une bibliothèque complète pour manipuler des graphes de Markov en Scala. Les objectifs initiaux ont été atteints :
-
-- **Deux représentations** (matrice et liste d'adjacence) fonctionnelles et validées  
-- **Abstraction par traits** permettant le polymorphisme et la réutilisabilité  
-- **Programmation fonctionnelle** : HOF, récursion terminale, immutabilité  
-- **Validation automatique** des propriétés de Markov avec gestion de la précision (Étape 2)
-- **Génération de visualisations** au format Mermaid pour représentation graphique (Étape 3)
-- **Chargement depuis fichiers** avec gestion robuste des erreurs  
-
-### Points forts du projet
-
-1. **Architecture flexible** : L'ajout de nouvelles représentations (ex: matrice creuse CSR) serait trivial grâce aux traits
-2. **Code idiomatique Scala** : Utilisation intensive des fonctionnalités du langage (pattern matching, HOF, Option)
-3. **Séparation des préoccupations** : Chaque classe a une responsabilité claire
-4. **Documentation exhaustive** : Scaladoc dans tous les fichiers sources
-
-### Limitations et améliorations possibles
-
-**Limitations actuelles** :
-
-- Pas de simulation de chaînes de Markov (évolution temporelle)
-- Pas de calcul de distributions stationnaires
-- Pas de détection de classes de communication
-- Sommets identifiés uniquement par des entiers
-
-**Perspectives d'évolution** :
-
-1. **Simulation temporelle** :
-
-   ```scala
-   def simuler(initial: Int, steps: Int, random: Random): List[Int]
-   ```
-
-   Générer une trajectoire aléatoire suivant les probabilités de transition.
-
-2. **Distribution stationnaire** :
-
-   ```scala
-   def distributionStationnaire(epsilon: Double): Array[Double]
-   ```
-
-   Calculer la distribution limite par méthode itérative (puissance de matrice).
-
-3. **Analyse de connectivité** :
-
-   ```scala
-   def classesRecurrentes(): List[Set[Int]]
-   def estIrreductible(): Boolean
-   ```
-
-4. **Sommets nommés** :
-
-   ```scala
-   class GrapheNomme(noms: Map[Int, String]) extends Graphe
-   ```
-
-   Associer des noms symboliques aux sommets (ex: "Pluie", "Soleil").
-
-5. **Export/visualisation** :
-
-   ```scala
-   def exportGraphviz(fichier: String): Unit
-   def exportJSON(fichier: String): Unit
-   ```
-
-   Générer des fichiers pour outils de visualisation (Graphviz, D3.js).
-
-6. **Tests unitaires** :
-   Intégrer ScalaTest ou MUnit pour des tests automatisés complets.
-
-### Compétences développées
-
-Ce projet a permis de consolider :
-
-- La **conception orientée objet** avec héritage et polymorphisme
-- La **programmation fonctionnelle** (HOF, récursion, immutabilité)
-- La **manipulation de collections** Scala (List, Map, Array)
-- La **gestion d'erreurs** fonctionnelle (Option, Try)
-- La **documentation technique** et la rédaction de rapports
+Ce projet a permis de concevoir et d'implémenter une bibliothèque complète pour manipuler des graphes de Markov en Scala, en respectant les trois étapes demandées.
+L'architecture repose sur une abstraction par traits permettant le polymorphisme entre deux représentations (matrice et liste d'adjacence), tout en exploitant pleinement le paradigme fonctionnel avec les fonctions d'ordre supérieur, la récursion terminale et l'immutabilité. Le module de validation automatique garantit les propriétés mathématiques des graphes de Markov en gérant correctement la précision flottante, tandis que la génération de visualisations au format Mermaid facilite la visualisation des graphes. Ce travail m'a permis de consolider mes compétences en conception orientée objet, en programmation fonctionnelle, et en manipulation des collections Scala.
 
 ---
 
 ## 8. Mode d'Emploi
 
-### 8.1 Prérequis
-
-- **JDK** : Version 17 ou supérieure
-- **Scala** : Version 3.7.4
-- **Scala-CLI** : Pour compilation et exécution simplifiées
-
-Installation de Scala-CLI (Windows) :
-
-```powershell
-winget install Virtuslab.ScalaCLI
-```
-
-### 8.2 Compilation et exécution
-
-#### Méthode 1 : Avec Scala-CLI (recommandé)
+### Exécution du programme
 
 ```bash
 # Se placer dans le dossier du projet
-cd c:\Users\arthu\Documents\projet-scala
+cd projet-scala
 
-# Compiler et exécuter
+# Exécuter le programme principal (Main)
 scala-cli run src/
-```
 
-#### Méthode 2 : Compilation manuelle
-
-```bash
-# Compiler tous les fichiers
-scalac src/*.scala -d bin/
-
-# Exécuter
-scala -cp bin/ Main
-```
-
-### 8.3 Exécution des tests de validation (Étape 2)
-
-Pour exécuter les tests de validation sur tous les fichiers d'exemples :
-
-```bash
+# Exécuter les tests de validation (Étape 2)
 scala-cli run src/TestValidation.scala src/*.scala --main-class testValidation
-```
 
-### 8.4 Génération des visualisations Mermaid (Étape 3)
-
-Pour générer les fichiers Mermaid pour tous les exemples :
-
-```bash
+# Générer les visualisations Mermaid (Étape 3)
 scala-cli run src/TestMermaid.scala src/*.scala --main-class TestMermaid
 ```
 
-Pour tester un fichier spécifique :
+### Exemples de sortie
 
-```scala
-import Validation._
-
-// Test avec MatriceAdjacence
-testerMatrice("exemples/exemple1.txt")
-
-// Test avec ListeAdjacence
-testerListe("exemples/exemple1.txt")
-```
-
-**Résultat attendu** :
-
-```text
-======================================================================
-TEST MATRICE D'ADJACENCE : exemples/exemple1.txt
-======================================================================
-[OK] Graphe chargé : 4 sommets
-
-[OK] RÉSULTAT : GRAPHE DE MARKOV VALIDE
-  Tous les sommets ont une somme de probabilités dans [0.99, 1]
-======================================================================
-```
-
-### 8.5 Utilisation de la bibliothèque
-
-#### Exemple 1 : Charger un graphe depuis un fichier
-
-```scala
-import Chargeur._
-
-val graphe = charger("exemples/exemple1.txt") match {
-  case Some(g) => g
-  case None => 
-    println("Erreur de chargement")
-    sys.exit(1)
-}
-
-println(s"Graphe chargé avec ${graphe.nbSommets} sommets")
-graphe.afficher()
-```
-
-#### Exemple 2 : Créer un graphe programmatiquement
-
-```scala
-val arcs = List(
-  (1, 1, 0.8),
-  (1, 2, 0.2),
-  (2, 1, 0.3),
-  (2, 2, 0.7)
-)
-
-val graphe = Chargeur.depuisListe(2, arcs)
-graphe.afficherValidation()
-```
-
-#### Exemple 3 : Interroger les successeurs
-
-```scala
-val succ = graphe.successeurs(1)
-println("Successeurs du sommet 1 :")
-succ.foreach { case (dest, proba) =>
-  println(f"  → Sommet $dest avec probabilité $proba%.2f")
-}
-```
-
-#### Exemple 4 : Générer un fichier Mermaid
-
-```scala
-import Mermaid._
-
-val graphe = Chargeur.charger("exemples/exemple1.txt").get
-
-// Générer le fichier
-genererMermaidMatrice(graphe.asInstanceOf[MatriceAdjacence], "exemple1.mmd")
-
-// Ou afficher un aperçu
-afficherApercu(graphe)
-```
-
-### 8.6 Captures d'écran
-
-#### Exécution du programme principal
+#### Programme principal
 
 ```text
 ==================================================
@@ -1632,42 +1358,7 @@ Une fois les diagrammes exportés en PNG/SVG, remplacer les blocs PlantUML dans 
 2. Dans Word, insérer les images à la place du code PlantUML
 3. Ajouter des légendes : "Figure 1 : Diagramme de classes"
 
-### Annexe D : Bibliographie
-
-#### Livres
-
-1. **Programming in Scala** (5th Edition) - Martin Odersky, Lex Spoon, Bill Venners
-   - Référence complète sur Scala, écrite par le créateur du langage
-
-2. **Functional Programming in Scala** - Paul Chiusano, Rúnar Bjarnason
-   - Approfondissement des concepts fonctionnels
-
-3. **Introduction aux processus stochastiques** - Sheldon Ross
-   - Fondements mathématiques des chaînes de Markov
-
-#### Articles et ressources en ligne
-
-1. **Scala Documentation officielle**
-   - <https://docs.scala-lang.org/>
-   - Guide complet du langage et des collections
-
-2. **Scala 3 Book**
-   - <https://docs.scala-lang.org/scala3/book/introduction.html>
-   - Introduction moderne à Scala 3
-
-3. **Markov Chains - Wikipedia**
-   - <https://en.wikipedia.org/wiki/Markov_chain>
-   - Contexte théorique et applications
-
-4. **Functional Programming Principles in Scala (Coursera)**
-   - Martin Odersky
-   - MOOC sur les principes de la programmation fonctionnelle
-
-5. **Scala Collections Performance Characteristics**
-   - <https://docs.scala-lang.org/overviews/collections-2.13/performance-characteristics.html>
-   - Analyse des complexités des structures de données
-
-### Annexe E : Structure du projet
+### Annexe D : Structure du projet
 
 ```text
 projet-scala/
@@ -1689,30 +1380,7 @@ projet-scala/
 │   ├── exemple3.txt         # Graphe complexe (INVALIDE - sommet 6)
 │   ├── exemple_meteo.txt    # Application météorologique (VALIDE)
 │   └── exemple_valid_step3.txt # Cas de validation (VALIDE)
-├── *.mmd                    # Fichiers Mermaid générés (10 fichiers)
+├── mermaid/*.mmd            # Fichiers Mermaid générés (10 fichiers)
 └── RAPPORT.md               # Ce document
 
-Taille totale du code source : ~1200 lignes (avec documentation)
 ```
-
-### Annexe F : Glossaire
-
-| Terme                   | Définition                                                                                                      |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Chaîne de Markov**    | Processus stochastique où la probabilité de l'état futur ne dépend que de l'état présent (propriété de Markov) |
-| **Graphe creux**        | Graphe avec beaucoup moins d'arcs que le maximum possible (beaucoup de zéros dans la matrice)                  |
-| **HOF**                 | Higher-Order Function : fonction prenant des fonctions en paramètres ou retournant des fonctions               |
-| **Pattern matching**    | Mécanisme de contrôle de flux basé sur la structure des données                                                |
-| **Récursion terminale** | Récursion où l'appel récursif est la dernière opération (optimisable en boucle)                                |
-| **Trait**               | Interface Scala pouvant contenir des implémentations par défaut                                                |
-| **Option[T]**           | Type représentant une valeur optionnelle (Some(valeur) ou None)                                                |
-| **Call by value**       | Mode de passage de paramètres où la valeur est évaluée avant l'appel                                           |
-| **Immutabilité**        | Propriété d'un objet dont l'état ne peut pas être modifié après création                                       |
-
----
-
-## Fin du rapport
-
-*Document généré le 2 janvier 2026*  
-*Projet : Graphes de Markov en Scala*  
-*Version : 1.0*
