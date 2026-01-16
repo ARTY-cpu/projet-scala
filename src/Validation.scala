@@ -52,16 +52,16 @@ object Validation {
     
     Chargeur.chargerMatrice(fichier) match {
       case Some(matrice) =>
-        println(s"✓ Graphe chargé : ${matrice.nbSommets} sommets")
+        println(s"Graphe chargé : ${matrice.nbSommets} sommets")
         println()
         
         val invalides = sommetsInvalides(matrice)
         
         if (invalides.isEmpty) {
-          println("✓ RÉSULTAT : GRAPHE DE MARKOV VALIDE")
+          println("RÉSULTAT : GRAPHE DE MARKOV VALIDE")
           println("  Tous les sommets ont une somme de probabilités dans [0.99, 1]")
         } else {
-          println("✗ RÉSULTAT : GRAPHE DE MARKOV INVALIDE")
+          println("RÉSULTAT : GRAPHE DE MARKOV INVALIDE")
           println(s"  Sommets en cause : ${invalides.mkString(", ")}")
           println()
           println("  Détail des sommets invalides :")
@@ -72,7 +72,7 @@ object Validation {
         }
         
       case None =>
-        println("✗ Erreur : impossible de charger le fichier")
+        println("Erreur : impossible de charger le fichier")
     }
     
     println("=" * 70)
@@ -93,16 +93,16 @@ object Validation {
     
     Chargeur.chargerListe(fichier) match {
       case Some(liste) =>
-        println(s"✓ Graphe chargé : ${liste.nbSommets} sommets")
+        println(s"Graphe chargé : ${liste.nbSommets} sommets")
         println()
         
         val invalides = sommetsInvalides(liste)
         
         if (invalides.isEmpty) {
-          println("✓ RÉSULTAT : GRAPHE DE MARKOV VALIDE")
+          println("RÉSULTAT : GRAPHE DE MARKOV VALIDE")
           println("  Tous les sommets ont une somme de probabilités dans [0.99, 1]")
         } else {
-          println("✗ RÉSULTAT : GRAPHE DE MARKOV INVALIDE")
+          println("RÉSULTAT : GRAPHE DE MARKOV INVALIDE")
           println(s"  Sommets en cause : ${invalides.mkString(", ")}")
           println()
           println("  Détail des sommets invalides :")
@@ -113,7 +113,7 @@ object Validation {
         }
         
       case None =>
-        println("✗ Erreur : impossible de charger le fichier")
+        println("Erreur : impossible de charger le fichier")
     }
     
     println("=" * 70)
