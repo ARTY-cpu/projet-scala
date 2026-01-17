@@ -1274,15 +1274,6 @@ Sommet 4 : [head @] -> (1, 1.00) @
   - Gestion automatique des dépendances
   - Compilation incrémentale rapide
 
-#### PlantUML
-
-- **Site officiel** : <https://plantuml.com/>
-- **Usage** : Génération de diagrammes UML à partir de descriptions textuelles
-- **Avantages** :
-  - Diagrammes versionnables (texte)
-  - Intégration avec Markdown
-  - Syntaxe simple et expressive
-
 ### Annexe B : Génération de la documentation
 
 #### Scaladoc
@@ -1305,57 +1296,6 @@ Cela produit une documentation HTML navigable similaire à la Javadoc.
  */
 def successeurs(sommet: Int): List[(Int, Double)]
 ```
-
-### Annexe C : Compilation des diagrammes PlantUML
-
-#### Configuration VSCode pour PlantUML
-
-Un fichier `.vscode/settings.json` a été créé dans le projet avec la configuration suivante :
-
-```json
-{
-    "plantuml.server": "https://www.plantuml.com/plantuml",
-    "plantuml.render": "PlantUMLServer"
-}
-```
-
-Les diagrammes sont également disponibles dans le dossier `diagrammes/` :
-
-- `diagramme_classes.puml` : Architecture du projet
-- `diagramme_sequence.puml` : Scénario de chargement
-
-#### Méthode 1 : Avec l'extension VSCode
-
-1. Installer l'extension **PlantUML** (jebbs.plantuml)
-2. Ouvrir un fichier `.puml` dans le dossier `diagrammes/`
-3. Appuyer sur `Alt+D` pour prévisualiser
-4. Clic droit → "Export Current Diagram" → Choisir le format (PNG, SVG, PDF)
-
-#### Méthode 2 : Avec l'outil en ligne de commande
-
-```bash
-# Installer PlantUML (nécessite Java)
-winget install PlantUML
-
-# Générer les images depuis les fichiers .puml
-cd diagrammes
-plantuml diagramme_classes.puml
-plantuml diagramme_sequence.puml
-```
-
-#### Méthode 3 : Serveur PlantUML en ligne
-
-- Visiter <https://www.plantuml.com/plantuml/>
-- Coller le code PlantUML depuis les fichiers `.puml`
-- Télécharger l'image générée
-
-#### Méthode 4 : Intégrer les images dans le rapport Word
-
-Une fois les diagrammes exportés en PNG/SVG, remplacer les blocs PlantUML dans le rapport Word par les images :
-
-1. Exporter les diagrammes en PNG (haute résolution)
-2. Dans Word, insérer les images à la place du code PlantUML
-3. Ajouter des légendes : "Figure 1 : Diagramme de classes"
 
 ### Annexe D : Structure du projet
 

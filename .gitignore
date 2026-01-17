@@ -51,6 +51,8 @@ scaladoc/
 
 # Scala-CLI specific
 .scala-build/
+*.class
+*.tasty
 
 # Fichiers de sortie générés
 mermaid/*.mmd
