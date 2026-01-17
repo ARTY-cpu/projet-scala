@@ -1,4 +1,4 @@
-@startuml diag_class
+@startuml diagramme_classes
 
 ' Définition des traits (interfaces)
 interface Graphe {
