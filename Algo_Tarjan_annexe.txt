@@ -1,0 +1,65 @@
+Algorithme de Tarjan
+Alain Cournier Stéphane Devismes
+Algorithme 1 Procédure parcours
+Entrées
+1: g : graphe orienté de n sommets
+2: x : sommet
+Entrées-Sorties
+3: P : pile de sommets
+4: retour[] : tableau de n entiers indexé sur les sommets
+5: dansPile[] : tableau de n booléens indexé sur les sommets
+6: numEmp[] : tableau de n entiers indexé sur les sommets
+7: num : entier
+Sorties
+8: partition[] : tableau de n sommets indexé sur les sommets
+Variables
+9: y : sommet
+Programme
+10: numEmp[x] ← num
+11: retour[x] ← num
+12: num ←num+1
+13: Empiler(P,x)
+14: dansPile[x] ← vrai
+15: Pour tout y ∈ Succ(x) faire
+16:   Si numEmp[y] = ∞ alors
+17:     parcours(g,y,P,retour,dansPile,numEmp,num,partition)
+18:     retour[x] ← min(retour[x],retour[y])
+19:   Sinon
+20:     Si dansPile[y] alors
+21:       retour[x] ← min(retour[x],numEmp[y])
+22:     Fin Si
+23:   Fin Si
+24: Fin Pour
+25: Si retour[x] = numEmp[x] alors
+26:  Répéter
+27:    y ←Tete(P)
+28:    partition[y] ← x
+29:    dansPile[y] ← faux
+30:    Depiler(P)
+31:  Jusqu’`a y = x
+32: Fin Si
+
+Algorithme 2 Procédure Tarjan
+Entrées
+1: g : graphe orienté de n sommets
+Sorties
+2: partition[] : tableau de n sommets indexé sur les sommets
+Variables
+3: P : pile de sommets
+4: retour[] : tableau de n entiers indexé sur les sommets
+5: dansPile[] : tableau de n booléens indexé sur les sommets
+6: numEmp[] : tableau de n entiers indexé sur les sommets
+7: num : entier
+8: x : sommet
+Programme
+9: num ←1
+10: P ←PileVide()
+11: Pour tout x ∈ X faire
+12:   dansPile[x] ← faux
+13:   numEmp[x] ← ∞
+14: Fin Pour
+15: Pour tout x ∈ X faire
+16:    Si numEmp[x] = ∞ alors
+17:       parcours(g,x,P,retour,dansPile,numEmp,num,partition)
+18:    Fin Si
+19: Fin Pour
