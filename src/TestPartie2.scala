@@ -19,13 +19,13 @@ object TestPartie2 extends App {
   
   Chargeur.charger(fichierMeteo) match {
     case Some(graphe) =>
-      println(s"✓ Graphe chargé: ${graphe.nbSommets} sommets")
+      println(s" Graphe chargé: ${graphe.nbSommets} sommets")
       
       // Convertir en matrice si c'est une liste
       val matrice = graphe match {
         case m: MatriceAdjacence => m
         case l: ListeAdjacence => 
-          println("  Conversion ListeAdjacence → MatriceAdjacence")
+          println("  Conversion ListeAdjacence -> MatriceAdjacence")
           CalculsMatriciels.listeVersMatrice(l)
       }
       
@@ -53,11 +53,11 @@ object TestPartie2 extends App {
       
       // Vérification avec les valeurs attendues
       println("\nVérification des valeurs attendues pour M³:")
-      println("  M³[1,1] attendu: 0.17 → obtenu: " + f"${m3.proba(1, 1)}%.2f")
-      println("  M³[1,2] attendu: 0.37 → obtenu: " + f"${m3.proba(1, 2)}%.2f")
-      println("  M³[1,3] attendu: 0.13 → obtenu: " + f"${m3.proba(1, 3)}%.2f")
-      println("  M³[1,4] attendu: 0.05 → obtenu: " + f"${m3.proba(1, 4)}%.2f")
-      println("  M³[1,5] attendu: 0.27 → obtenu: " + f"${m3.proba(1, 5)}%.2f")
+      println("  M³[1,1] attendu: 0.17 -> obtenu: " + f"${m3.proba(1, 1)}%.2f")
+      println("  M³[1,2] attendu: 0.37 -> obtenu: " + f"${m3.proba(1, 2)}%.2f")
+      println("  M³[1,3] attendu: 0.13 -> obtenu: " + f"${m3.proba(1, 3)}%.2f")
+      println("  M³[1,4] attendu: 0.05 -> obtenu: " + f"${m3.proba(1, 4)}%.2f")
+      println("  M³[1,5] attendu: 0.27 -> obtenu: " + f"${m3.proba(1, 5)}%.2f")
       
       // ===========================================================================
       // TEST 3 : Calcul de M⁷
@@ -71,11 +71,11 @@ object TestPartie2 extends App {
       
       // Vérification avec les valeurs attendues
       println("\nVérification des valeurs attendues pour M⁷:")
-      println("  M⁷[1,1] attendu: 0.16 → obtenu: " + f"${m7.proba(1, 1)}%.2f")
-      println("  M⁷[1,2] attendu: 0.36 → obtenu: " + f"${m7.proba(1, 2)}%.2f")
-      println("  M⁷[1,3] attendu: 0.13 → obtenu: " + f"${m7.proba(1, 3)}%.2f")
-      println("  M⁷[1,4] attendu: 0.05 → obtenu: " + f"${m7.proba(1, 4)}%.2f")
-      println("  M⁷[1,5] attendu: 0.29 → obtenu: " + f"${m7.proba(1, 5)}%.2f")
+      println("  M⁷[1,1] attendu: 0.16 -> obtenu: " + f"${m7.proba(1, 1)}%.2f")
+      println("  M⁷[1,2] attendu: 0.36 -> obtenu: " + f"${m7.proba(1, 2)}%.2f")
+      println("  M⁷[1,3] attendu: 0.13 -> obtenu: " + f"${m7.proba(1, 3)}%.2f")
+      println("  M⁷[1,4] attendu: 0.05 -> obtenu: " + f"${m7.proba(1, 4)}%.2f")
+      println("  M⁷[1,5] attendu: 0.29 -> obtenu: " + f"${m7.proba(1, 5)}%.2f")
       
       // Vérifier que toutes les lignes sont similaires (distribution stationnaire)
       println("\nVérification de la convergence (toutes les lignes similaires):")
@@ -107,7 +107,7 @@ object TestPartie2 extends App {
       println("\nRéponse à la question 1:")
       println(f"  'Quelle probabilité que le temps soit nuageux dans 3 jours")
       println(f"   s'il fait beau aujourd'hui?'")
-      println(f"  → ${pi3(2) * 100}%.1f%% (état 2: Cloudy)")
+      println(f"  -> ${pi3(2) * 100}%.1f%% (état 2: Cloudy)")
       
       // Distribution initiale : il pleut (Rain)
       println("\n" + "-" * 70)
@@ -122,7 +122,7 @@ object TestPartie2 extends App {
       
       println("\nRéponse à la question 2:")
       println(f"  'Quelles probabilités dans 7 jours s'il pleut aujourd'hui?'")
-      println(f"  → Distribution ci-dessus")
+      println(f"  -> Distribution ci-dessus")
       
       // ===========================================================================
       // TEST 5 : Recherche de la distribution stationnaire
@@ -134,7 +134,7 @@ object TestPartie2 extends App {
       val (n, mn, converge) = CalculsMatriciels.trouverConvergence(matrice, epsilon = 0.01)
       
       if (converge) {
-        println(f"✓ Convergence atteinte après $n itérations")
+        println(f" Convergence atteinte après $n itérations")
         println(f"  (différence < 0.01 entre M^$n et M^${n-1})")
         
         // Affiche la distribution stationnaire (première ligne)
@@ -145,13 +145,13 @@ object TestPartie2 extends App {
         println("\nRéponse à la question 3:")
         println("  'Atteint-on des probabilités indépendantes de la distribution")
         println("   de départ au bout d'un certain temps?'")
-        println(f"  → OUI, convergence en $n étapes vers la distribution stationnaire")
+        println(f"  -> OUI, convergence en $n étapes vers la distribution stationnaire")
       } else {
-        println(f"✗ Pas de convergence après $n itérations")
+        println(f" Pas de convergence après $n itérations")
       }
       
     case None =>
-      println(s"✗ Échec du chargement de $fichierMeteo")
+      println(s" Échec du chargement de $fichierMeteo")
   }
   
   // ===========================================================================
@@ -184,13 +184,13 @@ object TestPartie2 extends App {
         val (n, _, converge) = CalculsMatriciels.trouverConvergence(matrice, epsilon = 0.01)
         
         if (converge) {
-          println(f"  ✓ $nomFichier%-30s → convergence en $n%3d itérations")
+          println(f"   $nomFichier%-30s -> convergence en $n%3d itérations")
         } else {
-          println(f"  ✗ $nomFichier%-30s → PAS de convergence")
+          println(f"   $nomFichier%-30s -> PAS de convergence")
         }
         
       case None =>
-        println(f"  ✗ ${fichier.split("/").last}%-30s → Échec chargement")
+        println(f"   ${fichier.split("/").last}%-30s -> Échec chargement")
     }
   }
   

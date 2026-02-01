@@ -24,7 +24,7 @@ object TestComposantes extends App {
     
     Chargeur.charger(fichier) match {
       case Some(graphe) =>
-        println(s"✓ Graphe chargé: ${graphe.nbSommets} sommets\n")
+        println(s" Graphe chargé: ${graphe.nbSommets} sommets\n")
         
         // Analyse complète : Tarjan + distributions
         val partition = ComposantesFortementConnexes.analyseComplete(graphe)
@@ -54,7 +54,7 @@ object TestComposantes extends App {
         }
         
       case None =>
-        println(s"✗ Échec du chargement de $fichier")
+        println(s" Échec du chargement de $fichier")
     }
     
     println("\n" + "=" * 70)
@@ -84,10 +84,10 @@ object TestComposantes extends App {
         println(f"  - Composante C${idx + 1}: {$sommets}")
       }
       
-      println("\n✓ Test de conformité avec l'énoncé")
+      println("\n Test de conformité avec l'énoncé")
       
     case None =>
-      println("✗ Échec du chargement")
+      println(" Échec du chargement")
   }
   
   println("\n" + "=" * 70)

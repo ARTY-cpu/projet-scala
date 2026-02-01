@@ -16,40 +16,17 @@ New-Item -ItemType Directory -Path $exportDir -Force | Out-Null
 Write-Host "  [OK] Dossier cree: $exportName" -ForegroundColor Green
 
 Write-Host ""
-Write-Host "[2/5] Generation des diagrammes PlantUML..." -ForegroundColor Yellow
-$diagramsDir = Join-Path $projectRoot "diagrammes"
-$diagramsGenerated = $false
-
-$plantUmlJar = Join-Path $projectRoot "plantuml.jar"
-if (-not (Test-Path $plantUmlJar)) {
-    Write-Host "  -> Telechargement de PlantUML..." -ForegroundColor Gray
-    try {
-        $plantUmlUrl = "https://github.com/plantuml/plantuml/releases/download/v1.2024.0/plantuml-1.2024.0.jar"
-        Invoke-WebRequest -Uri $plantUmlUrl -OutFile $plantUmlJar -TimeoutSec 30
-        Write-Host "  [OK] PlantUML telecharge" -ForegroundColor Green
-    } catch {
-        Write-Host "  [WARN] Telechargement echoue" -ForegroundColor Yellow
+Write-Host "[2/5] Generation de la Scaladoc..." -ForegroundColor Yellow
+try {
+    $scalaCliCmd = Get-Command scala-cli -ErrorAction Stop
+    & scala-cli doc src --output-directory scaladoc --force 2>&1 | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "  [OK] Scaladoc regeneree" -ForegroundColor Green
+    } else {
+        Write-Host "  [WARN] Scaladoc non regeneree" -ForegroundColor Yellow
     }
-}
-
-if (Test-Path $plantUmlJar) {
-    try {
-        $javaCmd = Get-Command java -ErrorAction Stop
-        Push-Location $diagramsDir
-        java -jar $plantUmlJar -tpng *.puml 2>$null
-        Pop-Location
-        if ($LASTEXITCODE -eq 0) {
-            Write-Host "  [OK] Diagrammes PNG generes" -ForegroundColor Green
-            $diagramsGenerated = $true
-        }
-    } catch {
-        Write-Host "  [WARN] Generation echouee (Java requis)" -ForegroundColor Yellow
-    }
-}
-
-if (-not $diagramsGenerated) {
-    Write-Host "  -> Les diagrammes .puml seront inclus" -ForegroundColor Gray
-    Write-Host "  -> A exporter manuellement depuis VSCode si besoin" -ForegroundColor Cyan
+} catch {
+    Write-Host "  [WARN] scala-cli non trouve, scaladoc existante sera utilisee" -ForegroundColor Yellow
 }
 
 Write-Host ""
@@ -74,23 +51,24 @@ if (Test-Path "scaladoc") {
 }
 
 Write-Host ""
-Write-Host "[4/5] Copie des diagrammes..." -ForegroundColor Yellow
-$exportDiagramsDir = Join-Path $exportDir "diagrammes"
-New-Item -ItemType Directory -Path $exportDiagramsDir -Force | Out-Null
+Write-Host "[4/5] Copie de la documentation..." -ForegroundColor Yellow
 
-$pngFiles = Get-ChildItem -Path "diagrammes" -Filter "*.png" -ErrorAction SilentlyContinue
-if ($pngFiles) {
-    foreach ($file in $pngFiles) {
-        Copy-Item -Path $file.FullName -Destination $exportDiagramsDir -Force
-    }
-    Write-Host "  [OK] Diagrammes PNG ($($pngFiles.Count) fichiers)" -ForegroundColor Green
+if (Test-Path "RAPPORT.pdf") {
+    Copy-Item -Path "RAPPORT.pdf" -Destination $exportDir -Force
+    Write-Host "  [OK] RAPPORT.pdf" -ForegroundColor Green
 } else {
-    Write-Host "  [WARN] Aucun fichier PNG trouve" -ForegroundColor Yellow
-    Write-Host "  -> Generer depuis VSCode (Alt+D puis Export)" -ForegroundColor Cyan
+    Write-Host "  [WARN] RAPPORT.pdf manquant" -ForegroundColor Yellow
 }
 
-Copy-Item -Path "RAPPORT.md" -Destination $exportDir -Force
-Write-Host "  [OK] RAPPORT.md" -ForegroundColor Green
+if (Test-Path "README") {
+    Copy-Item -Path "README" -Destination $exportDir -Force
+    Write-Host "  [OK] README" -ForegroundColor Green
+}
+
+if (Test-Path "inventaire_des_notions.md") {
+    Copy-Item -Path "inventaire_des_notions.md" -Destination $exportDir -Force
+    Write-Host "  [OK] inventaire_des_notions.md" -ForegroundColor Green
+}
 
 # Supprimer les dossiers .bsp et .scala-build de partout dans l'export
 Write-Host ""
@@ -124,21 +102,13 @@ Write-Host "Archive creee: $archivePath" -ForegroundColor Cyan
 Write-Host "Taille: $([math]::Round((Get-Item $archivePath).Length / 1MB, 2)) MB" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Contenu de l'archive:" -ForegroundColor Yellow
-Write-Host "  - src/                - Fichiers sources Scala" -ForegroundColor Gray
-Write-Host "  - exemples/           - Fichiers d'exemples" -ForegroundColor Gray
-Write-Host "  - scaladoc/           - Documentation API" -ForegroundColor Gray
-Write-Host "  - diagrammes/         - Diagrammes UML (PNG uniquement)" -ForegroundColor Gray
-Write-Host "  - build.sbt           - Configuration du projet" -ForegroundColor Gray
-Write-Host "  - RAPPORT.md          - Rapport au format Markdown" -ForegroundColor Gray
-Write-Host ""
-if ($diagramsGenerated) {
-    Write-Host "[OK] Les diagrammes PNG sont inclus dans le rapport" -ForegroundColor Green
-} else {
-    Write-Host "[INFO] Les fichiers PNG doivent etre generes manuellement si necessaire" -ForegroundColor Cyan
-}
-Write-Host ""
-Write-Host "Le rapport RAPPORT.md contient des liens vers les images" -ForegroundColor Cyan
-Write-Host "Ouvrir avec VSCode (Ctrl+Shift+V) pour voir les diagrammes" -ForegroundColor Gray
+Write-Host "  - src/                     - Fichiers sources Scala" -ForegroundColor Gray
+Write-Host "  - exemples/                - Fichiers d'exemples" -ForegroundColor Gray
+Write-Host "  - scaladoc/                - Documentation API" -ForegroundColor Gray
+Write-Host "  - build.sbt                - Configuration du projet" -ForegroundColor Gray
+Write-Host "  - RAPPORT.pdf              - Rapport au format PDF" -ForegroundColor Gray
+Write-Host "  - README                   - Instructions d'utilisation" -ForegroundColor Gray
+Write-Host "  - inventaire_des_notions.md - Inventaire des concepts FP" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Pret pour soumission!" -ForegroundColor Green
 Write-Host ""

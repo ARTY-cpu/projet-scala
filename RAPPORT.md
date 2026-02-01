@@ -1,63 +1,16 @@
-# Rapport de Projet : Graphes de Markov en Scala
-
-**Projet de Programmation Fonctionnelle**  
-**Date** : 1 février 2026  
-**Langage** : Scala 3.7.4
-
+---
+title: "Rapport de Projet : Graphes de Markov en Scala"
+author: "Arthur Magnette"
+date: "1 février 2026"
+lang: fr
+geometry: margin=2.5cm
+fontsize: 11pt
+documentclass: article
+toc: true
+toc-depth: 3
 ---
 
-## Sommaire
-
-### PARTIE I : Structures de Données et Validation
-
-1. [Introduction](#1-introduction)
-2. [Analyse Fonctionnelle Générale](#2-analyse-fonctionnelle-générale)
-   - 2.1 [Problématique](#21-problématique)
-   - 2.2 [Choix de conception principaux](#22-choix-de-conception-principaux)
-   - 2.3 [Architecture globale](#23-architecture-globale)
-3. [Analyse Fonctionnelle Détaillée - Partie I](#3-analyse-fonctionnelle-détaillée---partie-i)
-   - 3.1 [Module Graphe (Trait abstrait)](#31-module-graphe-trait-abstrait)
-   - 3.2 [Module Matrice (Trait générique)](#32-module-matrice-trait-générique)
-   - 3.3 [Classe MatriceAdjacence](#33-classe-matriceadjacence)
-   - 3.4 [Classe ListeAdjacence](#34-classe-listeadjacence)
-   - 3.5 [Module Chargeur](#35-module-chargeur)
-   - 3.6 [Module Validation (Étape 2)](#36-module-validation-étape-2)
-   - 3.7 [Module Mermaid (Étape 3)](#37-module-mermaid-étape-3)
-   - 3.8 [Programme Principal (Main)](#38-programme-principal-main)
-4. [Modélisation UML](#4-modélisation-uml)
-   - 4.1 [Diagramme de classes](#41-diagramme-de-classes)
-   - 4.2 [Diagramme de séquence](#42-diagramme-de-séquence)
-5. [Difficultés Rencontrées et Solutions - Partie I](#5-difficultés-rencontrées-et-solutions---partie-i)
-6. [Tests et Validation - Partie I](#6-tests-et-validation---partie-i)
-
-### PARTIE II : Calculs Matriciels et Distributions
-
-1. [Analyse Fonctionnelle - Partie II](#7-analyse-fonctionnelle---partie-ii)
-   - 7.1 [Problématique de la Partie II](#71-problématique-de-la-partie-ii)
-   - 7.2 [Module CalculsMatriciels](#72-module-calculsmatriciels)
-   - 7.3 [Module Distribution](#73-module-distribution)
-   - 7.4 [Programme de Test (TestPartie2)](#74-programme-de-test-testpartie2)
-2. [Validation et Résultats - Partie II](#8-validation-et-résultats---partie-ii)
-   - 8.1 [Validation avec exemple météo](#81-validation-avec-exemple-météo)
-   - 8.2 [Distributions et évolutions](#82-distributions-et-évolutions)
-   - 8.3 [Convergence et distribution stationnaire](#83-convergence-et-distribution-stationnaire)
-3. [Difficultés Rencontrées et Solutions - Partie II](#9-difficultés-rencontrées-et-solutions---partie-ii)
-4. [Composantes Fortement Connexes et Propriétés des Classes](#10-composantes-fortement-connexes-et-propriétés-des-classes)
-   - 10.1 [Contexte et Problématique](#101-contexte-et-problématique)
-   - 10.2 [Algorithme de Tarjan](#102-algorithme-de-tarjan)
-   - 10.3 [Fonctions Implémentées](#103-fonctions-implémentées)
-   - 10.4 [Validation et Résultats](#104-validation-et-résultats)
-   - 10.5 [Propriétés Vérifiées](#105-propriétés-vérifiées)
-   - 10.6 [Analyse Comparative](#106-analyse-comparative--irréductible-vs-non-irréductible)
-   - 10.7 [Difficultés Rencontrées](#107-difficultés-rencontrées)
-
-### CONCLUSION ET ANNEXES
-
-- [Synthèse Finale et Conclusion](#11-synthèse-finale-et-conclusion)
-- [Mode d'Emploi](#12-mode-demploi)
-- [Annexes](#13-annexes)
-
----
+\newpage
 
 ## 1. Introduction
 
@@ -2462,16 +2415,16 @@ Ce projet a permis de construire un système complet d'analyse de graphes de Mar
 
 **Validation sur exemple météo** :
 
-- ✓ Prédiction à 3 jours : 37.4% couvert
-- ✓ Convergence détectée en 9 itérations
-- ✓ Distribution stationnaire conforme
+- Prédiction à 3 jours : 37.4% couvert
+- Convergence détectée en 9 itérations
+- Distribution stationnaire conforme
 
 **Composantes fortement connexes** (Section 10) :
 
-- ✓ Implémentation de l'algorithme de Tarjan fourni en annexe
-- ✓ Détection des classes persistantes et transitoires
-- ✓ Distributions stationnaires par classe
-- ✓ Validation sur 6 composantes (exemple_valid_step3.txt)
+- Implémentation de l'algorithme de Tarjan fourni en annexe
+- Détection des classes persistantes et transitoires
+- Distributions stationnaires par classe
+- Validation sur 6 composantes (exemple_valid_step3.txt)
 
 **Correspondance avec l'algorithme fourni** : Les structures `numEmp[]`, `retour[]`, `dansPile[]` et `P` de l'annexe correspondent exactement aux structures `index`, `lowlink`, `enPile` et `pile` dans l'implémentation Scala.
 

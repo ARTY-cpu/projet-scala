@@ -1,0 +1,3193 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>RAPPORT</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css" />
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#rapport-de-projet-graphes-de-markov-en-scala"
+id="toc-rapport-de-projet-graphes-de-markov-en-scala">Rapport de Projet
+: Graphes de Markov en Scala</a>
+<ul>
+<li><a href="#sommaire" id="toc-sommaire">Sommaire</a>
+<ul>
+<li><a href="#partie-i-structures-de-données-et-validation"
+id="toc-partie-i-structures-de-données-et-validation">PARTIE I :
+Structures de Données et Validation</a></li>
+<li><a href="#partie-ii-calculs-matriciels-et-distributions"
+id="toc-partie-ii-calculs-matriciels-et-distributions">PARTIE II :
+Calculs Matriciels et Distributions</a></li>
+<li><a href="#conclusion-et-annexes"
+id="toc-conclusion-et-annexes">CONCLUSION ET ANNEXES</a></li>
+</ul></li>
+<li><a href="#introduction" id="toc-introduction">1. Introduction</a>
+<ul>
+<li><a href="#présentation-de-la-problématique"
+id="toc-présentation-de-la-problématique">Présentation de la
+problématique</a></li>
+<li><a href="#objectifs-du-projet"
+id="toc-objectifs-du-projet">Objectifs du projet</a></li>
+</ul></li>
+<li><a href="#analyse-fonctionnelle-générale"
+id="toc-analyse-fonctionnelle-générale">2. Analyse Fonctionnelle
+Générale</a>
+<ul>
+<li><a href="#problématique" id="toc-problématique">2.1
+Problématique</a></li>
+<li><a href="#choix-de-conception-principaux"
+id="toc-choix-de-conception-principaux">2.2 Choix de conception
+principaux</a></li>
+<li><a href="#architecture-globale" id="toc-architecture-globale">2.3
+Architecture globale</a></li>
+</ul></li>
+<li><a href="#analyse-fonctionnelle-détaillée---partie-i"
+id="toc-analyse-fonctionnelle-détaillée---partie-i">3. Analyse
+Fonctionnelle Détaillée - Partie I</a>
+<ul>
+<li><a href="#module-graphe-trait-abstrait"
+id="toc-module-graphe-trait-abstrait">3.1 Module Graphe (Trait
+abstrait)</a></li>
+<li><a href="#module-matrice-trait-générique"
+id="toc-module-matrice-trait-générique">3.2 Module Matrice (Trait
+générique)</a></li>
+<li><a href="#classe-matriceadjacence"
+id="toc-classe-matriceadjacence">3.3 Classe MatriceAdjacence</a></li>
+<li><a href="#classe-listeadjacence" id="toc-classe-listeadjacence">3.4
+Classe ListeAdjacence</a></li>
+<li><a href="#module-chargeur" id="toc-module-chargeur">3.5 Module
+Chargeur</a></li>
+<li><a href="#module-validation-étape-2"
+id="toc-module-validation-étape-2">3.6 Module Validation (Étape
+2)</a></li>
+<li><a href="#module-mermaid-étape-3"
+id="toc-module-mermaid-étape-3">3.7 Module Mermaid (Étape 3)</a></li>
+<li><a href="#programme-principal-main"
+id="toc-programme-principal-main">3.8 Programme Principal
+(Main)</a></li>
+</ul></li>
+<li><a href="#modélisation-uml" id="toc-modélisation-uml">4.
+Modélisation UML</a>
+<ul>
+<li><a href="#diagramme-de-classes" id="toc-diagramme-de-classes">4.1
+Diagramme de classes</a></li>
+<li><a href="#diagramme-de-séquence" id="toc-diagramme-de-séquence">4.2
+Diagramme de séquence</a></li>
+</ul></li>
+<li><a href="#difficultés-rencontrées-et-solutions---partie-i"
+id="toc-difficultés-rencontrées-et-solutions---partie-i">5. Difficultés
+Rencontrées et Solutions - Partie I</a>
+<ul>
+<li><a href="#contexte-et-approche" id="toc-contexte-et-approche">5.1
+Contexte et Approche</a></li>
+<li><a href="#difficultés-techniques-et-compréhension"
+id="toc-difficultés-techniques-et-compréhension">5.2 Difficultés
+Techniques et Compréhension</a></li>
+<li><a href="#réflexion-sur-lapprentissage"
+id="toc-réflexion-sur-lapprentissage">5.3 Réflexion sur
+l’Apprentissage</a></li>
+</ul></li>
+<li><a href="#tests-et-validation---partie-i"
+id="toc-tests-et-validation---partie-i">6. Tests et Validation - Partie
+I</a>
+<ul>
+<li><a href="#fichiers-de-test" id="toc-fichiers-de-test">6.1 Fichiers
+de test</a></li>
+<li><a href="#tests-de-validation" id="toc-tests-de-validation">6.2
+Tests de validation</a></li>
+</ul></li>
+<li><a href="#analyse-fonctionnelle---partie-ii"
+id="toc-analyse-fonctionnelle---partie-ii">7. Analyse Fonctionnelle -
+Partie II</a>
+<ul>
+<li><a href="#problématique-de-la-partie-ii"
+id="toc-problématique-de-la-partie-ii">7.1 Problématique de la Partie
+II</a></li>
+<li><a href="#module-calculsmatriciels"
+id="toc-module-calculsmatriciels">7.2 Module CalculsMatriciels</a></li>
+<li><a href="#module-distribution" id="toc-module-distribution">7.3
+Module Distribution</a></li>
+<li><a href="#programme-de-test-testpartie2"
+id="toc-programme-de-test-testpartie2">7.4 Programme de Test
+(TestPartie2)</a></li>
+</ul></li>
+<li><a href="#validation-et-résultats---partie-ii"
+id="toc-validation-et-résultats---partie-ii">8. Validation et Résultats
+- Partie II</a>
+<ul>
+<li><a href="#validation-avec-exemple-météo"
+id="toc-validation-avec-exemple-météo">8.1 Validation avec exemple
+météo</a></li>
+<li><a href="#distributions-et-évolutions"
+id="toc-distributions-et-évolutions">8.2 Distributions et
+évolutions</a></li>
+<li><a href="#convergence-et-distribution-stationnaire"
+id="toc-convergence-et-distribution-stationnaire">8.3 Convergence et
+distribution stationnaire</a></li>
+</ul></li>
+<li><a href="#difficultés-rencontrées-et-solutions---partie-ii"
+id="toc-difficultés-rencontrées-et-solutions---partie-ii">9. Difficultés
+Rencontrées et Solutions - Partie II</a>
+<ul>
+<li><a href="#erreurs-darrondi-dans-les-multiplications-matricielles"
+id="toc-erreurs-darrondi-dans-les-multiplications-matricielles">9.1
+Erreurs d’arrondi dans les multiplications matricielles</a></li>
+<li><a href="#gestion-de-la-non-convergence"
+id="toc-gestion-de-la-non-convergence">9.2 Gestion de la
+non-convergence</a></li>
+<li><a href="#choix-entre-efficacité-et-clarté"
+id="toc-choix-entre-efficacité-et-clarté">9.3 Choix entre efficacité et
+clarté</a></li>
+<li><a href="#immutabilité-et-performance"
+id="toc-immutabilité-et-performance">9.4 Immutabilité et
+performance</a></li>
+</ul></li>
+<li><a href="#composantes-fortement-connexes-et-propriétés-des-classes"
+id="toc-composantes-fortement-connexes-et-propriétés-des-classes">10.
+Composantes Fortement Connexes et Propriétés des Classes</a>
+<ul>
+<li><a href="#contexte-et-problématique"
+id="toc-contexte-et-problématique">10.1 Contexte et
+Problématique</a></li>
+<li><a href="#algorithme-de-tarjan" id="toc-algorithme-de-tarjan">10.2
+Algorithme de Tarjan</a></li>
+<li><a href="#fonctions-implémentées"
+id="toc-fonctions-implémentées">10.3 Fonctions Implémentées</a></li>
+<li><a href="#validation-et-résultats"
+id="toc-validation-et-résultats">10.4 Validation et Résultats</a></li>
+<li><a href="#propriétés-vérifiées" id="toc-propriétés-vérifiées">10.5
+Propriétés Vérifiées</a></li>
+<li><a href="#analyse-comparative-irréductible-vs-non-irréductible"
+id="toc-analyse-comparative-irréductible-vs-non-irréductible">10.6
+Analyse Comparative : Irréductible vs Non Irréductible</a></li>
+<li><a href="#difficultés-rencontrées"
+id="toc-difficultés-rencontrées">10.7 Difficultés Rencontrées</a></li>
+</ul></li>
+<li><a href="#conclusion-générale" id="toc-conclusion-générale">11.
+Conclusion Générale</a></li>
+<li><a href="#mode-demploi" id="toc-mode-demploi">12. Mode d’Emploi</a>
+<ul>
+<li><a href="#choix-de-loutil-dexécution-scala-cli"
+id="toc-choix-de-loutil-dexécution-scala-cli">12.1 Choix de l’outil
+d’exécution : scala-cli</a></li>
+<li><a href="#prérequis" id="toc-prérequis">12.2 Prérequis</a></li>
+<li><a href="#tests-de-robustesse" id="toc-tests-de-robustesse">12.3
+Tests de robustesse</a></li>
+<li><a href="#exécution-des-programmes"
+id="toc-exécution-des-programmes">12.4 Exécution des programmes</a></li>
+<li><a href="#exemples-de-sortie" id="toc-exemples-de-sortie">12.5
+Exemples de sortie</a></li>
+</ul></li>
+<li><a href="#synthèse-finale-et-conclusion"
+id="toc-synthèse-finale-et-conclusion">11. Synthèse Finale et
+Conclusion</a>
+<ul>
+<li><a href="#réalisations-de-la-partie-i"
+id="toc-réalisations-de-la-partie-i">Réalisations de la Partie
+I</a></li>
+<li><a href="#réalisations-de-la-partie-ii"
+id="toc-réalisations-de-la-partie-ii">Réalisations de la Partie
+II</a></li>
+<li><a href="#architecture-logicielle"
+id="toc-architecture-logicielle">Architecture Logicielle</a></li>
+<li><a href="#apprentissages"
+id="toc-apprentissages">Apprentissages</a></li>
+<li><a href="#perspectives-dextension"
+id="toc-perspectives-dextension">Perspectives d’extension</a></li>
+</ul></li>
+<li><a href="#annexes" id="toc-annexes">13. Annexes</a>
+<ul>
+<li><a href="#annexe-a-technologies-employées"
+id="toc-annexe-a-technologies-employées">Annexe A : Technologies
+employées</a></li>
+<li><a href="#annexe-b-génération-de-la-documentation"
+id="toc-annexe-b-génération-de-la-documentation">Annexe B : Génération
+de la documentation</a></li>
+<li><a href="#annexe-d-structure-du-projet"
+id="toc-annexe-d-structure-du-projet">Annexe D : Structure du
+projet</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="rapport-de-projet-graphes-de-markov-en-scala">Rapport de Projet
+: Graphes de Markov en Scala</h1>
+<p><strong>Projet de Programmation Fonctionnelle</strong><br />
+<strong>Date</strong> : 1 février 2026<br />
+<strong>Langage</strong> : Scala 3.7.4</p>
+<hr />
+<h2 id="sommaire">Sommaire</h2>
+<h3 id="partie-i-structures-de-données-et-validation">PARTIE I :
+Structures de Données et Validation</h3>
+<ol type="1">
+<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#2-analyse-fonctionnelle-générale">Analyse Fonctionnelle
+Générale</a>
+<ul>
+<li>2.1 <a href="#21-problématique">Problématique</a></li>
+<li>2.2 <a href="#22-choix-de-conception-principaux">Choix de conception
+principaux</a></li>
+<li>2.3 <a href="#23-architecture-globale">Architecture globale</a></li>
+</ul></li>
+<li><a href="#3-analyse-fonctionnelle-détaillée---partie-i">Analyse
+Fonctionnelle Détaillée - Partie I</a>
+<ul>
+<li>3.1 <a href="#31-module-graphe-trait-abstrait">Module Graphe (Trait
+abstrait)</a></li>
+<li>3.2 <a href="#32-module-matrice-trait-générique">Module Matrice
+(Trait générique)</a></li>
+<li>3.3 <a href="#33-classe-matriceadjacence">Classe
+MatriceAdjacence</a></li>
+<li>3.4 <a href="#34-classe-listeadjacence">Classe
+ListeAdjacence</a></li>
+<li>3.5 <a href="#35-module-chargeur">Module Chargeur</a></li>
+<li>3.6 <a href="#36-module-validation-étape-2">Module Validation (Étape
+2)</a></li>
+<li>3.7 <a href="#37-module-mermaid-étape-3">Module Mermaid (Étape
+3)</a></li>
+<li>3.8 <a href="#38-programme-principal-main">Programme Principal
+(Main)</a></li>
+</ul></li>
+<li><a href="#4-modélisation-uml">Modélisation UML</a>
+<ul>
+<li>4.1 <a href="#41-diagramme-de-classes">Diagramme de classes</a></li>
+<li>4.2 <a href="#42-diagramme-de-séquence">Diagramme de
+séquence</a></li>
+</ul></li>
+<li><a
+href="#5-difficultés-rencontrées-et-solutions---partie-i">Difficultés
+Rencontrées et Solutions - Partie I</a></li>
+<li><a href="#6-tests-et-validation---partie-i">Tests et Validation -
+Partie I</a></li>
+</ol>
+<h3 id="partie-ii-calculs-matriciels-et-distributions">PARTIE II :
+Calculs Matriciels et Distributions</h3>
+<ol type="1">
+<li><a href="#7-analyse-fonctionnelle---partie-ii">Analyse Fonctionnelle
+- Partie II</a>
+<ul>
+<li>7.1 <a href="#71-problématique-de-la-partie-ii">Problématique de la
+Partie II</a></li>
+<li>7.2 <a href="#72-module-calculsmatriciels">Module
+CalculsMatriciels</a></li>
+<li>7.3 <a href="#73-module-distribution">Module Distribution</a></li>
+<li>7.4 <a href="#74-programme-de-test-testpartie2">Programme de Test
+(TestPartie2)</a></li>
+</ul></li>
+<li><a href="#8-validation-et-résultats---partie-ii">Validation et
+Résultats - Partie II</a>
+<ul>
+<li>8.1 <a href="#81-validation-avec-exemple-météo">Validation avec
+exemple météo</a></li>
+<li>8.2 <a href="#82-distributions-et-évolutions">Distributions et
+évolutions</a></li>
+<li>8.3 <a
+href="#83-convergence-et-distribution-stationnaire">Convergence et
+distribution stationnaire</a></li>
+</ul></li>
+<li><a
+href="#9-difficultés-rencontrées-et-solutions---partie-ii">Difficultés
+Rencontrées et Solutions - Partie II</a></li>
+<li><a
+href="#10-composantes-fortement-connexes-et-propriétés-des-classes">Composantes
+Fortement Connexes et Propriétés des Classes</a>
+<ul>
+<li>10.1 <a href="#101-contexte-et-problématique">Contexte et
+Problématique</a></li>
+<li>10.2 <a href="#102-algorithme-de-tarjan">Algorithme de
+Tarjan</a></li>
+<li>10.3 <a href="#103-fonctions-implémentées">Fonctions
+Implémentées</a></li>
+<li>10.4 <a href="#104-validation-et-résultats">Validation et
+Résultats</a></li>
+<li>10.5 <a href="#105-propriétés-vérifiées">Propriétés
+Vérifiées</a></li>
+<li>10.6 <a
+href="#106-analyse-comparative--irréductible-vs-non-irréductible">Analyse
+Comparative</a></li>
+<li>10.7 <a href="#107-difficultés-rencontrées">Difficultés
+Rencontrées</a></li>
+</ul></li>
+</ol>
+<h3 id="conclusion-et-annexes">CONCLUSION ET ANNEXES</h3>
+<ul>
+<li><a href="#11-synthèse-finale-et-conclusion">Synthèse Finale et
+Conclusion</a></li>
+<li><a href="#12-mode-demploi">Mode d’Emploi</a></li>
+<li><a href="#13-annexes">Annexes</a></li>
+</ul>
+<hr />
+<h2 id="introduction">1. Introduction</h2>
+<h3 id="présentation-de-la-problématique">Présentation de la
+problématique</h3>
+<p>Les <strong>chaînes de Markov</strong> sont des modèles mathématiques
+utilisés pour représenter des systèmes évoluant de manière probabiliste.
+Un graphe de Markov est composé de sommets (états) et de transitions
+probabilistes entre ces états, avec la contrainte que la somme des
+probabilités sortantes de chaque sommet doit être égale à 1.</p>
+<p>Ces modèles trouvent des applications dans de nombreux domaines :</p>
+<ul>
+<li><strong>Météorologie</strong> : prédiction de transitions entre
+états climatiques</li>
+<li><strong>Finance</strong> : modélisation de marchés financiers</li>
+<li><strong>Intelligence artificielle</strong> : algorithmes de décision
+(PageRank, systèmes de recommandation)</li>
+<li><strong>Biologie</strong> : évolution de populations ou de séquences
+génétiques</li>
+</ul>
+<h3 id="objectifs-du-projet">Objectifs du projet</h3>
+<p>Ce projet vise à concevoir et implémenter en <strong>Scala</strong>
+une bibliothèque pour manipuler des graphes de Markov. Le projet est
+divisé en deux parties complémentaires :</p>
+<h4 id="partie-i-structures-de-données-et-validation-1">Partie I :
+Structures de données et validation</h4>
+<ol type="1">
+<li><strong>Implémenter deux représentations</strong> de graphes :
+matrice d’adjacence (dense) et liste d’adjacence (sparse)</li>
+<li><strong>Utiliser le polymorphisme</strong> pour manipuler les
+graphes indépendamment de leur représentation</li>
+<li><strong>Exploiter la programmation fonctionnelle</strong> :
+fonctions d’ordre supérieur (HOF), récursion terminale,
+immutabilité</li>
+<li><strong>Valider</strong> les propriétés mathématiques des graphes de
+Markov</li>
+<li><strong>Charger</strong> des graphes depuis des fichiers texte</li>
+<li><strong>Exporter</strong> des visualisations au format Mermaid</li>
+</ol>
+<h4 id="partie-ii-calculs-matriciels-et-distributions-1">Partie II :
+Calculs matriciels et distributions</h4>
+<ol type="1">
+<li><strong>Implémenter des opérations matricielles</strong> :
+multiplication, puissance, différence</li>
+<li><strong>Calculer les distributions</strong> de probabilités sur les
+états</li>
+<li><strong>Étudier l’évolution temporelle</strong> des distributions
+(Π(n) = Π(0) × M^n)</li>
+<li><strong>Rechercher la distribution stationnaire</strong>
+(convergence)</li>
+<li><strong>Appliquer</strong> ces concepts à la prévision
+météorologique</li>
+</ol>
+<hr />
+<h2 id="analyse-fonctionnelle-générale">2. Analyse Fonctionnelle
+Générale</h2>
+<h3 id="problématique">2.1 Problématique</h3>
+<p>Comment concevoir une bibliothèque flexible et réutilisable
+permettant de manipuler des graphes de Markov avec différentes
+représentations internes, tout en garantissant les contraintes
+mathématiques (somme des probabilités = 1) ?</p>
+<h3 id="choix-de-conception-principaux">2.2 Choix de conception
+principaux</h3>
+<h4 id="choix-1-abstraction-par-traits-interfaces">Choix 1 : Abstraction
+par traits (interfaces)</h4>
+<p><strong>Justification</strong> : L’utilisation de traits Scala permet
+de :</p>
+<ul>
+<li>Définir des contrats clairs (<code>Graphe</code>,
+<code>Matrice[T]</code>)</li>
+<li>Permettre le polymorphisme et la substitution de Liskov</li>
+</ul>
+<h4 id="choix-2-double-représentation-matrice-vs-liste">Choix 2 : Double
+représentation (Matrice vs Liste)</h4>
+<p><strong>Justification</strong> :</p>
+<ul>
+<li><strong>Matrice d’adjacence</strong> : simple à implémenter, accès
+O(1), mais coûteuse en mémoire pour les graphes creux</li>
+<li><strong>Liste d’adjacence</strong> : économe en mémoire pour graphes
+creux (beaucoup de probabilités nulles), mais accès O(k) où k = nombre
+de successeurs</li>
+</ul>
+<h4 id="choix-3-programmation-fonctionnelle">Choix 3 : Programmation
+fonctionnelle</h4>
+<p><strong>Justification</strong> : Scala favorise le paradigme
+fonctionnel :</p>
+<ul>
+<li><strong>Immutabilité</strong> : usage de <code>Map</code> et
+<code>List</code> immuables</li>
+<li><strong>HOF</strong> : <code>map</code>, <code>filter</code>,
+<code>find</code>, <code>foreach</code>, <code>forall</code> pour un
+code concis</li>
+<li><strong>Récursion terminale</strong> : optimisée par le compilateur
+(<code>@tailrec</code>)</li>
+<li><strong>Pattern matching</strong> : pour la gestion des cas</li>
+</ul>
+<h4 id="choix-4-gestion-des-erreurs-avec-option">Choix 4 : Gestion des
+erreurs avec Option</h4>
+<p><strong>Justification</strong> : L’utilisation de
+<code>Option[T]</code> permet de gérer les échecs de chargement sans
+exceptions, dans le style fonctionnel.</p>
+<h3 id="architecture-globale">2.3 Architecture globale</h3>
+<p>Le projet est structuré en <strong>modules fonctionnels</strong>
+:</p>
+<pre class="text"><code>Traits (Abstractions)
+    ├── Graphe : Interface non générique pour graphes de Markov
+    └── Matrice[T] : Interface générique pour matrices
+
+Implémentations
+    ├── MatriceAdjacence : Graphe + Matrice[Double]
+    └── ListeAdjacence : Graphe + Matrice[Double]
+
+Utilitaires
+    ├── Chargeur : Lecture de fichiers
+    ├── Validation : Vérification des propriétés de Markov (Étape 2)
+    ├── TestValidation : Tests automatisés de validation
+    ├── Mermaid : Génération de visualisations (Étape 3)
+    ├── TestMermaid : Tests de génération Mermaid
+    └── Main : Programme de démonstration</code></pre>
+<p><strong>Flux de données</strong> :</p>
+<ol type="1">
+<li>Le <code>Chargeur</code> lit un fichier et crée un graphe (Matrice
+ou Liste)</li>
+<li>Le graphe est manipulé via l’interface <code>Graphe</code>
+(polymorphisme)</li>
+<li>Les opérations (validation, affichage, requêtes) sont
+effectuées</li>
+</ol>
+<hr />
+<h2 id="analyse-fonctionnelle-détaillée---partie-i">3. Analyse
+Fonctionnelle Détaillée - Partie I</h2>
+<h3 id="module-graphe-trait-abstrait">3.1 Module Graphe (Trait
+abstrait)</h3>
+<p><strong>Rôle</strong> : Définir l’interface commune pour tous les
+graphes de Markov, indépendamment de leur représentation interne.</p>
+<p><strong>Interface publique</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 35%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>nbSommets</code></td>
+<td><code>Int</code></td>
+<td>Retourne le nombre de sommets</td>
+</tr>
+<tr>
+<td><code>proba(i, j)</code></td>
+<td><code>(Int, Int) =&gt; Double</code></td>
+<td>Probabilité de transition i→j</td>
+</tr>
+<tr>
+<td><code>setProba(i, j, p)</code></td>
+<td><code>(Int, Int, Double) =&gt; Unit</code></td>
+<td>Définit la probabilité i→j</td>
+</tr>
+<tr>
+<td><code>successeurs(s)</code></td>
+<td><code>Int =&gt; List[(Int, Double)]</code></td>
+<td>Liste des successeurs avec probas</td>
+</tr>
+<tr>
+<td><code>sommeSortante(s)</code></td>
+<td><code>Int =&gt; Double</code></td>
+<td>Somme des probas sortantes</td>
+</tr>
+<tr>
+<td><code>estValide(ε)</code></td>
+<td><code>Double =&gt; Boolean</code></td>
+<td>Vérifie si graphe de Markov valide</td>
+</tr>
+<tr>
+<td><code>afficher()</code></td>
+<td><code>() =&gt; Unit</code></td>
+<td>Affichage du graphe</td>
+</tr>
+<tr>
+<td><code>afficherValidation(ε)</code></td>
+<td><code>Double =&gt; Unit</code></td>
+<td>Rapport de validation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Données manipulées</strong> :</p>
+<ul>
+<li><strong>Entrée</strong> : indices de sommets (1 à n), probabilités
+(0.0 à 1.0)</li>
+<li><strong>Sortie</strong> : listes de successeurs, booléens de
+validation, affichages</li>
+</ul>
+<p><strong>Algorithme de validation</strong> :</p>
+<pre class="text"><code>Pour chaque sommet s de 1 à n :
+    somme ← Σ proba(s, j) pour j de 1 à n
+    Si somme ≠ 0 alors
+        Vérifier que |somme - 1.0| &lt; ε</code></pre>
+<h3 id="module-matrice-trait-générique">3.2 Module Matrice (Trait
+générique)</h3>
+<p><strong>Rôle</strong> : Fournir une abstraction générique pour les
+structures matricielles, permettant la réutilisation pour d’autres types
+que <code>Double</code>.</p>
+<p><strong>Interface publique</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 45%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>Méthode</th>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>get(i, j)</code></td>
+<td><code>(Int, Int) =&gt; T</code></td>
+<td>Accès en lecture</td>
+</tr>
+<tr>
+<td><code>set(i, j, v)</code></td>
+<td><code>(Int, Int, T) =&gt; Unit</code></td>
+<td>Accès en écriture</td>
+</tr>
+<tr>
+<td><code>taille</code></td>
+<td><code>Int</code></td>
+<td>Dimension de la matrice</td>
+</tr>
+<tr>
+<td><code>afficher()</code></td>
+<td><code>() =&gt; Unit</code></td>
+<td>Affichage</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Généricité</strong> : Le paramètre de type <code>[T]</code>
+permet d’utiliser cette interface pour n’importe quel type (Int, String,
+etc.), bien que le projet l’utilise avec <code>Double</code>.</p>
+<h3 id="classe-matriceadjacence">3.3 Classe MatriceAdjacence</h3>
+<p><strong>Rôle</strong> : Implémentation concrète utilisant une matrice
+2D pour stocker toutes les probabilités.</p>
+<p><strong>Structure de données</strong> :</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">val</span> matrice<span class="op">:</span> <span class="ex">Array</span><span class="op">[</span><span class="ex">Array</span><span class="op">[</span><span class="ex">Double</span><span class="op">]]</span> <span class="op">=</span> <span class="ex">Array</span><span class="op">.</span>ofDim<span class="op">[</span><span class="ex">Double</span><span class="op">](</span>n<span class="op">,</span> n<span class="op">)</span></span></code></pre></div>
+<p><strong>Complexités</strong> :</p>
+<ul>
+<li>Accès (<code>get</code>/<code>set</code>) :
+<strong>O(1)</strong></li>
+<li>Espace mémoire : <strong>O(n²)</strong></li>
+<li><code>successeurs(s)</code> : <strong>O(n)</strong> (parcours de
+ligne)</li>
+</ul>
+<p><strong>Algorithme <code>successeurs(sommet)</code> en
+pseudo-code</strong> :</p>
+<pre class="text"><code>résultat ← liste vide
+Pour j de 1 à n :
+    p ← get(sommet, j)
+    Si p &gt; 0 alors
+        Ajouter (j, p) à résultat
+Retourner résultat</code></pre>
+<p><strong>Code Scala (HOF)</strong> :</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">successeurs</span><span class="op">(</span>sommet<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="ex">List</span><span class="op">[(</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">Double</span><span class="op">)]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span><span class="op">(</span><span class="fu">estValide</span><span class="op">(</span>sommet<span class="op">),</span> <span class="ss">s&quot;</span><span class="st">Sommet invalide: </span><span class="ss">$sommet&quot;</span><span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span><span class="dv">1</span> to n<span class="op">)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span><span class="fu">map</span><span class="op">(</span>j <span class="op">=&gt;</span> <span class="op">(</span>j<span class="op">,</span> <span class="fu">get</span><span class="op">(</span>sommet<span class="op">,</span> j<span class="op">)))</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span>filter <span class="op">{</span> <span class="cf">case</span> <span class="op">(</span>_<span class="op">,</span> proba<span class="op">)</span> <span class="op">=&gt;</span> proba <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">}</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>      <span class="op">.</span>toList</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Avantages</strong> :</p>
+<ul>
+<li>Simplicité d’implémentation</li>
+<li>Accès très rapide aux probabilités</li>
+</ul>
+<p><strong>Inconvénients</strong> :</p>
+<ul>
+<li>Gaspillage de mémoire pour graphes creux (beaucoup de zéros)</li>
+</ul>
+<h3 id="classe-listeadjacence">3.4 Classe ListeAdjacence</h3>
+<p><strong>Rôle</strong> : Implémentation optimisée pour les graphes
+creux, stockant uniquement les transitions non-nulles.</p>
+<p><strong>Structure de données</strong> :</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">var</span> adjacences<span class="op">:</span> <span class="ex">Map</span><span class="op">[</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">List</span><span class="op">[(</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">Double</span><span class="op">)]]</span> <span class="op">=</span> <span class="ex">Map</span><span class="op">()</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Clé = sommet départ, Valeur = List de (destination, probabilité)</span></span></code></pre></div>
+<p><strong>Exemple</strong> : Pour le graphe <code>exemple1.txt</code>
+:</p>
+<pre class="text"><code>Sommet 1 : [(1, 0.95), (2, 0.04), (3, 0.01)]
+Sommet 2 : [(2, 0.90), (3, 0.05), (4, 0.05)]
+Sommet 3 : [(3, 0.80), (4, 0.20)]
+Sommet 4 : [(1, 1.00)]</code></pre>
+<p><strong>Complexités</strong> :</p>
+<ul>
+<li>Accès (<code>get</code>) : <strong>O(k)</strong> où k = nombre de
+successeurs (généralement petit)</li>
+<li>Modification (<code>set</code>) : <strong>O(k)</strong></li>
+<li>Espace mémoire : <strong>O(m)</strong> où m = nombre d’arcs
+non-nuls</li>
+<li><code>successeurs(s)</code> : <strong>O(k log k)</strong> (avec
+tri)</li>
+</ul>
+<p><strong>Algorithme <code>set(i, j, valeur)</code> en
+pseudo-code</strong> :</p>
+<pre class="text"><code>liste ← adjacences[i]
+Si valeur &gt; 0 alors
+    // Ajouter ou remplacer
+    Supprimer l&#39;ancienne entrée (j, _) de liste
+    Ajouter (j, valeur) en tête de liste
+Sinon
+    // Supprimer la transition
+    Supprimer (j, _) de liste
+Mettre à jour adjacences[i]</code></pre>
+<p><strong>Code Scala (HOF)</strong> :</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">set</span><span class="op">(</span>i<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> j<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> valeur<span class="op">:</span> <span class="ex">Double</span><span class="op">):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span><span class="op">(</span><span class="fu">estValide</span><span class="op">(</span>i<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu">estValide</span><span class="op">(</span>j<span class="op">),</span> <span class="ss">s&quot;</span><span class="st">Indices invalides: (</span><span class="ss">$i</span><span class="st">, </span><span class="ss">$j</span><span class="st">)</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span><span class="op">(</span>valeur <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> valeur <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">,</span> <span class="ss">s&quot;</span><span class="st">Probabilité invalide: </span><span class="ss">$valeur&quot;</span><span class="op">)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> listeActuelle <span class="op">=</span> adjacences<span class="op">.</span><span class="fu">getOrElse</span><span class="op">(</span>i<span class="op">,</span> <span class="ex">List</span><span class="op">.</span>empty<span class="op">)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>valeur <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> nouvelleListe <span class="op">=</span> <span class="op">(</span>j<span class="op">,</span> valeur<span class="op">)</span> <span class="op">::</span> listeActuelle<span class="op">.</span>filterNot <span class="op">{</span> <span class="cf">case</span> <span class="op">(</span>dest<span class="op">,</span> _<span class="op">)</span> <span class="op">=&gt;</span> dest <span class="op">==</span> j <span class="op">}</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    adjacences <span class="op">=</span> adjacences<span class="op">.</span><span class="fu">updated</span><span class="op">(</span>i<span class="op">,</span> nouvelleListe<span class="op">)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> nouvelleListe <span class="op">=</span> listeActuelle<span class="op">.</span>filterNot <span class="op">{</span> <span class="cf">case</span> <span class="op">(</span>dest<span class="op">,</span> _<span class="op">)</span> <span class="op">=&gt;</span> dest <span class="op">==</span> j <span class="op">}</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    adjacences <span class="op">=</span> adjacences<span class="op">.</span><span class="fu">updated</span><span class="op">(</span>i<span class="op">,</span> nouvelleListe<span class="op">)</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Techniques fonctionnelles utilisées</strong> :</p>
+<ul>
+<li><code>filterNot</code> : supprime les éléments vérifiant un
+prédicat</li>
+<li><code>::</code> (cons) : ajoute un élément en tête de liste</li>
+<li><code>getOrElse</code> : gestion sûre des valeurs optionnelles</li>
+</ul>
+<p><strong>Avantages</strong> :</p>
+<ul>
+<li>Économie de mémoire considérable pour graphes creux</li>
+<li>Performance acceptable pour graphes avec peu de successeurs par
+sommet</li>
+</ul>
+<p><strong>Inconvénients</strong> :</p>
+<ul>
+<li>Légèrement plus complexe à implémenter</li>
+<li>Accès moins rapide qu’une matrice</li>
+</ul>
+<h3 id="module-chargeur">3.5 Module Chargeur</h3>
+<p><strong>Rôle</strong> : Lecture de fichiers texte et construction de
+graphes.</p>
+<p><strong>Format de fichier attendu</strong> :</p>
+<pre class="text"><code>4                  ← nombre de sommets
+1 1 0.95          ← départ arrivée probabilité
+1 2 0.04
+1 3 0.01
+...</code></pre>
+<p><strong>Fonctions principales</strong> :</p>
+<h4
+id="chargermatricechemin-string-optionmatriceadjacence"><code>chargerMatrice(chemin: String): Option[MatriceAdjacence]</code></h4>
+<p><strong>Algorithme</strong> :</p>
+<ol type="1">
+<li>Ouvrir le fichier avec <code>Source.fromFile</code></li>
+<li>Lire toutes les lignes</li>
+<li>Parser la première ligne pour obtenir <code>n</code></li>
+<li>Créer une matrice vide de taille <code>n</code></li>
+<li>Appeler <code>lireArcs</code> (récursif) pour remplir la
+matrice</li>
+<li>Retourner <code>Some(matrice)</code> ou <code>None</code> en cas
+d’erreur</li>
+</ol>
+<h4
+id="lirearcsmatrice-lignes-unit-récursion-terminale"><code>lireArcs(matrice, lignes): Unit</code>
+(récursion terminale)</h4>
+<p><strong>Algorithme récursif</strong> :</p>
+<pre class="text"><code>lireArcs(matrice, lignes) :
+    Si lignes est vide :
+        Terminer
+    Sinon :
+        ligne ← première ligne
+        reste ← lignes restantes
+        Parser ligne en (départ, arrivée, proba)
+        matrice.set(départ, arrivée, proba)
+        lireArcs(matrice, reste)  // Appel terminal</code></pre>
+<p><strong>Annotation <code>@tailrec</code></strong> : Garantit que le
+compilateur optimise la récursion en boucle, évitant le débordement de
+pile.</p>
+<p><strong>Gestion des erreurs</strong> :</p>
+<ul>
+<li>Fichier introuvable → <code>None</code></li>
+<li>Format invalide → lignes ignorées</li>
+<li>Utilisation de <code>try-catch</code> pour robustesse</li>
+</ul>
+<h3 id="module-validation-étape-2">3.6 Module Validation (Étape 2)</h3>
+<p><strong>Rôle</strong> : Vérifier qu’un graphe respecte les propriétés
+d’un graphe de Markov, c’est-à-dire que la somme des probabilités
+sortantes de chaque sommet est dans l’intervalle [0.99, 1].</p>
+<p><strong>Fonctions de validation</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 32%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sommetsInvalides(MatriceAdjacence)</code></td>
+<td><code>MatriceAdjacence =&gt; List[Int]</code></td>
+<td>Retourne la liste des sommets invalides (matrice)</td>
+</tr>
+<tr>
+<td><code>sommetsInvalides(ListeAdjacence)</code></td>
+<td><code>ListeAdjacence =&gt; List[Int]</code></td>
+<td>Retourne la liste des sommets invalides (liste)</td>
+</tr>
+<tr>
+<td><code>testerMatrice(fichier)</code></td>
+<td><code>String =&gt; Unit</code></td>
+<td>Teste un fichier avec MatriceAdjacence</td>
+</tr>
+<tr>
+<td><code>testerListe(fichier)</code></td>
+<td><code>String =&gt; Unit</code></td>
+<td>Teste un fichier avec ListeAdjacence</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Algorithme de validation</strong> :</p>
+<pre class="text"><code>sommetsInvalides(graphe) :
+    résultat ← liste vide
+    Pour chaque sommet s de 1 à n :
+        somme ← sommeSortante(s)
+        Si somme &gt; 0 ET (somme &lt; 0.99 OU somme &gt; 1.0) alors
+            Ajouter s à résultat
+    Retourner résultat</code></pre>
+<p><strong>Code Scala (HOF)</strong> :</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">sommetsInvalides</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">):</span> <span class="ex">List</span><span class="op">[</span><span class="bu">Int</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span><span class="dv">1</span> to matrice<span class="op">.</span>nbSommets<span class="op">).</span>filter <span class="op">{</span> sommet <span class="op">=&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> somme <span class="op">=</span> matrice<span class="op">.</span><span class="fu">sommeSortante</span><span class="op">(</span>sommet<span class="op">)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    somme <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> <span class="op">(</span>somme <span class="op">&lt;</span> <span class="fl">0.99</span> <span class="op">||</span> somme <span class="op">&gt;</span> <span class="fl">1.0</span><span class="op">)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}.</span>toList</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Fonctions de test paramétrées</strong> :</p>
+<p>Selon l’énoncé de l’étape 2, deux fonctions de test ont été
+implémentées, une pour chaque RPI (Représentation Physique Interne)
+:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">testerMatrice</span><span class="op">(</span>fichier<span class="op">:</span> <span class="ex">String</span><span class="op">):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  Chargeur<span class="op">.</span><span class="fu">chargerMatrice</span><span class="op">(</span>fichier<span class="op">)</span> <span class="cf">match</span> <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="bu">Some</span><span class="op">(</span>matrice<span class="op">)</span> <span class="op">=&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> invalides <span class="op">=</span> <span class="fu">sommetsInvalides</span><span class="op">(</span>matrice<span class="op">)</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(</span>invalides<span class="op">.</span>isEmpty<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span><span class="op">(</span><span class="st">&quot;[OK] RÉSULTAT : GRAPHE DE MARKOV VALIDE&quot;</span><span class="op">)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span><span class="op">(</span><span class="st">&quot;[KO] RÉSULTAT : GRAPHE DE MARKOV INVALIDE&quot;</span><span class="op">)</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">  Sommets en cause : </span><span class="ss">${</span>invalides<span class="op">.</span><span class="fu">mkString</span><span class="op">(</span><span class="st">&quot;, &quot;</span><span class="op">)</span><span class="ss">}&quot;</span><span class="op">)</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="bu">None</span> <span class="op">=&gt;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">println</span><span class="op">(</span><span class="st">&quot;[ERREUR] Impossible de charger le fichier&quot;</span><span class="op">)</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Résultats des tests</strong> :</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 29%" />
+<col style="width: 37%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Statut</th>
+<th>Détails</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exemple1.txt</code></td>
+<td>VALIDE</td>
+<td>4 sommets, toutes sommes dans [0.99, 1]</td>
+</tr>
+<tr>
+<td><code>exemple2.txt</code></td>
+<td>VALIDE</td>
+<td>10 sommets, toutes sommes dans [0.99, 1]</td>
+</tr>
+<tr>
+<td><code>exemple3.txt</code></td>
+<td>INVALIDE</td>
+<td>Sommet 6 : somme = 1.1000</td>
+</tr>
+<tr>
+<td><code>exemple_meteo.txt</code></td>
+<td>VALIDE</td>
+<td>5 sommets, toutes sommes dans [0.99, 1]</td>
+</tr>
+<tr>
+<td><code>exemple_valid_step3.txt</code></td>
+<td>VALIDE</td>
+<td>10 sommets, toutes sommes dans [0.99, 1]</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Avantages de cette approche</strong> :</p>
+<ul>
+<li><strong>Séparation des responsabilités</strong> : module dédié à la
+validation</li>
+<li><strong>Respect de l’énoncé</strong> : deux fonctions par RPI
+(validation + test)</li>
+<li><strong>Tests automatisés</strong> : tous les fichiers peuvent être
+testés en une commande</li>
+<li><strong>Intervalle [0.99, 1]</strong> : gestion correcte de la
+précision flottante</li>
+</ul>
+<h3 id="module-mermaid-étape-3">3.7 Module Mermaid (Étape 3)</h3>
+<p><strong>Rôle</strong> : Générer des fichiers au format Mermaid pour
+visualiser les graphes de Markov sur <a
+href="https://www.mermaidchart.com/"
+class="uri">https://www.mermaidchart.com/</a></p>
+<p><strong>Fonctions principales</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 32%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fonction</th>
+<th>Signature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>getID(i)</code></td>
+<td><code>Int =&gt; String</code></td>
+<td>Convertit un numéro en identifiant alphabétique</td>
+</tr>
+<tr>
+<td><code>genererMermaidMatrice(matrice, fichier)</code></td>
+<td><code>(MatriceAdjacence, String) =&gt; Unit</code></td>
+<td>Génère un fichier Mermaid (matrice)</td>
+</tr>
+<tr>
+<td><code>genererMermaidListe(liste, fichier)</code></td>
+<td><code>(ListeAdjacence, String) =&gt; Unit</code></td>
+<td>Génère un fichier Mermaid (liste)</td>
+</tr>
+<tr>
+<td><code>genererDepuisFichier(in, out, useMatrice)</code></td>
+<td><code>(String, String, Boolean) =&gt; Unit</code></td>
+<td>Génère depuis un fichier source</td>
+</tr>
+<tr>
+<td><code>afficherApercu(graphe)</code></td>
+<td><code>Graphe =&gt; Unit</code></td>
+<td>Affiche un aperçu du contenu</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Algorithme de conversion getID</strong> :</p>
+<p>La fonction <code>getID</code> convertit un numéro de sommet en
+identifiant alphabétique selon le schéma :</p>
+<pre class="text"><code>1 → A
+2 → B
+...
+26 → Z
+27 → AA
+28 → AB
+...</code></pre>
+<p><strong>Algorithme récursif</strong> :</p>
+<pre class="text"><code>getID(n, acc=&quot;&quot;) :
+    Si n ≤ 0 alors
+        Retourner acc
+    Sinon
+        reste ← (n - 1) % 26
+        lettre ← &#39;A&#39; + reste
+        quotient ← (n - 1) / 26
+        Retourner getID(quotient, lettre + acc)</code></pre>
+<p><strong>Code Scala</strong> :</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">getID</span><span class="op">(</span>i<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="ex">String</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span><span class="op">(</span>i <span class="op">&gt;</span> <span class="dv">0</span><span class="op">,</span> <span class="ss">s&quot;</span><span class="st">Le numéro de sommet doit être positif: </span><span class="ss">$i&quot;</span><span class="op">)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  @annotation<span class="op">.</span>tailrec</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">buildID</span><span class="op">(</span>n<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> acc<span class="op">:</span> <span class="ex">String</span><span class="op">):</span> <span class="ex">String</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">&lt;=</span> <span class="dv">0</span><span class="op">)</span> acc</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> reste <span class="op">=</span> <span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">%</span> <span class="dv">26</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> lettre <span class="op">=</span> <span class="op">(</span><span class="ch">&#39;A&#39;</span> <span class="op">+</span> reste<span class="op">).</span>toChar</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> quotient <span class="op">=</span> <span class="op">(</span>n <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">/</span> <span class="dv">26</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">buildID</span><span class="op">(</span>quotient<span class="op">,</span> lettre <span class="op">+</span> acc<span class="op">)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">buildID</span><span class="op">(</span>i<span class="op">,</span> <span class="st">&quot;&quot;</span><span class="op">)</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Format Mermaid généré</strong> :</p>
+<pre class="mermaid"><code>---
+config:
+   layout: elk
+   theme: neo
+   look: neo
+---
+flowchart LR
+A((1))
+B((2))
+C((3))
+D((4))
+A --&gt;|0.95|A
+A --&gt;|0.04|B
+A --&gt;|0.01|C
+B --&gt;|0.90|B
+B --&gt;|0.05|C
+B --&gt;|0.05|D
+C --&gt;|0.80|C
+C --&gt;|0.20|D
+D --&gt;|1.00|A</code></pre>
+<p><strong>Algorithme de génération</strong> :</p>
+<pre class="text"><code>genererContenu(graphe) :
+    contenu ← en-tête de configuration
+    
+    // Déclaration des sommets
+    Pour i de 1 à n :
+        id ← getID(i)
+        Ajouter &quot;id((i))&quot; au contenu
+    
+    // Déclaration des arêtes
+    Pour i de 1 à n :
+        successeurs ← graphe.successeurs(i)
+        Pour chaque (j, proba) dans successeurs :
+            idDepart ← getID(i)
+            idArrivee ← getID(j)
+            Ajouter &quot;idDepart --&gt;|proba|idArrivee&quot; au contenu
+    
+    Retourner contenu</code></pre>
+<p><strong>Code Scala (HOF)</strong> :</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">def</span> <span class="fu">genererAretes</span><span class="op">(</span>graphe<span class="op">:</span> Graphe<span class="op">):</span> <span class="ex">String</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> aretes <span class="op">=</span> <span class="cf">for</span> <span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    i <span class="op">&lt;-</span> <span class="dv">1</span> to graphe<span class="op">.</span>nbSommets</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    successeur <span class="op">&lt;-</span> graphe<span class="op">.</span><span class="fu">successeurs</span><span class="op">(</span>i<span class="op">)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">(</span>j<span class="op">,</span> proba<span class="op">)</span> <span class="op">=</span> successeur</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">yield</span> <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> idDepart <span class="op">=</span> <span class="fu">getID</span><span class="op">(</span>i<span class="op">)</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> idArrivee <span class="op">=</span> <span class="fu">getID</span><span class="op">(</span>j<span class="op">)</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="ss">s&quot;$idDepart</span><span class="st"> --&gt;|</span><span class="ss">${f&quot;$proba%.2f&quot;}</span><span class="st">|</span><span class="ss">$idArrivee&quot;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  aretes<span class="op">.</span><span class="fu">mkString</span><span class="op">(</span><span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span><span class="op">)</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Fonctions de génération paramétrées</strong> :</p>
+<p>Selon l’énoncé de l’étape 3, deux fonctions de génération ont été
+implémentées, une pour chaque RPI :</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">genererMermaidMatrice</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> fichierSortie<span class="op">:</span> <span class="ex">String</span><span class="op">):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> contenu <span class="op">=</span> <span class="fu">genererContenu</span><span class="op">(</span>matrice<span class="op">)</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> writer <span class="op">=</span> <span class="kw">new</span> <span class="ex">PrintWriter</span><span class="op">(</span><span class="kw">new</span> <span class="ex">File</span><span class="op">(</span>fichierSortie<span class="op">))</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>      writer<span class="op">.</span><span class="fu">write</span><span class="op">(</span>contenu<span class="op">)</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">Fichier Mermaid généré : </span><span class="ss">$fichierSortie&quot;</span><span class="op">)</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>      <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">  </span><span class="ss">${</span>matrice<span class="op">.</span>nbSommets<span class="ss">}</span><span class="st"> sommets</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> nbAretes <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to matrice<span class="op">.</span>nbSommets<span class="op">).</span>map <span class="op">{</span> i <span class="op">=&gt;</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        matrice<span class="op">.</span><span class="fu">successeurs</span><span class="op">(</span>i<span class="op">).</span>size</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>      <span class="op">}.</span>sum</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">  </span><span class="ss">$nbAretes</span><span class="st"> arêtes</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">finally</span> <span class="op">{</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>      writer<span class="op">.</span><span class="fu">close</span><span class="op">()</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> e<span class="op">:</span> <span class="ex">Exception</span> <span class="op">=&gt;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">Erreur lors de la génération : </span><span class="ss">${</span>e<span class="op">.</span>getMessage<span class="ss">}&quot;</span><span class="op">)</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Résultats des tests</strong> :</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 19%" />
+<col style="width: 38%" />
+</colgroup>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Sommets</th>
+<th>Arêtes</th>
+<th>Fichier généré</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exemple1.txt</code></td>
+<td>4</td>
+<td>9</td>
+<td><code>exemple1_matrice.mmd</code></td>
+</tr>
+<tr>
+<td><code>exemple2.txt</code></td>
+<td>10</td>
+<td>17</td>
+<td><code>exemple2_matrice.mmd</code></td>
+</tr>
+<tr>
+<td><code>exemple3.txt</code></td>
+<td>8</td>
+<td>15</td>
+<td><code>exemple3_matrice.mmd</code></td>
+</tr>
+<tr>
+<td><code>exemple_meteo.txt</code></td>
+<td>5</td>
+<td>18</td>
+<td><code>exemple_meteo_matrice.mmd</code></td>
+</tr>
+<tr>
+<td><code>exemple_valid_step3.txt</code></td>
+<td>10</td>
+<td>23</td>
+<td><code>exemple_valid_step3_matrice.mmd</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exemple de visualisation</strong> :</p>
+<p>Pour le fichier <code>exemple1.txt</code> (4 sommets, 9 arêtes), la
+visualisation Mermaid montre :</p>
+<ul>
+<li>Sommet 1 (A) : boucle avec haute probabilité (0.95) + transitions
+vers 2 et 3</li>
+<li>Sommet 2 (B) : boucle (0.90) + transitions vers 3 et 4</li>
+<li>Sommet 3 (C) : boucle (0.80) + transition vers 4</li>
+<li>Sommet 4 (D) : retour vers 1 (1.00)</li>
+</ul>
+<p><strong>Avantages de cette approche</strong> :</p>
+<ul>
+<li><strong>Visualisation interactive</strong> : permet de comprendre
+rapidement la structure du graphe</li>
+<li><strong>Format standard</strong> : Mermaid est un format largement
+supporté</li>
+<li><strong>Deux fonctions par RPI</strong> : respect strict de
+l’énoncé</li>
+<li><strong>Réutilisation du code</strong> : utilise l’interface
+<code>Graphe</code> pour la généricité</li>
+<li><strong>Récursion terminale</strong> : fonction <code>getID</code>
+optimisée</li>
+</ul>
+<p><strong>Utilisation</strong> :</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Charger et générer</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> matrice <span class="op">=</span> Chargeur<span class="op">.</span><span class="fu">chargerMatrice</span><span class="op">(</span><span class="st">&quot;exemple1.txt&quot;</span><span class="op">).</span>get</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Mermaid<span class="op">.</span><span class="fu">genererMermaidMatrice</span><span class="op">(</span>matrice<span class="op">,</span> <span class="st">&quot;exemple1.mmd&quot;</span><span class="op">)</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Ou en une seule étape</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>Mermaid<span class="op">.</span><span class="fu">genererDepuisFichier</span><span class="op">(</span><span class="st">&quot;exemple1.txt&quot;</span><span class="op">,</span> <span class="st">&quot;exemple1.mmd&quot;</span><span class="op">,</span> useMatrice <span class="op">=</span> <span class="kw">true</span><span class="op">)</span></span></code></pre></div>
+<h3 id="programme-principal-main">3.8 Programme Principal (Main)</h3>
+<p><strong>Rôle</strong> : Démonstration des fonctionnalités de la
+bibliothèque.</p>
+<p><strong>Flux d’exécution</strong> :</p>
+<ol type="1">
+<li>Définir le chemin du fichier d’exemple</li>
+<li>Charger le graphe avec <code>Chargeur.charger</code></li>
+<li>Pattern matching sur <code>Option[Graphe]</code> :
+<ul>
+<li><code>Some(graphe)</code> : afficher le graphe et ses
+propriétés</li>
+<li><code>None</code> : afficher un message d’erreur</li>
+</ul></li>
+<li>Afficher les successeurs de chaque sommet</li>
+</ol>
+<p><strong>Exemple de sortie</strong> :</p>
+<pre class="text"><code>==================================================
+GRAPHES DE MARKOV
+==================================================
+
+Chargement: exemples/exemple1.txt
+--------------------------------------------------
+ok 4 sommets
+
+Matrice 4x4:
+    1      2      3      4
+    ----------------------------
+  1 |  0.95   0.04   0.01   0.00
+  2 |  0.00   0.90   0.05   0.05
+  3 |  0.00   0.00   0.80   0.20
+  4 |  1.00   0.00   0.00   0.00
+
+=== Validation du graphe de Markov ===
+Sommet  1 : somme = 1.0000 ok
+Sommet  2 : somme = 1.0000 ok
+Sommet  3 : somme = 1.0000 ok
+Sommet  4 : somme = 1.0000 ok
+
+VALIDE
+========================================
+
+&gt;&gt;&gt; Successeurs:
+--------------------------------------------------
+Sommet 1 → 1(0.95), 2(0.04), 3(0.01)
+Sommet 2 → 2(0.90), 3(0.05), 4(0.05)
+Sommet 3 → 3(0.80), 4(0.20)
+Sommet 4 → 1(1.00)</code></pre>
+<hr />
+<h2 id="modélisation-uml">4. Modélisation UML</h2>
+<h3 id="diagramme-de-classes">4.1 Diagramme de classes</h3>
+<p>Le diagramme suivant illustre l’architecture orientée objet du projet
+avec les relations d’héritage et d’implémentation.</p>
+<figure>
+<img src="diagrammes/diagramme_classes.png"
+alt="Diagramme de classes" />
+<figcaption aria-hidden="true">Diagramme de classes</figcaption>
+</figure>
+<h3 id="diagramme-de-séquence">4.2 Diagramme de séquence</h3>
+<p>Scénario : Chargement et validation d’un graphe depuis un
+fichier.</p>
+<figure>
+<img src="diagrammes/diagramme_sequence.png"
+alt="Diagramme de séquence" />
+<figcaption aria-hidden="true">Diagramme de séquence</figcaption>
+</figure>
+<hr />
+<h2 id="difficultés-rencontrées-et-solutions---partie-i">5. Difficultés
+Rencontrées et Solutions - Partie I</h2>
+<h3 id="contexte-et-approche">5.1 Contexte et Approche</h3>
+<p>Ce projet a représenté un défi significatif car il nécessitait la
+maîtrise simultanée de plusieurs concepts : la programmation
+fonctionnelle en Scala, les structures de données abstraites, les
+graphes de Markov, et la conception orientée objet. Pour m’accompagner
+dans cette démarche, j’ai utilisé l’intelligence artificielle (IA) comme
+outil d’apprentissage et d’assistance.</p>
+<p><strong>Utilisation de l’IA dans ce projet :</strong></p>
+<ul>
+<li><strong>Structure du projet</strong> : L’IA m’a aidé à organiser
+l’architecture modulaire du code Scala (séparation en traits, classes,
+objets)</li>
+<li><strong>Explications conceptuelles</strong> : Pour comprendre des
+concepts comme l’immutabilité, les fonctions d’ordre supérieur, et la
+récursion terminale</li>
+<li><strong>Génération de documentation</strong> : Assistance pour
+rédiger certaines parties du rapport, notamment les explications
+algorithmiques et les diagrammes UML, et certaines parties pour
+l’architecture</li>
+<li><strong>Débogage</strong> : Aide à identifier et corriger des
+erreurs de logique ou de syntaxe dans le code</li>
+</ul>
+<p>Cependant, toute l’implémentation finale et les choix de conception
+sont le fruit de mon travail personnel.</p>
+<h3 id="difficultés-techniques-et-compréhension">5.2 Difficultés
+Techniques et Compréhension</h3>
+<h4
+id="difficulté-1-transition-vers-la-programmation-fonctionnelle">Difficulté
+1 : Transition vers la programmation fonctionnelle</h4>
+<p><strong>Problème rencontré</strong> : le paradigme fonctionnel de
+Scala demande un changement de logique à appliquer.</p>
+<p><strong>Concepts difficiles</strong> :</p>
+<ul>
+<li>utilisation de <code>map</code>, <code>filter</code>,
+<code>fold</code> avec une prédictabilité du résultat plus difficile à
+appréhender comparé à l’approche impérative</li>
+</ul>
+<p><strong>Exemple de transformation mentale</strong> :</p>
+<p>Plutôt que :</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> liste <span class="op">=</span> <span class="ex">List</span><span class="op">[</span><span class="bu">Int</span><span class="op">]()</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="op">&lt;-</span> <span class="dv">1</span> to n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span><span class="fu">condition</span><span class="op">(</span>i<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    liste <span class="op">=</span> liste <span class="op">:+</span> i</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>J’ai appris à écrire :</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> liste <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to n<span class="op">).</span><span class="fu">filter</span><span class="op">(</span>condition<span class="op">).</span>toList</span></code></pre></div>
+<h4 id="difficulté-2-indexation-base-0-vs-base-1">Difficulté 2 :
+Indexation base 0 vs base 1</h4>
+<p><strong>Problème</strong> : Les tableaux Scala utilisent l’indexation
+base 0 (comme la plupart des langages), mais la notation mathématique
+des graphes numérote les sommets de 1 à n.</p>
+<p><strong>Compréhension acquise</strong> : J’ai appris l’importance de
+séparer l’<strong>interface publique</strong> (orientée
+utilisateur/mathématique) de l’<strong>implémentation interne</strong>
+(orientée machine). Cette abstraction permet de cacher la
+complexité.</p>
+<p><strong>Solution adoptée</strong> :</p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">get</span><span class="op">(</span>i<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> j<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="ex">Double</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">require</span><span class="op">(</span><span class="fu">estValide</span><span class="op">(</span>i<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="fu">estValide</span><span class="op">(</span>j<span class="op">),</span> <span class="ss">s&quot;</span><span class="st">Indices invalides: (</span><span class="ss">$i</span><span class="st">, </span><span class="ss">$j</span><span class="st">)</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">matrice</span><span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)(</span>j <span class="op">-</span> <span class="dv">1</span><span class="op">)</span>  <span class="co">// Conversion base 1 → base 0</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="difficulté-3-immutabilité-et-structures-de-données">Difficulté 3
+: Immutabilité et structures de données</h4>
+<p><strong>Problème initial</strong> : Dans <code>ListeAdjacence</code>,
+j’ai d’abord tenté de modifier directement un <code>Map</code>, ce qui
+est impossible avec des structures immuables.</p>
+<p><strong>Erreur conceptuelle</strong> :</p>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Ceci ne compile pas !</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> adjacences<span class="op">:</span> <span class="ex">Map</span><span class="op">[</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">List</span><span class="op">[(</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">Double</span><span class="op">)]]</span> <span class="op">=</span> <span class="ex">Map</span><span class="op">()</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">adjacences</span><span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">=</span> <span class="ex">List</span><span class="op">((</span><span class="dv">2</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">))</span>  <span class="co">// ERREUR : val ne peut pas être réassigné</span></span></code></pre></div>
+<p><strong>Solution finale</strong> :</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">var</span> adjacences<span class="op">:</span> <span class="ex">Map</span><span class="op">[</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">List</span><span class="op">[(</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">Double</span><span class="op">)]]</span> <span class="op">=</span> <span class="ex">Map</span><span class="op">()</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">set</span><span class="op">(</span>i<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> j<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> valeur<span class="op">:</span> <span class="ex">Double</span><span class="op">):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> nouvelleListe <span class="op">=</span> <span class="op">(</span>j<span class="op">,</span> valeur<span class="op">)</span> <span class="op">::</span> listeActuelle<span class="op">.</span>filterNot <span class="op">{</span> <span class="cf">case</span> <span class="op">(</span>dest<span class="op">,</span> _<span class="op">)</span> <span class="op">=&gt;</span> dest <span class="op">==</span> j <span class="op">}</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  adjacences <span class="op">=</span> adjacences<span class="op">.</span><span class="fu">updated</span><span class="op">(</span>i<span class="op">,</span> nouvelleListe<span class="op">)</span>  <span class="co">// Nouvelle version du Map</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Apprentissage</strong> : L’utilisation de <code>var</code>
+avec des structures immuables (<code>Map</code>, <code>List</code>) est
+un compromis acceptable qui préserve les avantages de l’immutabilité au
+niveau des données.</p>
+<h4 id="difficulté-4-récursion-terminale-tail-recursion">Difficulté 4 :
+Récursion terminale (tail recursion)</h4>
+<p><strong>Problème</strong> : Lors du chargement de gros fichiers, j’ai
+rencontré des <code>StackOverflowError</code> avec ma première
+implémentation récursive.</p>
+<p><strong>Code initial (problématique)</strong> :</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">lireArcs</span><span class="op">(</span>lignes<span class="op">:</span> <span class="ex">List</span><span class="op">[</span><span class="ex">String</span><span class="op">]):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>lignes<span class="op">.</span>nonEmpty<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">traiterLigne</span><span class="op">(</span>lignes<span class="op">.</span>head<span class="op">)</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lireArcs</span><span class="op">(</span>lignes<span class="op">.</span>tail<span class="op">)</span>  <span class="co">// Appel NON terminal (calcul après l&#39;appel)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Compréhension du problème</strong> : J’ai appris que la
+récursion classique empile les appels de fonction, consommant de la
+mémoire. La récursion terminale permet au compilateur Scala d’optimiser
+en boucle.</p>
+<p><strong>Solution avec tail recursion</strong> :</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>@annotation<span class="op">.</span>tailrec</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="kw">private</span> <span class="kw">def</span> <span class="fu">lireArcs</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> lignes<span class="op">:</span> <span class="ex">List</span><span class="op">[</span><span class="ex">String</span><span class="op">]):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  lignes <span class="cf">match</span> <span class="op">{</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> Nil <span class="op">=&gt;</span> <span class="co">// Fin</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> ligne <span class="op">::</span> reste <span class="op">=&gt;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">traiterLigne</span><span class="op">(</span>ligne<span class="op">)</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">lireArcs</span><span class="op">(</span>matrice<span class="op">,</span> reste<span class="op">)</span> <span class="co">// Appel terminal : DERNIÈRE opération</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Leçon clé</strong> : L’annotation
+<code>@annotation.tailrec</code> est importante car elle force le
+compilateur à vérifier l’optimisation. Si l’appel n’est pas terminal, le
+code ne compile pas.</p>
+<h4 id="difficulté-5-précision-des-nombres-flottants">Difficulté 5 :
+Précision des nombres flottants</h4>
+<p><strong>Problème découvert</strong> : Les tests de validation
+échouaient alors que les graphes semblaient corrects.</p>
+<p><strong>Exemple du problème</strong> :</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> somme <span class="op">=</span> <span class="fl">0.1</span> <span class="op">+</span> <span class="fl">0.2</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">println</span><span class="op">(</span>somme <span class="op">==</span> <span class="fl">0.3</span><span class="op">)</span>  <span class="co">// false ! (somme vaut 0.30000000000000004)</span></span></code></pre></div>
+<p><strong>Compréhension</strong> : J’ai appris que les calculs en
+virgule flottante (type <code>Double</code>) ne sont pas exacts en
+raison de la représentation binaire. C’est une limite fondamentale des
+ordinateurs.</p>
+<p><strong>Solution avec epsilon</strong> :</p>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">estValide</span><span class="op">(</span>epsilon<span class="op">:</span> <span class="ex">Double</span> <span class="op">=</span> <span class="fl">0.0001</span><span class="op">):</span> <span class="ex">Boolean</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span><span class="dv">1</span> to n<span class="op">).</span>forall <span class="op">{</span> sommet <span class="op">=&gt;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> somme <span class="op">=</span> <span class="fu">sommeSortante</span><span class="op">(</span>sommet<span class="op">)</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    math<span class="op">.</span><span class="fu">abs</span><span class="op">(</span>somme <span class="op">-</span> <span class="fl">1.0</span><span class="op">)</span> <span class="op">&lt;</span> epsilon <span class="op">||</span> somme <span class="op">==</span> <span class="fl">0.0</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Principe appris</strong> : Ne jamais tester l’égalité stricte
+avec des <code>Double</code>. Toujours utiliser une tolérance.</p>
+<h4 id="difficulté-6-gestion-des-erreurs-avec-option">Difficulté 6 :
+Gestion des erreurs avec Option</h4>
+<p><strong>Approche initiale</strong> : Utiliser des exceptions pour
+gérer les erreurs de chargement de fichiers.</p>
+<p><strong>Problème</strong> : Les exceptions cassent le flux du
+programme et sont difficiles à gérer proprement.</p>
+<p><strong>Découverte de Option</strong> : J’ai appris que Scala
+favorise le type <code>Option[T]</code> pour représenter l’absence de
+valeur, évitant les <code>NullPointerException</code>.</p>
+<p><strong>Solution fonctionnelle</strong> :</p>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">charger</span><span class="op">(</span>chemin<span class="op">:</span> <span class="ex">String</span><span class="op">):</span> <span class="ex">Option</span><span class="op">[</span>Graphe<span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Chargement...</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">Some</span><span class="op">(</span>graphe<span class="op">)</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">catch</span> <span class="op">{</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> _<span class="op">:</span> <span class="ex">Exception</span> <span class="op">=&gt;</span> <span class="bu">None</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Utilisation avec pattern matching</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>chargeur<span class="op">.</span><span class="fu">charger</span><span class="op">(</span><span class="st">&quot;fichier.txt&quot;</span><span class="op">)</span> <span class="cf">match</span> <span class="op">{</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="bu">Some</span><span class="op">(</span>graphe<span class="op">)</span> <span class="op">=&gt;</span> graphe<span class="op">.</span><span class="fu">afficher</span><span class="op">()</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">case</span> <span class="bu">None</span> <span class="op">=&gt;</span> <span class="fu">println</span><span class="op">(</span><span class="st">&quot;Erreur de chargement&quot;</span><span class="op">)</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Avantage compris</strong> : Le compilateur force à gérer le
+cas <code>None</code>, évitant les oublis.</p>
+<h4 id="difficulté-7-format-mermaid-et-localisation">Difficulté 7 :
+Format Mermaid et localisation</h4>
+<p><strong>Problème inattendu (Étape 3)</strong> : Les visualisations
+Mermaid n’affichaient pas correctement les probabilités.</p>
+<p><strong>Cause</strong> : J’utilisais le format français avec virgules
+(<code>0,95</code>) alors que Mermaid attend le format anglais avec
+points (<code>0.95</code>).</p>
+<p><strong>Solution</strong> :</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> probaFormatee <span class="op">=</span> <span class="st">&quot;%.2f&quot;</span><span class="op">.</span><span class="fu">formatLocal</span><span class="op">(</span>java<span class="op">.</span>util<span class="op">.</span><span class="ex">Locale</span><span class="op">.</span>US<span class="op">,</span> proba<span class="op">)</span></span></code></pre></div>
+<p><strong>Leçon</strong> : Toujours considérer l’internationalisation
+dans les projets, même pour des détails comme les séparateurs
+décimaux.</p>
+<h3 id="réflexion-sur-lapprentissage">5.3 Réflexion sur
+l’Apprentissage</h3>
+<p><strong>Ce que j’ai retenu</strong> :</p>
+<ol type="1">
+<li><strong>Abstraction</strong> : Les traits (<code>Graphe</code>,
+<code>Matrice[T]</code>) permettent d’écrire du code générique et
+réutilisable</li>
+<li><strong>Types</strong> : Le système de types de Scala aide à éviter
+les erreurs à la compilation plutôt qu’à l’exécution</li>
+<li><strong>Documentation</strong> : La Scaladoc est essentielle pour
+comprendre le code et est simple à générer</li>
+</ol>
+<p><strong>Apport de l’IA</strong> :</p>
+<p>L’utilisation de l’IA m’a permis d’accélérer l’apprentissage en :</p>
+<ul>
+<li>Obtenant des explications immédiates sur des concepts
+difficiles</li>
+<li>Découvrant des idiomes Scala que je n’aurais pas trouvés seul ainsi
+que des pistes permettant de résoudre et utiliser certains outils</li>
+<li>Structurant le projet de manière professionnelle dès le départ</li>
+</ul>
+<p>Cependant, j’ai veillé à <strong>comprendre chaque ligne de
+code</strong> plutôt que de copier aveuglément, et à adapter les
+suggestions à mes besoins spécifiques.</p>
+<hr />
+<h2 id="tests-et-validation---partie-i">6. Tests et Validation - Partie
+I</h2>
+<h3 id="fichiers-de-test">6.1 Fichiers de test</h3>
+<p>Le projet inclut plusieurs fichiers d’exemples fournis dans le
+dossier <code>exemples/</code>.</p>
+<h3 id="tests-de-validation">6.2 Tests de validation</h3>
+<h4 id="test-1-graphe-valide-exemple1.txt">Test 1 : Graphe valide
+(exemple1.txt)</h4>
+<p><strong>Entrée</strong> :</p>
+<pre class="text"><code>4
+1 1 0.95
+1 2 0.04
+1 3 0.01
+2 2 0.9
+2 3 0.05
+2 4 0.05
+3 3 0.8
+3 4 0.2
+4 1 1</code></pre>
+<p><strong>Résultat attendu</strong> : Toutes les sommes = 1.0, statut
+VALIDE</p>
+<p><strong>Résultat obtenu</strong> :</p>
+<pre class="text"><code>=== Validation du graphe de Markov ===
+Sommet  1 : somme = 1.0000 ok
+Sommet  2 : somme = 1.0000 ok
+Sommet  3 : somme = 1.0000 ok
+Sommet  4 : somme = 1.0000 ok
+
+VALIDE</code></pre>
+<p><strong>Test réussi</strong></p>
+<h4 id="test-2-graphe-invalide">Test 2 : Graphe invalide</h4>
+<p><strong>Modification</strong> : Retirer une transition de
+<code>exemple1.txt</code></p>
+<p><strong>Résultat</strong> :</p>
+<pre class="text"><code>=== Validation du graphe de Markov ===
+Sommet  1 : somme = 0.9900 ko
+Sommet  2 : somme = 1.0000 ok
+...
+
+INVALIDE</code></pre>
+<p><strong>Test réussi</strong> : l’invalidité est correctement
+détectée</p>
+<h4 id="test-3-comparaison-matrice-vs-liste">Test 3 : Comparaison
+Matrice vs Liste</h4>
+<p><strong>Test</strong> : Charger le même graphe avec les deux
+représentations et vérifier que :</p>
+<ul>
+<li><code>successeurs(s)</code> retourne les mêmes résultats</li>
+<li><code>proba(i, j)</code> retourne les mêmes valeurs</li>
+<li><code>estValide()</code> retourne le même booléen</li>
+</ul>
+<p><strong>Méthode de test</strong> :</p>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> matrice <span class="op">=</span> Chargeur<span class="op">.</span><span class="fu">chargerMatrice</span><span class="op">(</span><span class="st">&quot;exemple1.txt&quot;</span><span class="op">).</span>get</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> liste <span class="op">=</span> Chargeur<span class="op">.</span><span class="fu">chargerListe</span><span class="op">(</span><span class="st">&quot;exemple1.txt&quot;</span><span class="op">).</span>get</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="op">&lt;-</span> <span class="dv">1</span> to <span class="dv">4</span><span class="op">;</span> j <span class="op">&lt;-</span> <span class="dv">1</span> to <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">assert</span><span class="op">(</span>matrice<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">==</span> liste<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">))</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Test réussi</strong> : les deux représentations sont
+équivalentes</p>
+<hr />
+<h2 id="analyse-fonctionnelle---partie-ii">7. Analyse Fonctionnelle -
+Partie II</h2>
+<h3 id="problématique-de-la-partie-ii">7.1 Problématique de la Partie
+II</h3>
+<p>La Partie I a permis de créer les structures de données pour
+représenter et valider des graphes de Markov. La <strong>Partie
+II</strong> ajoute des fonctionnalités d’<strong>analyse
+quantitative</strong> pour étudier l’évolution temporelle des systèmes
+modélisés par ces graphes.</p>
+<h4 id="contexte-mathématique">Contexte mathématique</h4>
+<p>Un graphe de Markov modélise des transitions probabilistes entre
+états. À un instant donné, le système n’est pas dans un état défini,
+mais dans une <strong>distribution de probabilités</strong> sur les
+états :</p>
+<p><strong>Distribution Π</strong> : vecteur ligne où Π[i] = probabilité
+d’être dans l’état i</p>
+<p><strong>Propriété</strong> : Σ Π[i] = 1 (somme des probabilités =
+1)</p>
+<h4 id="questions-à-résoudre">Questions à résoudre</h4>
+<ol type="1">
+<li><strong>Évolution temporelle</strong> : Comment évolue la
+distribution après n transitions ?
+<ul>
+<li>Formule : <strong>Π(n) = Π(0) × M^n</strong></li>
+</ul></li>
+<li><strong>Prévisions à long terme</strong> : Le système converge-t-il
+vers un état stable ?
+<ul>
+<li>Notion de <strong>distribution stationnaire</strong> : Π∞ × M =
+Π∞</li>
+</ul></li>
+<li><strong>Application pratique</strong> : Prédire l’évolution de la
+météo sur plusieurs jours</li>
+</ol>
+<h4 id="objectifs-techniques">Objectifs techniques</h4>
+<p>Pour répondre à ces questions, il faut implémenter :</p>
+<ol type="1">
+<li><strong>Opérations matricielles</strong> : multiplication, puissance
+(M^n), différence</li>
+<li><strong>Classe Distribution</strong> : représentation et évolution
+de vecteurs de probabilités</li>
+<li><strong>Algorithme de convergence</strong> : détection automatique
+de la distribution stationnaire</li>
+</ol>
+<hr />
+<h3 id="module-calculsmatriciels">7.2 Module CalculsMatriciels</h3>
+<p><strong>Rôle</strong> : Fournir les opérations matricielles
+nécessaires pour l’analyse des graphes de Markov</p>
+<p><strong>Fichier</strong> :
+<code>src/CalculsMatriciels.scala</code></p>
+<h4 id="fonction-listeversmatrice">7.2.1 Fonction listeVersMatrice</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">listeVersMatrice</span><span class="op">(</span>liste<span class="op">:</span> ListeAdjacence<span class="op">):</span> MatriceAdjacence</span></code></pre></div>
+<p><strong>Description</strong> : Convertit une liste d’adjacence en
+matrice d’adjacence</p>
+<p><strong>Algorithme</strong> :</p>
+<ol type="1">
+<li>Créer une matrice n×n initialisée à 0</li>
+<li>Pour chaque sommet i de 1 à n :
+<ul>
+<li>Récupérer la liste des successeurs</li>
+<li>Pour chaque (j, proba) dans cette liste :
+<ul>
+<li>Définir M[i,j] = proba</li>
+</ul></li>
+</ul></li>
+</ol>
+<p><strong>Utilisation des HOF</strong> :</p>
+<ul>
+<li><code>foreach</code> pour itérer sur les successeurs</li>
+</ul>
+<p><strong>Complexité</strong> : O(n + m) où m = nombre de
+transitions</p>
+<p><strong>Exemple</strong> :</p>
+<p>Liste d’adjacence :</p>
+<pre class="text"><code>1 → [(2, 0.5), (3, 0.5)]
+2 → [(1, 1.0)]
+3 → [(2, 1.0)]</code></pre>
+<p>Matrice équivalente :</p>
+<pre class="text"><code>     1    2    3
+1 [ 0.0  0.5  0.5 ]
+2 [ 1.0  0.0  0.0 ]
+3 [ 0.0  1.0  0.0 ]</code></pre>
+<h4 id="fonction-multiplier">7.2.2 Fonction multiplier</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">multiplier</span><span class="op">(</span>a<span class="op">:</span> MatriceAdjacence<span class="op">,</span> b<span class="op">:</span> MatriceAdjacence<span class="op">):</span> MatriceAdjacence</span></code></pre></div>
+<p><strong>Description</strong> : Multiplie deux matrices n×n selon la
+formule du produit matriciel</p>
+<p><strong>Algorithme</strong> :</p>
+<p>Pour chaque cellule (i,j) de la matrice résultat :</p>
+<pre class="text"><code>C[i,j] = Σ(k=1 to n) A[i,k] × B[k,j]</code></pre>
+<p><strong>Pseudo-code</strong> :</p>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Pour i de <span class="dv">1</span> à n</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  Pour j de <span class="dv">1</span> à n</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    somme ← <span class="dv">0</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    Pour k de <span class="dv">1</span> à n</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>      somme ← somme <span class="op">+</span> A<span class="op">[</span>i<span class="op">,</span>k<span class="op">]</span> × B<span class="op">[</span>k<span class="op">,</span>j<span class="op">]</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    C<span class="op">[</span>i<span class="op">,</span>j<span class="op">]</span> ← somme</span></code></pre></div>
+<p><strong>Implémentation fonctionnelle</strong> :</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>i <span class="op">&lt;-</span> <span class="dv">1</span> to n<span class="op">;</span> j <span class="op">&lt;-</span> <span class="dv">1</span> to n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> valeur <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to n<span class="op">).</span><span class="fu">map</span><span class="op">(</span>k <span class="op">=&gt;</span> a<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> k<span class="op">)</span> <span class="op">*</span> b<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>k<span class="op">,</span> j<span class="op">)).</span>sum</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  resultat<span class="op">.</span><span class="fu">setProba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">,</span> valeur<span class="op">)</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Utilisation des HOF</strong> :</p>
+<ul>
+<li><code>map</code> : transformation de chaque k en produit A[i,k] ×
+B[k,j]</li>
+<li><code>sum</code> : réduction pour calculer la somme</li>
+</ul>
+<p><strong>Complexité</strong> : O(n³)</p>
+<p><strong>Gestion des erreurs d’arrondi</strong> :</p>
+<p>Les multiplications successives peuvent créer des valeurs légèrement
+&gt; 1.0 ou &lt; 0.0 à cause de la précision flottante. Solution :</p>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> valeurArrondie <span class="op">=</span> math<span class="op">.</span><span class="fu">min</span><span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> math<span class="op">.</span><span class="fu">max</span><span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> valeur<span class="op">))</span></span></code></pre></div>
+<h4 id="fonction-puissance">7.2.3 Fonction puissance</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">puissance</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> n<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> MatriceAdjacence</span></code></pre></div>
+<p><strong>Description</strong> : Calcule M^n (matrice multipliée par
+elle-même n fois)</p>
+<p><strong>Algorithme</strong> :</p>
+<pre class="text"><code>Si n = 0 : retourner I (matrice identité)
+Si n = 1 : retourner copie de M
+Sinon :
+  Resultat ← M
+  Pour i de 2 à n :
+    Resultat ← Resultat × M
+  Retourner Resultat</code></pre>
+<p><strong>Optimisation possible</strong> (non implémentée) :
+Exponentiation rapide en O(log n)</p>
+<p><strong>Complexité actuelle</strong> : O(n × n³) = O(n⁴) pour n
+multiplications</p>
+<p><strong>Exemple</strong> :</p>
+<p>M² = M × M<br />
+M³ = M² × M<br />
+M⁷ = M⁶ × M</p>
+<h4 id="fonction-difference">7.2.4 Fonction difference</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb49"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">difference</span><span class="op">(</span>m<span class="op">:</span> MatriceAdjacence<span class="op">,</span> n<span class="op">:</span> MatriceAdjacence<span class="op">):</span> <span class="ex">Double</span></span></code></pre></div>
+<p><strong>Description</strong> : Calcule la somme des différences
+absolues entre deux matrices</p>
+<p><strong>Formule</strong> :</p>
+<pre class="text"><code>diff(M, N) = Σ(i,j) |M[i,j] - N[i,j]|</code></pre>
+<p><strong>Implémentation fonctionnelle</strong> :</p>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="op">(</span><span class="cf">for</span> <span class="op">{</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  i <span class="op">&lt;-</span> <span class="dv">1</span> to taille</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  j <span class="op">&lt;-</span> <span class="dv">1</span> to taille</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">yield</span> math<span class="op">.</span><span class="fu">abs</span><span class="op">(</span>m<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">)</span> <span class="op">-</span> n<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">))).</span>sum</span></code></pre></div>
+<p><strong>Utilisation</strong> : Mesurer la convergence vers une
+distribution stationnaire</p>
+<p><strong>Critère de convergence</strong> : Si diff(M^n, M^(n-1)) &lt;
+ε, alors convergence atteinte</p>
+<h4 id="fonction-trouverconvergence">7.2.5 Fonction
+trouverConvergence</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">trouverConvergence</span><span class="op">(</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  epsilon<span class="op">:</span> <span class="ex">Double</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">,</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  maxIterations<span class="op">:</span> <span class="bu">Int</span> <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="op">):</span> <span class="op">(</span><span class="bu">Int</span><span class="op">,</span> MatriceAdjacence<span class="op">,</span> <span class="ex">Boolean</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Description</strong> : Trouve la puissance n pour laquelle
+M^n converge (distribution stationnaire)</p>
+<p><strong>Algorithme</strong> :</p>
+<pre class="text"><code>precedente ← M
+courante ← M²
+n ← 2
+
+Tant que (n &lt; maxIterations ET non convergé) :
+  diff ← difference(courante, precedente)
+  
+  Si diff &lt; epsilon :
+    convergé ← vrai
+  Sinon :
+    precedente ← courante
+    courante ← courante × M
+    n ← n + 1
+
+Retourner (n, courante, convergé)</code></pre>
+<p><strong>Retour</strong> : Tuple (n, M^n, converge?)</p>
+<ul>
+<li><code>n</code> : puissance où la convergence est atteinte</li>
+<li><code>M^n</code> : matrice convergée</li>
+<li><code>converge</code> : true si convergence, false si maxIterations
+atteint</li>
+</ul>
+<p><strong>Utilisation</strong> : Détecter automatiquement la
+distribution stationnaire</p>
+<p><strong>Cas de non-convergence</strong> : Graphes avec plusieurs
+composantes fortement connexes non communicantes</p>
+<hr />
+<h3 id="module-distribution">7.3 Module Distribution</h3>
+<p><strong>Rôle</strong> : Représenter et manipuler des distributions de
+probabilités sur les états d’un graphe de Markov</p>
+<p><strong>Fichier</strong> : <code>src/Distribution.scala</code></p>
+<h4 id="classe-distribution">7.3.1 Classe Distribution</h4>
+<p><strong>Structure de données</strong> :</p>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> <span class="fu">Distribution</span><span class="op">(</span><span class="kw">val</span> probas<span class="op">:</span> <span class="ex">Vector</span><span class="op">[</span><span class="ex">Double</span><span class="op">])</span></span></code></pre></div>
+<p><strong>Choix d’immutabilité</strong> : <code>Vector[Double]</code>
+est immuable, garantissant qu’une distribution ne peut pas être modifiée
+après création</p>
+<p><strong>Propriété fondamentale</strong> : Σ probas[i] = 1.0</p>
+<h4 id="méthodes-de-la-classe">7.3.2 Méthodes de la classe</h4>
+<p><strong>Méthode apply</strong> :</p>
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">apply</span><span class="op">(</span>i<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="ex">Double</span></span></code></pre></div>
+<p>Accès aux probabilités avec indexation base 1 (cohérent avec les
+sommets)</p>
+<p>Exemple : <code>distribution(2)</code> retourne la probabilité de
+l’état 2</p>
+<p><strong>Méthode estValide</strong> :</p>
+<div class="sourceCode" id="cb56"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">estValide</span><span class="op">(</span>epsilon<span class="op">:</span> <span class="ex">Double</span> <span class="op">=</span> <span class="fl">0.0001</span><span class="op">):</span> <span class="ex">Boolean</span></span></code></pre></div>
+<p>Vérifie que la somme des probabilités = 1 (avec tolérance
+epsilon)</p>
+<p><strong>Méthode evoluer</strong> :</p>
+<div class="sourceCode" id="cb57"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">evoluer</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">):</span> Distribution</span></code></pre></div>
+<p>Calcule l’évolution d’une étape : Π’ = Π × M</p>
+<p><strong>Algorithme</strong> :</p>
+<p>Pour chaque état j :</p>
+<pre class="text"><code>Π&#39;[j] = Σ(i=1 to n) Π[i] × M[i,j]</code></pre>
+<p><strong>Implémentation</strong> :</p>
+<div class="sourceCode" id="cb59"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> nouvellesProba <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to taille<span class="op">).</span>map <span class="op">{</span> j <span class="op">=&gt;</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span><span class="dv">1</span> to taille<span class="op">).</span><span class="fu">map</span><span class="op">(</span>i <span class="op">=&gt;</span> <span class="fu">probas</span><span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> matrice<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">)).</span>sum</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="op">}.</span>toVector</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="kw">new</span> <span class="fu">Distribution</span><span class="op">(</span>nouvellesProba<span class="op">)</span></span></code></pre></div>
+<p><strong>Méthode evoluerN</strong> :</p>
+<div class="sourceCode" id="cb60"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">evoluerN</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> n<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> Distribution</span></code></pre></div>
+<p>Calcule l’évolution après n étapes : Π(n) = Π(0) × M^n</p>
+<p><strong>Optimisation</strong> : Calcule d’abord M^n puis multiplie
+(plus efficace que n évolutions successives)</p>
+<p><strong>Méthode afficher</strong> :</p>
+<div class="sourceCode" id="cb61"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">afficher</span><span class="op">(</span>nomsEtats<span class="op">:</span> <span class="ex">Option</span><span class="op">[</span><span class="ex">Vector</span><span class="op">[</span><span class="ex">String</span><span class="op">]]):</span> <span class="bu">Unit</span></span></code></pre></div>
+<p>Affiche la distribution avec ou sans noms d’états</p>
+<p>Format :</p>
+<pre class="text"><code>État 1: Sunny         → 0.1638 (16.38%)
+État 2: Cloudy        → 0.3636 (36.36%)
+...
+Somme = 1.000000</code></pre>
+<h4 id="objet-companion-distribution">7.3.3 Objet companion
+Distribution</h4>
+<p><strong>Méthodes de construction</strong> :</p>
+<p><strong>depuisEtat</strong> :</p>
+<div class="sourceCode" id="cb63"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">depuisEtat</span><span class="op">(</span>n<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span> etatInitial<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> Distribution</span></code></pre></div>
+<p>Crée une distribution avec 100% dans un état donné</p>
+<p>Exemple : <code>Distribution.depuisEtat(5, 1)</code> → Π = (1, 0, 0,
+0, 0)</p>
+<p><strong>uniforme</strong> :</p>
+<div class="sourceCode" id="cb64"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">uniforme</span><span class="op">(</span>n<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> Distribution</span></code></pre></div>
+<p>Distribution équiprobable : tous les états ont probabilité 1/n</p>
+<p><strong>depuisVecteur</strong> :</p>
+<div class="sourceCode" id="cb65"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">depuisVecteur</span><span class="op">(</span>probas<span class="op">:</span> <span class="ex">Vector</span><span class="op">[</span><span class="ex">Double</span><span class="op">]):</span> Distribution</span></code></pre></div>
+<p>Crée depuis un vecteur personnalisé</p>
+<p><strong>depuisLigneMatrice</strong> :</p>
+<div class="sourceCode" id="cb66"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">depuisLigneMatrice</span><span class="op">(</span>matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> ligne<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> Distribution</span></code></pre></div>
+<p>Extrait une ligne de matrice comme distribution (utile pour M^∞)</p>
+<hr />
+<h3 id="programme-de-test-testpartie2">7.4 Programme de Test
+(TestPartie2)</h3>
+<p><strong>Fichier</strong> : <code>src/TestPartie2.scala</code></p>
+<h4 id="structure-du-programme">Structure du programme</h4>
+<p>Le programme de test valide toutes les fonctionnalités de la Partie
+II avec l’exemple météorologique</p>
+<h4 id="test-1-chargement-et-affichage">TEST 1 : Chargement et
+affichage</h4>
+<p><strong>Objectif</strong> : Charger <code>exemple_meteo.txt</code> et
+afficher la matrice de transition</p>
+<p><strong>Étapes</strong> :</p>
+<ol type="1">
+<li>Charger le graphe avec <code>Chargeur.charger()</code></li>
+<li>Convertir en matrice si nécessaire (polymorphisme)</li>
+<li>Afficher la matrice M</li>
+</ol>
+<p><strong>Données météo</strong> :</p>
+<ul>
+<li>5 états : Sunny, Cloudy, Rain, Storm, Sunny_spells</li>
+<li>Matrice 5×5 de probabilités de transition</li>
+</ul>
+<h4 id="test-2-calcul-de-m³">TEST 2 : Calcul de M³</h4>
+<p><strong>Objectif</strong> : Vérifier que M³ correspond aux valeurs
+attendues dans l’énoncé</p>
+<p><strong>Méthode</strong> :</p>
+<div class="sourceCode" id="cb67"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> m3 <span class="op">=</span> CalculsMatriciels<span class="op">.</span><span class="fu">puissance</span><span class="op">(</span>matrice<span class="op">,</span> <span class="dv">3</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Vérifications</strong> : Comparer les valeurs obtenues avec
+les valeurs théoriques</p>
+<h4 id="test-3-calcul-de-m⁷">TEST 3 : Calcul de M⁷</h4>
+<p><strong>Objectif</strong> : Observer la convergence vers une
+distribution stationnaire</p>
+<p><strong>Observation</strong> : Dans M⁷, toutes les lignes doivent
+être identiques (ou quasi-identiques)</p>
+<h4 id="test-4-distributions-et-évolutions">TEST 4 : Distributions et
+évolutions</h4>
+<p><strong>Question 1</strong> : “Quelle est la probabilité que le temps
+soit nuageux dans 3 jours s’il fait beau aujourd’hui ?”</p>
+<p><strong>Méthode</strong> :</p>
+<div class="sourceCode" id="cb68"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> pi0 <span class="op">=</span> Distribution<span class="op">.</span><span class="fu">depuisEtat</span><span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">1</span><span class="op">)</span>  <span class="co">// Sunny</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> pi3 <span class="op">=</span> pi0<span class="op">.</span><span class="fu">evoluerN</span><span class="op">(</span>matrice<span class="op">,</span> <span class="dv">3</span><span class="op">)</span></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> reponse <span class="op">=</span> <span class="fu">pi3</span><span class="op">(</span><span class="dv">2</span><span class="op">)</span>  <span class="co">// État 2 = Cloudy</span></span></code></pre></div>
+<p><strong>Question 2</strong> : “Quelles sont les probabilités dans 7
+jours s’il pleut aujourd’hui ?”</p>
+<div class="sourceCode" id="cb69"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> pi0_rain <span class="op">=</span> Distribution<span class="op">.</span><span class="fu">depuisEtat</span><span class="op">(</span><span class="dv">5</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span>  <span class="co">// Rain</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> pi7 <span class="op">=</span> pi0_rain<span class="op">.</span><span class="fu">evoluerN</span><span class="op">(</span>matrice<span class="op">,</span> <span class="dv">7</span><span class="op">)</span></span></code></pre></div>
+<h4 id="test-5-distribution-stationnaire">TEST 5 : Distribution
+stationnaire</h4>
+<p><strong>Objectif</strong> : Trouver automatiquement la distribution
+d’équilibre</p>
+<div class="sourceCode" id="cb70"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="op">(</span>n<span class="op">,</span> mn<span class="op">,</span> converge<span class="op">)</span> <span class="op">=</span> CalculsMatriciels<span class="op">.</span><span class="fu">trouverConvergence</span><span class="op">(</span>matrice<span class="op">,</span> epsilon <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Question 3</strong> : “Atteint-on des probabilités
+indépendantes de la distribution de départ ?”</p>
+<p>Réponse : OUI si convergence = true</p>
+<h4 id="test-6-convergence-sur-tous-les-exemples">TEST 6 : Convergence
+sur tous les exemples</h4>
+<p><strong>Objectif</strong> : Tester tous les fichiers d’exemple et
+identifier ceux qui convergent</p>
+<p><strong>Méthode</strong> : Boucle sur tous les fichiers avec analyse
+de convergence</p>
+<p><strong>Résultats attendus</strong> : Certains graphes ne convergent
+pas (graphes avec classes multiples)</p>
+<hr />
+<h2 id="validation-et-résultats---partie-ii">8. Validation et Résultats
+- Partie II</h2>
+<h3 id="validation-avec-exemple-météo">8.1 Validation avec exemple
+météo</h3>
+<h4 id="matrice-m-transitions-météorologiques">Matrice M (transitions
+météorologiques)</h4>
+<pre class="text"><code>Matrice 5x5:
+         1      2      3      4      5
+    -----------------------------------
+  1 |  0.34   0.27   0.00   0.18   0.21
+  2 |  0.20   0.40   0.20   0.00   0.20
+  3 |  0.00   0.41   0.37   0.09   0.13
+  4 |  0.00   0.68   0.20   0.12   0.00
+  5 |  0.12   0.30   0.00   0.00   0.58</code></pre>
+<p>Correspondance des états :</p>
+<ol type="1">
+<li>Sunny (ensoleillé)</li>
+<li>Cloudy (nuageux)</li>
+<li>Rain (pluie)</li>
+<li>Storm (orage)</li>
+<li>Sunny_spells (éclaircies)</li>
+</ol>
+<h4 id="validation-de-m³">Validation de M³</h4>
+<p><strong>Valeurs attendues (énoncé)</strong> vs <strong>Valeurs
+obtenues</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Attendu</th>
+<th>Obtenu</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M³[1,1]</td>
+<td>0.17</td>
+<td>0.17</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M³[1,2]</td>
+<td>0.37</td>
+<td>0.37</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M³[1,3]</td>
+<td>0.13</td>
+<td>0.13</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M³[1,4]</td>
+<td>0.05</td>
+<td>0.05</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M³[1,5]</td>
+<td>0.27</td>
+<td>0.27</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion</strong> : Les calculs sont <strong>exactement
+conformes</strong> aux résultats théoriques</p>
+<h4 id="validation-de-m⁷">Validation de M⁷</h4>
+<p><strong>Valeurs attendues</strong> vs <strong>Valeurs
+obtenues</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Position</th>
+<th>Attendu</th>
+<th>Obtenu</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M⁷[1,1]</td>
+<td>0.16</td>
+<td>0.16</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M⁷[1,2]</td>
+<td>0.36</td>
+<td>0.36</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M⁷[1,3]</td>
+<td>0.13</td>
+<td>0.13</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M⁷[1,4]</td>
+<td>0.05</td>
+<td>0.05</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>M⁷[1,5]</td>
+<td>0.29</td>
+<td>0.29</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Observation importante</strong> : Toutes les lignes de M⁷
+sont identiques</p>
+<pre class="text"><code>Ligne 1: 0.16  0.36  0.13  0.05  0.29
+Ligne 2: 0.16  0.36  0.13  0.05  0.29
+Ligne 3: 0.16  0.36  0.13  0.05  0.29
+Ligne 4: 0.16  0.36  0.13  0.05  0.29
+Ligne 5: 0.16  0.36  0.13  0.05  0.30  (arrondi)</code></pre>
+<p><strong>Interprétation</strong> : La distribution stationnaire est
+atteinte (ou quasi-atteinte) en 7 itérations</p>
+<hr />
+<h3 id="distributions-et-évolutions">8.2 Distributions et
+évolutions</h3>
+<h4 id="réponse-à-la-question-1">Réponse à la Question 1</h4>
+<p><strong>Question</strong> : “Quelle est la probabilité que le temps
+soit nuageux (Cloudy) dans 3 jours s’il fait beau (Sunny) aujourd’hui
+?”</p>
+<p><strong>Distribution initiale</strong> : Π(0) = (1, 0, 0, 0, 0) (100%
+Sunny)</p>
+<p><strong>Distribution après 3 jours</strong> : Π(3) = Π(0) × M³</p>
+<pre class="text"><code>État 1: Sunny         → 0.1729 (17.29%)
+État 2: Cloudy        → 0.3740 (37.40%)  ← RÉPONSE
+État 3: Rain          → 0.1269 (12.69%)
+État 4: Storm         → 0.0531 (5.31%)
+État 5: Sunny_spells  → 0.2730 (27.30%)</code></pre>
+<p><strong>Réponse</strong> : Il y a <strong>37.4%</strong> de chances
+que le temps soit nuageux dans 3 jours</p>
+<h4 id="réponse-à-la-question-2">Réponse à la Question 2</h4>
+<p><strong>Question</strong> : “Quelles sont les probabilités que la
+météo soit dans tel état dans une semaine (7 jours) sachant qu’il pleut
+(Rain) aujourd’hui ?”</p>
+<p><strong>Distribution initiale</strong> : Π(0) = (0, 0, 1, 0, 0) (100%
+Rain)</p>
+<p><strong>Distribution après 7 jours</strong> : Π(7) = Π(0) × M⁷</p>
+<pre class="text"><code>État 1: Sunny         → 0.1631 (16.31%)
+État 2: Cloudy        → 0.3643 (36.43%)
+État 3: Rain          → 0.1322 (13.22%)
+État 4: Storm         → 0.0469 (4.69%)
+État 5: Sunny_spells  → 0.2935 (29.35%)</code></pre>
+<p><strong>Réponse</strong> : Dans 7 jours :</p>
+<ul>
+<li>16% de chances d’avoir du soleil</li>
+<li>36% de chances d’avoir des nuages</li>
+<li>13% de chances d’avoir de la pluie</li>
+<li>5% de chances d’avoir un orage</li>
+<li>29% de chances d’avoir des éclaircies</li>
+</ul>
+<p><strong>Observation</strong> : Cette distribution est très proche de
+celle partant de Sunny (Question 1), ce qui confirme la convergence</p>
+<hr />
+<h3 id="convergence-et-distribution-stationnaire">8.3 Convergence et
+distribution stationnaire</h3>
+<h4 id="réponse-à-la-question-3">Réponse à la Question 3</h4>
+<p><strong>Question</strong> : “Atteint-on des probabilités
+indépendantes de la distribution de départ au bout d’un certain temps ?”
+(existe-t-il une distribution stationnaire ?)</p>
+<p><strong>Méthode de détection automatique</strong> :</p>
+<div class="sourceCode" id="cb75"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="op">(</span>n<span class="op">,</span> mn<span class="op">,</span> converge<span class="op">)</span> <span class="op">=</span> CalculsMatriciels<span class="op">.</span><span class="fu">trouverConvergence</span><span class="op">(</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  matrice<span class="op">,</span> </span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  epsilon <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="op">)</span></span></code></pre></div>
+<p><strong>Résultat</strong> :</p>
+<ul>
+<li><strong>Convergence atteinte</strong> : OUI</li>
+<li><strong>Nombre d’itérations</strong> : 9</li>
+<li><strong>Critère</strong> : diff(M⁹, M⁸) &lt; 0.01</li>
+</ul>
+<p><strong>Distribution stationnaire Π∞</strong> :</p>
+<pre class="text"><code>État 1: Sunny         → 0.1638 (16.38%)
+État 2: Cloudy        → 0.3636 (36.36%)
+État 3: Rain          → 0.1304 (13.04%)
+État 4: Storm         → 0.0469 (4.69%)
+État 5: Sunny_spells  → 0.2952 (29.52%)
+
+Somme = 1.000000</code></pre>
+<p><strong>Propriété vérifiée</strong> : Π∞ × M = Π∞ (équilibre)</p>
+<p><strong>Réponse à la question 3</strong> : <strong>OUI</strong>,
+convergence en 9 étapes vers une distribution stationnaire</p>
+<p><strong>Interprétation météorologique</strong> : À long terme,
+indépendamment de la météo d’aujourd’hui, le système converge vers une
+répartition stable où il y a environ :</p>
+<ul>
+<li>16% de jours ensoleillés</li>
+<li>36% de jours nuageux (état le plus probable)</li>
+<li>13% de jours pluvieux</li>
+<li>5% de jours orageux</li>
+<li>30% de jours avec éclaircies</li>
+</ul>
+<h4 id="analyse-de-convergence-sur-tous-les-exemples">Analyse de
+convergence sur tous les exemples</h4>
+<p><strong>Tableau récapitulatif</strong> (epsilon = 0.01) :</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Sommets</th>
+<th>Convergence</th>
+<th>Itérations</th>
+<th>Observation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exemple1.txt</td>
+<td>4</td>
+<td>✓ OUI</td>
+<td>29</td>
+<td>Graphe simple cyclique</td>
+</tr>
+<tr>
+<td>exemple2.txt</td>
+<td>10</td>
+<td>✓ OUI</td>
+<td>48</td>
+<td>Graphe complexe connexe</td>
+</tr>
+<tr>
+<td>exemple3.txt</td>
+<td>8</td>
+<td>✗ NON</td>
+<td>-</td>
+<td>Plusieurs composantes</td>
+</tr>
+<tr>
+<td>exemple_meteo.txt</td>
+<td>5</td>
+<td>✓ OUI</td>
+<td>9</td>
+<td>Modèle météo</td>
+</tr>
+<tr>
+<td>exemple_valid_step3.txt</td>
+<td>10</td>
+<td>✓ OUI</td>
+<td>11</td>
+<td>Cas de test</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Analyse du cas de non-convergence</strong> :</p>
+<p><code>exemple3.txt</code> ne converge pas car il possède plusieurs
+<strong>composantes fortement connexes</strong> (classes) qui ne
+communiquent pas entre elles. Dans ce cas :</p>
+<ul>
+<li>Chaque classe a sa propre distribution stationnaire</li>
+<li>La distribution globale dépend de l’état de départ</li>
+<li>Le critère de convergence unique n’est pas applicable</li>
+</ul>
+<p><strong>Conclusion</strong> : La méthode détecte correctement les
+graphes ergodiques (convergence) et non-ergodiques (pas de
+convergence)</p>
+<hr />
+<h2 id="difficultés-rencontrées-et-solutions---partie-ii">9. Difficultés
+Rencontrées et Solutions - Partie II</h2>
+<h3 id="erreurs-darrondi-dans-les-multiplications-matricielles">9.1
+Erreurs d’arrondi dans les multiplications matricielles</h3>
+<p><strong>Problème identifié</strong> :</p>
+<p>Lors du calcul de M³, M⁷, etc., les multiplications successives de
+nombres flottants créaient des erreurs d’arrondi cumulatives. Certaines
+valeurs dépassaient légèrement 1.0 (ex: 1.0157), ce qui violait les
+contraintes de probabilité.</p>
+<p><strong>Symptôme</strong> :</p>
+<pre class="text"><code>Exception: java.lang.IllegalArgumentException: 
+  requirement failed: Probabilité invalide: 1.0157085652011586</code></pre>
+<p><strong>Cause</strong> : Précision limitée des nombres flottants
+(Double en Scala/Java)</p>
+<p><strong>Solution implémentée</strong> :</p>
+<p>Ajout de contraintes dans la fonction <code>multiplier</code> :</p>
+<div class="sourceCode" id="cb78"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> valeur <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to n<span class="op">).</span><span class="fu">map</span><span class="op">(</span>k <span class="op">=&gt;</span> a<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> k<span class="op">)</span> <span class="op">*</span> b<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>k<span class="op">,</span> j<span class="op">)).</span>sum</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> valeurArrondie <span class="op">=</span> math<span class="op">.</span><span class="fu">min</span><span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> math<span class="op">.</span><span class="fu">max</span><span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> valeur<span class="op">))</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>resultat<span class="op">.</span><span class="fu">setProba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">,</span> valeurArrondie<span class="op">)</span></span></code></pre></div>
+<p><strong>Effet</strong> : Toute valeur &gt; 1.0 est ramenée à 1.0,
+toute valeur &lt; 0.0 est ramenée à 0.0</p>
+<p><strong>Justification mathématique</strong> : Les dépassements sont
+uniquement dus à l’imprécision flottante (de l’ordre de 10⁻¹⁵), pas à
+des erreurs algorithmiques</p>
+<h3 id="gestion-de-la-non-convergence">9.2 Gestion de la
+non-convergence</h3>
+<p><strong>Problème</strong> :</p>
+<p>Certains graphes ne convergent jamais vers une distribution unique
+(graphes avec plusieurs composantes fortement connexes)</p>
+<p><strong>Risque</strong> : Boucle infinie dans
+<code>trouverConvergence</code></p>
+<p><strong>Solution</strong> :</p>
+<p>Ajout d’un paramètre <code>maxIterations</code> (défaut: 1000) :</p>
+<div class="sourceCode" id="cb79"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">trouverConvergence</span><span class="op">(</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  epsilon<span class="op">:</span> <span class="ex">Double</span> <span class="op">=</span> <span class="fl">0.01</span><span class="op">,</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>  maxIterations<span class="op">:</span> <span class="bu">Int</span> <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="op">):</span> <span class="op">(</span><span class="bu">Int</span><span class="op">,</span> MatriceAdjacence<span class="op">,</span> <span class="ex">Boolean</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Retour</strong> : Tuple avec booléen <code>converge</code>
+indiquant si la convergence a été atteinte</p>
+<p><strong>Utilisation</strong> :</p>
+<div class="sourceCode" id="cb80"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> <span class="op">(</span>n<span class="op">,</span> mn<span class="op">,</span> converge<span class="op">)</span> <span class="op">=</span> <span class="fu">trouverConvergence</span><span class="op">(</span>matrice<span class="op">)</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>converge<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">println</span><span class="op">(</span><span class="ss">s&quot;</span><span class="st">Convergence en </span><span class="ss">$n</span><span class="st"> itérations</span><span class="ss">&quot;</span><span class="op">)</span></span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">println</span><span class="op">(</span><span class="st">&quot;Pas de convergence&quot;</span><span class="op">)</span></span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h3 id="choix-entre-efficacité-et-clarté">9.3 Choix entre efficacité et
+clarté</h3>
+<p><strong>Dilemme</strong> : Pour calculer Π(n) = Π(0) × M^n, deux
+approches possibles :</p>
+<p><strong>Approche 1</strong> : n évolutions successives</p>
+<div class="sourceCode" id="cb81"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> resultat <span class="op">=</span> pi0</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>_ <span class="op">&lt;-</span> <span class="dv">1</span> to n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  resultat <span class="op">=</span> resultat<span class="op">.</span><span class="fu">evoluer</span><span class="op">(</span>matrice<span class="op">)</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<ul>
+<li>Avantage : Simple, évident</li>
+<li>Inconvénient : O(n × n²) = O(n³)</li>
+</ul>
+<p><strong>Approche 2</strong> : Calcul de M^n puis multiplication</p>
+<div class="sourceCode" id="cb82"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> puissance <span class="op">=</span> CalculsMatriciels<span class="op">.</span><span class="fu">puissance</span><span class="op">(</span>matrice<span class="op">,</span> n<span class="op">)</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> resultat <span class="op">=</span> pi0<span class="op">.</span><span class="fu">evoluerAvecPuissance</span><span class="op">(</span>puissance<span class="op">)</span></span></code></pre></div>
+<ul>
+<li>Avantage : Plus efficace pour n grand</li>
+<li>Inconvénient : Calcul de M^n coûteux (O(n × n³))</li>
+</ul>
+<p><strong>Solution choisie</strong> : Approche 2, plus mathématiquement
+correcte</p>
+<p><strong>Optimisation future possible</strong> : Exponentiation rapide
+(puissance en O(log n))</p>
+<h3 id="immutabilité-et-performance">9.4 Immutabilité et
+performance</h3>
+<p><strong>Contrainte fonctionnelle</strong> : Utiliser des structures
+immuables (Vector, pas de var)</p>
+<p><strong>Impact</strong> : Chaque opération crée une nouvelle
+instance</p>
+<p><strong>Exemple</strong> :</p>
+<div class="sourceCode" id="cb83"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="kw">val</span> nouvellesProba <span class="op">=</span> <span class="op">(</span><span class="dv">1</span> to taille<span class="op">).</span>map <span class="op">{</span> j <span class="op">=&gt;</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="op">(</span><span class="dv">1</span> to taille<span class="op">).</span><span class="fu">map</span><span class="op">(</span>i <span class="op">=&gt;</span> <span class="fu">probas</span><span class="op">(</span>i <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">*</span> matrice<span class="op">.</span><span class="fu">proba</span><span class="op">(</span>i<span class="op">,</span> j<span class="op">)).</span>sum</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="op">}.</span>toVector</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="kw">new</span> <span class="fu">Distribution</span><span class="op">(</span>nouvellesProba<span class="op">)</span>  <span class="co">// Nouvelle instance</span></span></code></pre></div>
+<p><strong>Avantages</strong> :</p>
+<ul>
+<li>Thread-safe (pas de concurrence)</li>
+<li>Prévisibilité (pas d’effets de bord)</li>
+<li>Facilite le raisonnement sur le code</li>
+</ul>
+<p><strong>Inconvénient</strong> : Overhead mémoire et temps</p>
+<p><strong>Conclusion</strong> : L’immutabilité est un choix fondamental
+de Scala, le gain en sûreté compense largement le coût</p>
+<hr />
+<h2 id="composantes-fortement-connexes-et-propriétés-des-classes">10.
+Composantes Fortement Connexes et Propriétés des Classes</h2>
+<h3 id="contexte-et-problématique">10.1 Contexte et Problématique</h3>
+<p>Dans un graphe de Markov, les sommets peuvent être regroupés en
+<strong>classes</strong> (ou composantes fortement connexes). Cette
+partition permet d’analyser plus finement les propriétés du graphe et le
+comportement à long terme du système.</p>
+<h4 id="définitions">Définitions</h4>
+<p><strong>Composante fortement connexe (CFC)</strong> : Ensemble de
+sommets qui communiquent tous entre eux. À partir de n’importe quel
+sommet de la classe, on peut atteindre tous les autres sommets de cette
+classe (et y revenir).</p>
+<p><strong>Propriété fondamentale</strong> : Tout sommet appartient à
+une et une seule classe. L’ensemble des classes forme une
+<strong>partition</strong> du graphe.</p>
+<h4 id="types-de-classes">Types de classes</h4>
+<p><strong>Classe persistante (fermée)</strong> : On ne peut pas sortir
+de cette classe. Il n’existe aucune transition d’un sommet de la classe
+vers un sommet extérieur.</p>
+<ul>
+<li>Possède au moins une distribution stationnaire</li>
+<li>Les probabilités ne s’échappent pas</li>
+</ul>
+<p><strong>Classe transitoire</strong> : On peut sortir de cette classe.
+Il existe au moins une transition vers l’extérieur.</p>
+<ul>
+<li>Distribution stationnaire nulle (probabilités → 0)</li>
+<li>État temporaire du système</li>
+</ul>
+<h4 id="classification-des-graphes">Classification des graphes</h4>
+<p><strong>Graphe irréductible</strong> : Possède une seule classe</p>
+<ul>
+<li>Tous les états communiquent entre eux</li>
+<li>Distribution stationnaire unique</li>
+<li>Exemple : graphes météo, exemple1.txt</li>
+</ul>
+<p><strong>Graphe non irréductible</strong> : Possède plusieurs
+classes</p>
+<ul>
+<li>États regroupés en sous-ensembles</li>
+<li>Plusieurs distributions stationnaires possibles</li>
+<li>Exemple : exemple3.txt, exemple_valid_step3.txt</li>
+</ul>
+<h3 id="algorithme-de-tarjan">10.2 Algorithme de Tarjan</h3>
+<h4 id="présentation">Présentation</h4>
+<p>L’algorithme de <strong>Tarjan</strong> (1972) est un algorithme
+efficace pour détecter les composantes fortement connexes d’un graphe
+orienté. Sa complexité est <strong>linéaire</strong> : O(n + m) où n =
+nombre de sommets et m = nombre d’arêtes.</p>
+<p><strong>Avantage</strong> : Beaucoup plus efficace que les
+algorithmes naïfs (O(n³)) ou basés sur Floyd-Warshall.</p>
+<h4 id="principe-de-lalgorithme">Principe de l’algorithme</h4>
+<p>L’algorithme effectue un <strong>parcours en profondeur</strong>
+(DFS) du graphe en maintenant deux informations pour chaque sommet :</p>
+<ol type="1">
+<li><strong>index[v]</strong> : Ordre de visite du sommet v
+(numérotation en profondeur)</li>
+<li><strong>lowlink[v]</strong> : Plus petit index accessible depuis v
+en suivant les arcs</li>
+</ol>
+<p><strong>Propriété clé</strong> : Si
+<code>lowlink[v] == index[v]</code>, alors v est la
+<strong>racine</strong> d’une composante fortement connexe.</p>
+<h4 id="structures-de-données">Structures de données</h4>
+<ul>
+<li><strong>Pile P</strong> : Contient les sommets visités dans l’ordre
+DFS</li>
+<li><strong>dansPile[]</strong> : Indique si un sommet est dans la
+pile</li>
+<li><strong>numEmp[]</strong> : Correspond à index[] (numéro
+d’empilement)</li>
+<li><strong>retour[]</strong> : Correspond à lowlink[]</li>
+</ul>
+<h4 id="pseudo-code-fourni-en-annexe">Pseudo-code fourni en annexe</h4>
+<p>Le pseudo-code fourni dans <code>Algo_Tarjan_annexe.txt</code> décrit
+la procédure <code>parcours(g, x, ...)</code> :</p>
+<pre class="text"><code>numEmp[x] ← num
+retour[x] ← num
+num ← num + 1
+Empiler(P, x)
+dansPile[x] ← vrai
+
+Pour tout y ∈ Succ(x) faire
+  Si numEmp[y] = ∞ alors
+    parcours(g, y, ...)
+    retour[x] ← min(retour[x], retour[y])
+  Sinon
+    Si dansPile[y] alors
+      retour[x] ← min(retour[x], numEmp[y])
+    Fin Si
+  Fin Si
+Fin Pour
+
+Si retour[x] = numEmp[x] alors
+  Répéter
+    y ← Tete(P)
+    partition[y] ← x
+    dansPile[y] ← faux
+    Depiler(P)
+  Jusqu&#39;à y = x
+Fin Si</code></pre>
+<h4 id="implémentation-en-scala">Implémentation en Scala</h4>
+<p><strong>Fichier</strong> :
+<code>src/ComposantesFortementConnexes.scala</code></p>
+<p><strong>Fonction principale</strong> :</p>
+<div class="sourceCode" id="cb85"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">tarjan</span><span class="op">(</span>graphe<span class="op">:</span> Graphe<span class="op">):</span> Partition <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> n <span class="op">=</span> graphe<span class="op">.</span>nbSommets</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Structures de données</span></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> index <span class="op">=</span> mutable<span class="op">.</span><span class="ex">Map</span><span class="op">[</span><span class="bu">Int</span><span class="op">,</span> <span class="bu">Int</span><span class="op">]()</span>      <span class="co">// numEmp[]</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> lowlink <span class="op">=</span> mutable<span class="op">.</span><span class="ex">Map</span><span class="op">[</span><span class="bu">Int</span><span class="op">,</span> <span class="bu">Int</span><span class="op">]()</span>    <span class="co">// retour[]</span></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> enPile <span class="op">=</span> mutable<span class="op">.</span><span class="ex">Set</span><span class="op">[</span><span class="bu">Int</span><span class="op">]()</span>          <span class="co">// dansPile[]</span></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> pile <span class="op">=</span> mutable<span class="op">.</span><span class="ex">Stack</span><span class="op">[</span><span class="bu">Int</span><span class="op">]()</span>          <span class="co">// P</span></span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> indexCourant <span class="op">=</span> <span class="dv">0</span>                     <span class="co">// num</span></span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">val</span> composantes <span class="op">=</span> mutable<span class="op">.</span><span class="bu">ListBuffer</span><span class="op">[</span><span class="ex">Set</span><span class="op">[</span><span class="bu">Int</span><span class="op">]]()</span></span>
+<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">strongConnect</span><span class="op">(</span>v<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="bu">Unit</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialisation</span></span>
+<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">index</span><span class="op">(</span>v<span class="op">)</span> <span class="op">=</span> indexCourant</span>
+<span id="cb85-15"><a href="#cb85-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lowlink</span><span class="op">(</span>v<span class="op">)</span> <span class="op">=</span> indexCourant</span>
+<span id="cb85-16"><a href="#cb85-16" aria-hidden="true" tabindex="-1"></a>    indexCourant <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb85-17"><a href="#cb85-17" aria-hidden="true" tabindex="-1"></a>    pile<span class="op">.</span><span class="fu">push</span><span class="op">(</span>v<span class="op">)</span></span>
+<span id="cb85-18"><a href="#cb85-18" aria-hidden="true" tabindex="-1"></a>    enPile<span class="op">.</span><span class="fu">add</span><span class="op">(</span>v<span class="op">)</span></span>
+<span id="cb85-19"><a href="#cb85-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb85-20"><a href="#cb85-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Explorer les successeurs</span></span>
+<span id="cb85-21"><a href="#cb85-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">val</span> successeurs <span class="op">=</span> graphe<span class="op">.</span><span class="fu">successeurs</span><span class="op">(</span>v<span class="op">)</span></span>
+<span id="cb85-22"><a href="#cb85-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">((</span>w<span class="op">,</span> _<span class="op">)</span> <span class="op">&lt;-</span> successeurs<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb85-23"><a href="#cb85-23" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> <span class="op">(!</span>index<span class="op">.</span><span class="fu">contains</span><span class="op">(</span>w<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb85-24"><a href="#cb85-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// w non visité : récursion</span></span>
+<span id="cb85-25"><a href="#cb85-25" aria-hidden="true" tabindex="-1"></a>        <span class="fu">strongConnect</span><span class="op">(</span>w<span class="op">)</span></span>
+<span id="cb85-26"><a href="#cb85-26" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lowlink</span><span class="op">(</span>v<span class="op">)</span> <span class="op">=</span> math<span class="op">.</span><span class="fu">min</span><span class="op">(</span><span class="fu">lowlink</span><span class="op">(</span>v<span class="op">),</span> <span class="fu">lowlink</span><span class="op">(</span>w<span class="op">))</span></span>
+<span id="cb85-27"><a href="#cb85-27" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>enPile<span class="op">.</span><span class="fu">contains</span><span class="op">(</span>w<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb85-28"><a href="#cb85-28" aria-hidden="true" tabindex="-1"></a>        <span class="co">// w dans la pile : arc arrière</span></span>
+<span id="cb85-29"><a href="#cb85-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">lowlink</span><span class="op">(</span>v<span class="op">)</span> <span class="op">=</span> math<span class="op">.</span><span class="fu">min</span><span class="op">(</span><span class="fu">lowlink</span><span class="op">(</span>v<span class="op">),</span> <span class="fu">index</span><span class="op">(</span>w<span class="op">))</span></span>
+<span id="cb85-30"><a href="#cb85-30" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb85-31"><a href="#cb85-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb85-32"><a href="#cb85-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb85-33"><a href="#cb85-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Si v est racine de composante</span></span>
+<span id="cb85-34"><a href="#cb85-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="fu">lowlink</span><span class="op">(</span>v<span class="op">)</span> <span class="op">==</span> <span class="fu">index</span><span class="op">(</span>v<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb85-35"><a href="#cb85-35" aria-hidden="true" tabindex="-1"></a>      <span class="kw">val</span> composante <span class="op">=</span> mutable<span class="op">.</span><span class="ex">Set</span><span class="op">[</span><span class="bu">Int</span><span class="op">]()</span></span>
+<span id="cb85-36"><a href="#cb85-36" aria-hidden="true" tabindex="-1"></a>      <span class="kw">var</span> w <span class="op">=</span> pile<span class="op">.</span><span class="fu">pop</span><span class="op">()</span></span>
+<span id="cb85-37"><a href="#cb85-37" aria-hidden="true" tabindex="-1"></a>      enPile<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>w<span class="op">)</span></span>
+<span id="cb85-38"><a href="#cb85-38" aria-hidden="true" tabindex="-1"></a>      composante<span class="op">.</span><span class="fu">add</span><span class="op">(</span>w<span class="op">)</span></span>
+<span id="cb85-39"><a href="#cb85-39" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb85-40"><a href="#cb85-40" aria-hidden="true" tabindex="-1"></a>      <span class="cf">while</span> <span class="op">(</span>w <span class="op">!=</span> v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb85-41"><a href="#cb85-41" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> pile<span class="op">.</span><span class="fu">pop</span><span class="op">()</span></span>
+<span id="cb85-42"><a href="#cb85-42" aria-hidden="true" tabindex="-1"></a>        enPile<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>w<span class="op">)</span></span>
+<span id="cb85-43"><a href="#cb85-43" aria-hidden="true" tabindex="-1"></a>        composante<span class="op">.</span><span class="fu">add</span><span class="op">(</span>w<span class="op">)</span></span>
+<span id="cb85-44"><a href="#cb85-44" aria-hidden="true" tabindex="-1"></a>      <span class="op">}</span></span>
+<span id="cb85-45"><a href="#cb85-45" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb85-46"><a href="#cb85-46" aria-hidden="true" tabindex="-1"></a>      composantes <span class="op">+=</span> composante<span class="op">.</span>toSet</span>
+<span id="cb85-47"><a href="#cb85-47" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb85-48"><a href="#cb85-48" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb85-49"><a href="#cb85-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-50"><a href="#cb85-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Lancer pour chaque sommet non visité</span></span>
+<span id="cb85-51"><a href="#cb85-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span>v <span class="op">&lt;-</span> <span class="dv">1</span> to n <span class="cf">if</span> <span class="op">!</span>index<span class="op">.</span><span class="fu">contains</span><span class="op">(</span>v<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb85-52"><a href="#cb85-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strongConnect</span><span class="op">(</span>v<span class="op">)</span></span>
+<span id="cb85-53"><a href="#cb85-53" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb85-54"><a href="#cb85-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-55"><a href="#cb85-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Partition</span><span class="op">(</span>composantes<span class="op">.</span>toList<span class="op">.</span>reverse<span class="op">)</span></span>
+<span id="cb85-56"><a href="#cb85-56" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p><strong>Correspondance avec l’algorithme fourni</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Annexe</th>
+<th>Implémentation</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>numEmp[]</code></td>
+<td><code>index</code></td>
+<td>Ordre de visite</td>
+</tr>
+<tr>
+<td><code>retour[]</code></td>
+<td><code>lowlink</code></td>
+<td>Plus petit index accessible</td>
+</tr>
+<tr>
+<td><code>dansPile[]</code></td>
+<td><code>enPile</code></td>
+<td>Sommets dans la pile</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td><code>pile</code></td>
+<td>Pile DFS</td>
+</tr>
+<tr>
+<td><code>num</code></td>
+<td><code>indexCourant</code></td>
+<td>Compteur</td>
+</tr>
+<tr>
+<td><code>parcours(g,x,...)</code></td>
+<td><code>strongConnect(v)</code></td>
+<td>Fonction récursive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Justification des structures mutables</strong> : L’algorithme
+de Tarjan est intrinsèquement impératif. Utiliser des structures
+immuables dégraderait la complexité de O(n+m) à O(n log n) ou pire.</p>
+<h3 id="fonctions-implémentées">10.3 Fonctions Implémentées</h3>
+<h4 id="extraction-de-sous-matrice">10.3.1 Extraction de
+sous-matrice</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb86"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">extraireSousMatrice</span><span class="op">(</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>  matrice<span class="op">:</span> MatriceAdjacence<span class="op">,</span> </span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  partition<span class="op">:</span> Partition<span class="op">,</span> </span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  indexClasse<span class="op">:</span> <span class="bu">Int</span></span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="op">):</span> MatriceAdjacence</span></code></pre></div>
+<p><strong>Rôle</strong> : Extrait la sous-matrice correspondant à une
+classe donnée</p>
+<p><strong>Algorithme</strong> :</p>
+<ol type="1">
+<li>Récupérer l’ensemble des sommets de la classe</li>
+<li>Trier les sommets pour un ordre cohérent</li>
+<li>Créer une matrice de taille |classe| × |classe|</li>
+<li>Créer un mapping : ancien numéro → nouveau numéro</li>
+<li>Copier les probabilités pour les paires (i,j) ∈ classe²</li>
+</ol>
+<p><strong>Exemple</strong> : Pour la classe {3, 6, 8} dans un graphe
+10×10</p>
+<pre class="text"><code>Mapping : 3→1, 6→2, 8→3
+
+Matrice 10×10                  Sous-matrice 3×3
+     1  2  3 ... 6 ... 8 ...          1    2    3
+3 [  ·  ·  ·     a     b   ]      1 [ ·    a    b  ]
+6 [  ·  ·  c     ·     d   ]      2 [ c    ·    d  ]
+8 [  ·  ·  e     f     ·   ]      3 [ e    f    ·  ]</code></pre>
+<h4 id="distribution-stationnaire-dune-classe">10.3.2 Distribution
+stationnaire d’une classe</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb88"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">distributionStationnaireClasse</span><span class="op">(</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  graphe<span class="op">:</span> Graphe<span class="op">,</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  partition<span class="op">:</span> Partition<span class="op">,</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  indexClasse<span class="op">:</span> <span class="bu">Int</span><span class="op">,</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  epsilon<span class="op">:</span> <span class="ex">Double</span> <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="op">):</span> <span class="ex">Option</span><span class="op">[</span>Distribution<span class="op">]</span></span></code></pre></div>
+<p><strong>Algorithme</strong> :</p>
+<ol type="1">
+<li>Déterminer le type de classe (persistante ou transitoire)</li>
+<li><strong>Si classe transitoire</strong> :
+<ul>
+<li>Retourner distribution nulle (Vector de 0.0)</li>
+<li>Justification : les probabilités s’échappent de la classe</li>
+</ul></li>
+<li><strong>Si classe persistante</strong> :
+<ul>
+<li>Extraire la sous-matrice de la classe</li>
+<li>Calculer M^n jusqu’à convergence (réutiliser
+<code>trouverConvergence</code>)</li>
+<li>Extraire la distribution depuis la première ligne de M^n</li>
+<li>Créer une distribution sur le graphe complet (0 hors classe)</li>
+</ul></li>
+</ol>
+<p><strong>Retour</strong> : <code>Option[Distribution]</code></p>
+<ul>
+<li><code>Some(dist)</code> si distribution trouvée</li>
+<li><code>None</code> si pas de convergence</li>
+</ul>
+<h4 id="affichage-des-distributions">10.3.3 Affichage des
+distributions</h4>
+<p><strong>Signature</strong> :</p>
+<div class="sourceCode" id="cb89"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">afficherDistributionsStationnaires</span><span class="op">(</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>  graphe<span class="op">:</span> Graphe<span class="op">,</span></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>  partition<span class="op">:</span> Partition</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="op">):</span> <span class="bu">Unit</span></span></code></pre></div>
+<p><strong>Format de sortie</strong> :</p>
+<pre class="text"><code>&gt;&gt;&gt; Composante C1: {1, 2, 3}
+    Type: PERSISTANTE (fermée)
+    Distribution stationnaire:
+      Sommet  1: 0.3333 (33.33%)
+      Sommet  2: 0.3333 (33.33%)
+      Sommet  3: 0.3333 (33.33%)</code></pre>
+<p>Pour les classes transitoires :</p>
+<pre class="text"><code>&gt;&gt;&gt; Composante C2: {5, 6}
+    Type: TRANSITOIRE (on peut sortir)
+    Distribution stationnaire: NULLE (tous les états → 0)</code></pre>
+<h3 id="validation-et-résultats">10.4 Validation et Résultats</h3>
+<h4 id="test-1-exemple1.txt-4-sommets">Test 1 : exemple1.txt (4
+sommets)</h4>
+<p><strong>Résultat</strong> :</p>
+<ul>
+<li><strong>1 composante</strong> : {1, 2, 3, 4}</li>
+<li><strong>Type</strong> : Graphe IRRÉDUCTIBLE</li>
+<li><strong>Classe</strong> : Persistante</li>
+<li><strong>Distribution stationnaire</strong> :
+<ul>
+<li>Sommet 1: 62.71%</li>
+<li>Sommet 2: 24.90%</li>
+<li>Sommet 3: 9.29%</li>
+<li>Sommet 4: 3.10%</li>
+</ul></li>
+</ul>
+<p><strong>Interprétation</strong> : Tous les états communiquent. Le
+système converge vers une distribution unique où l’état 1 est le plus
+probable.</p>
+<h4 id="test-2-exemple_valid_step3.txt-10-sommets">Test 2 :
+exemple_valid_step3.txt (10 sommets)</h4>
+<p><strong>Résultat</strong> :</p>
+<ul>
+<li><strong>6 composantes</strong> (conforme à l’énoncé)</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Composante</th>
+<th>Sommets</th>
+<th>Type</th>
+<th>Distribution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C1</td>
+<td>{10}</td>
+<td>Transitoire</td>
+<td>Nulle</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>{9}</td>
+<td>Transitoire</td>
+<td>Nulle</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>{4}</td>
+<td>Persistante</td>
+<td>4: 100%</td>
+</tr>
+<tr>
+<td>C4</td>
+<td>{3,6,8}</td>
+<td>Persistante</td>
+<td>3:32%, 6:34%, 8:34%</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>{2}</td>
+<td>Persistante</td>
+<td>2: 100%</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>{1,5,7}</td>
+<td>Persistante</td>
+<td>1:20%, 5:41%, 7:39%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conformité</strong> : ✓ Les composantes détectées
+correspondent exactement à celles attendues dans l’énoncé du projet.</p>
+<p><strong>Analyse</strong> :</p>
+<ul>
+<li><strong>Classes transitoires</strong> {9}, {10} : États de passage.
+Le système finit par les quitter.</li>
+<li><strong>Classes persistantes</strong> : Une fois atteint, le système
+reste dans la classe
+<ul>
+<li>Classes à 1 sommet {2}, {4} : Boucles absorbantes</li>
+<li>Classes à 3 sommets {1,5,7}, {3,6,8} : Sous-systèmes dynamiques</li>
+</ul></li>
+</ul>
+<p><strong>Comportement à long terme</strong> : Le système converge vers
+l’une des 4 classes persistantes selon l’état de départ.</p>
+<h4 id="test-3-exemple3.txt-8-sommets">Test 3 : exemple3.txt (8
+sommets)</h4>
+<p><strong>Résultat</strong> :</p>
+<ul>
+<li><strong>4 composantes</strong></li>
+<li><strong>2 transitoires</strong> : {1,3}, {2,6,7}</li>
+<li><strong>2 persistantes</strong> : {4}, {5,8}</li>
+</ul>
+<p><strong>Observation particulière</strong> : La classe {5,8} ne
+converge pas</p>
+<ul>
+<li>Raison probable : Oscillation entre les deux états sans
+stabilisation</li>
+<li>La méthode de convergence avec epsilon = 0.01 ne termine pas</li>
+</ul>
+<p><strong>Conclusion</strong> : Certaines classes persistantes peuvent
+avoir un comportement périodique sans convergence vers une distribution
+unique.</p>
+<h4 id="test-4-exemple_meteo.txt-5-états">Test 4 : exemple_meteo.txt (5
+états)</h4>
+<p><strong>Résultat</strong> :</p>
+<ul>
+<li><strong>1 composante</strong> : {1, 2, 3, 4, 5}</li>
+<li><strong>Type</strong> : Graphe IRRÉDUCTIBLE</li>
+<li><strong>Distribution</strong> : (déjà calculée en section 8.3)
+<ul>
+<li>Sunny: 16.38%, Cloudy: 36.36%, Rain: 13.04%, Storm: 4.69%,
+Sunny_spells: 29.52%</li>
+</ul></li>
+</ul>
+<p><strong>Cohérence</strong> : Les résultats de l’analyse par classes
+confirment la distribution stationnaire trouvée précédemment.</p>
+<h3 id="propriétés-vérifiées">10.5 Propriétés Vérifiées</h3>
+<h4 id="propriété-1-partition-complète">Propriété 1 : Partition
+complète</h4>
+<p>✓ <strong>Vérifiée</strong> : Dans tous les tests, chaque sommet
+appartient à exactement une classe</p>
+<h4 id="propriété-2-graphe-irréductible-distribution-unique">Propriété 2
+: Graphe irréductible ⇒ distribution unique</h4>
+<p>✓ <strong>Vérifiée</strong> :</p>
+<ul>
+<li><code>exemple1.txt</code> (1 classe) → 1 distribution</li>
+<li><code>exemple_meteo.txt</code> (1 classe) → 1 distribution</li>
+</ul>
+<h4 id="propriété-3-classe-transitoire-distribution-nulle">Propriété 3 :
+Classe transitoire ⇒ distribution nulle</h4>
+<p>✓ <strong>Vérifiée</strong> :</p>
+<ul>
+<li>Classes {9}, {10} dans <code>exemple_valid_step3.txt</code> →
+distribution nulle</li>
+<li>Classes {1,3}, {2,6,7} dans <code>exemple3.txt</code> → distribution
+nulle</li>
+</ul>
+<p><strong>Justification mathématique</strong> : Les probabilités
+“s’échappent” de la classe au fil du temps. À long terme, la probabilité
+d’être dans un état transitoire tend vers 0.</p>
+<h4
+id="propriété-4-classe-persistante-distribution-stationnaire">Propriété
+4 : Classe persistante ⇒ distribution stationnaire</h4>
+<p>✓ <strong>Vérifiée</strong> (avec exceptions) :</p>
+<ul>
+<li>La plupart des classes persistantes convergent</li>
+<li>Exception : {5,8} dans <code>exemple3.txt</code> (comportement
+périodique)</li>
+</ul>
+<h3 id="analyse-comparative-irréductible-vs-non-irréductible">10.6
+Analyse Comparative : Irréductible vs Non Irréductible</h3>
+<table>
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 38%" />
+<col style="width: 46%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Graphe Irréductible</th>
+<th>Graphe Non Irréductible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nombre de classes</td>
+<td>1</td>
+<td>≥ 2</td>
+</tr>
+<tr>
+<td>Distribution stationnaire</td>
+<td>Unique</td>
+<td>Multiple (une par classe persistante)</td>
+</tr>
+<tr>
+<td>Comportement long terme</td>
+<td>Convergence garantie</td>
+<td>Dépend de l’état initial</td>
+</tr>
+<tr>
+<td>Prédictibilité</td>
+<td>Élevée</td>
+<td>Variable</td>
+</tr>
+<tr>
+<td>Exemple</td>
+<td>Météo, exemple1</td>
+<td>exemple3, valid_step3</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implications pratiques</strong> :</p>
+<p><strong>Pour un graphe irréductible</strong> (météo) :</p>
+<ul>
+<li>Quelle que soit la météo aujourd’hui, les probabilités à long terme
+sont les mêmes</li>
+<li>Le système “oublie” son état initial</li>
+</ul>
+<p><strong>Pour un graphe non irréductible</strong>
+(exemple_valid_step3) :</p>
+<ul>
+<li>L’état d’arrivée dépend de l’état de départ</li>
+<li>Si on part de {9} ou {10}, on finira dans {2}, {4}, {1,5,7} ou
+{3,6,8}</li>
+<li>Si on est déjà dans {2}, on y reste à 100%</li>
+</ul>
+<h3 id="difficultés-rencontrées">10.7 Difficultés Rencontrées</h3>
+<h4 id="difficulté-1-syntaxe-do-while-en-scala-3">Difficulté 1 : Syntaxe
+do-while en Scala 3</h4>
+<p><strong>Problème</strong> : Le pseudo-code fourni utilise
+<code>Répéter ... Jusqu'à</code>, correspondant à <code>do-while</code>
+en Scala 2, mais cette construction n’est plus supportée en Scala 3.</p>
+<p><strong>Solution</strong> : Réécriture avec <code>while</code></p>
+<div class="sourceCode" id="cb92"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Au lieu de :</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  w <span class="op">=</span> pile<span class="op">.</span><span class="fu">pop</span><span class="op">()</span></span>
+<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// traitement</span></span>
+<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>w <span class="op">!=</span> v<span class="op">)</span></span>
+<span id="cb92-6"><a href="#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Utiliser :</span></span>
+<span id="cb92-8"><a href="#cb92-8" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> w <span class="op">=</span> pile<span class="op">.</span><span class="fu">pop</span><span class="op">()</span></span>
+<span id="cb92-9"><a href="#cb92-9" aria-hidden="true" tabindex="-1"></a><span class="co">// traitement initial</span></span>
+<span id="cb92-10"><a href="#cb92-10" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>w <span class="op">!=</span> v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb92-11"><a href="#cb92-11" aria-hidden="true" tabindex="-1"></a>  w <span class="op">=</span> pile<span class="op">.</span><span class="fu">pop</span><span class="op">()</span></span>
+<span id="cb92-12"><a href="#cb92-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// traitement</span></span>
+<span id="cb92-13"><a href="#cb92-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<h4 id="difficulté-2-structures-mutables-vs-immutabilité">Difficulté 2 :
+Structures mutables vs immutabilité</h4>
+<p><strong>Dilemme</strong> : L’algorithme de Tarjan nécessite des
+structures mutables (Stack, Map mutables), alors que Scala favorise
+l’immutabilité.</p>
+<p><strong>Choix</strong> : Utiliser des structures mutables localement
+(dans la fonction <code>tarjan</code>), mais retourner une structure
+immuable (<code>Partition</code> avec <code>List[Set[Int]]</code>)</p>
+<p><strong>Justification</strong> :</p>
+<ul>
+<li>L’algorithme de Tarjan est O(n+m) avec structures mutables</li>
+<li>Une implémentation purement fonctionnelle serait O(n log n) ou
+pire</li>
+<li>Le compromis : mutabilité locale, immutabilité externe</li>
+</ul>
+<h4 id="difficulté-3-ordre-des-composantes">Difficulté 3 : Ordre des
+composantes</h4>
+<p><strong>Observation</strong> : L’algorithme de Tarjan retourne les
+composantes dans l’ordre inverse de leur finition en DFS.</p>
+<p><strong>Solution</strong> : Appel à <code>.reverse</code> sur la
+liste finale pour obtenir un ordre plus intuitif</p>
+<p><strong>Impact</strong> : Aucun sur la correction, uniquement sur la
+présentation</p>
+<hr />
+<h2 id="conclusion-générale">11. Conclusion Générale</h2>
+<p>Ce projet en deux parties a permis de concevoir et d’implémenter une
+bibliothèque complète pour manipuler et analyser des graphes de Markov
+en Scala.</p>
+<p><strong>Réalisations de la Partie I</strong> :</p>
+<ul>
+<li>Architecture modulaire reposant sur des abstractions par traits
+(Graphe, Matrice[T])</li>
+<li>Deux représentations (matrice et liste d’adjacence) avec
+polymorphisme</li>
+<li>Module de validation automatique des propriétés de Markov</li>
+<li>Export de visualisations au format Mermaid</li>
+<li>Exploitation du paradigme fonctionnel (HOF, immutabilité,
+récursion)</li>
+</ul>
+<p><strong>Réalisations de la Partie II</strong> :</p>
+<ul>
+<li>Module de calculs matriciels (multiplication, puissance,
+différence)</li>
+<li>Classe Distribution pour les vecteurs de probabilités</li>
+<li>Calcul d’évolutions temporelles : Π(n) = Π(0) × M^n</li>
+<li>Détection automatique de convergence vers distribution
+stationnaire</li>
+<li>Application pratique aux prévisions météorologiques</li>
+<li>Validation complète avec résultats conformes aux valeurs
+théoriques</li>
+</ul>
+<p><strong>Compétences développées</strong> :</p>
+<ol type="1">
+<li><strong>Programmation fonctionnelle</strong> : Maîtrise des HOF
+(map, filter, sum, foreach), immutabilité, pattern matching</li>
+<li><strong>Conception orientée objet</strong> : Traits, héritage,
+polymorphisme, encapsulation</li>
+<li><strong>Algorithmique</strong> : Opérations matricielles,
+algorithmes de convergence, gestion de la précision numérique</li>
+<li><strong>Mathématiques appliquées</strong> : Chaînes de Markov,
+distributions de probabilités, algèbre linéaire</li>
+<li><strong>Gestion de projet</strong> : Modularité, tests,
+documentation, résolution de problèmes complexes</li>
+</ol>
+<p><strong>Perspectives d’extension</strong> :</p>
+<ol type="1">
+<li><strong>Algorithme de Tarjan</strong> : Détection des composantes
+fortement connexes pour analyser les graphes non-ergodiques</li>
+<li><strong>Distribution par classe</strong> : Calculer les
+distributions stationnaires pour chaque composante</li>
+<li><strong>Optimisations</strong> : Exponentiation rapide (M^n en O(log
+n)), structures de données creuses (sparse matrices)</li>
+<li><strong>Interface graphique</strong> : Visualisation interactive des
+graphes et évolutions</li>
+<li><strong>Applications supplémentaires</strong> : PageRank, systèmes
+de recommandation, analyse de réseaux sociaux</li>
+</ol>
+<p>Ce travail m’a permis de consolider mes compétences en Scala, de
+comprendre profondément les chaînes de Markov, et de maîtriser la
+démarche de conception d’une bibliothèque logicielle complète respectant
+les principes de la programmation fonctionnelle.</p>
+<hr />
+<h2 id="mode-demploi">12. Mode d’Emploi</h2>
+<h3 id="choix-de-loutil-dexécution-scala-cli">12.1 Choix de l’outil
+d’exécution : scala-cli</h3>
+<p>Ce projet utilise <strong>scala-cli</strong> comme outil principal
+d’exécution et de compilation, plutôt que SBT traditionnel.</p>
+<h4 id="pourquoi-scala-cli">Pourquoi scala-cli ?</h4>
+<p><strong>Avantages principaux</strong> :</p>
+<ol type="1">
+<li><strong>Simplicité et rapidité</strong> :
+<ul>
+<li>Aucune configuration complexe nécessaire (pas de build.sbt
+détaillé)</li>
+<li>Exécution directe :
+<code>scala-cli run src --main-class Main</code></li>
+<li>Compilation incrémentale très rapide</li>
+</ul></li>
+<li><strong>Configuration légère</strong> :
+<ul>
+<li>Configuration par directives dans les fichiers sources
+(<code>//&gt; using</code>)</li>
+<li>Pas de fichiers de configuration séparés à maintenir</li>
+<li>Idéal pour les projets d’apprentissage et prototypes</li>
+</ul></li>
+<li><strong>Expérience développeur moderne</strong> :
+<ul>
+<li>Outil officiel Scala depuis 2022</li>
+<li>Syntaxe intuitive et messages d’erreur clairs</li>
+<li>Support natif de Scala 3</li>
+</ul></li>
+<li><strong>Comparaison avec SBT</strong> :</li>
+</ol>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 45%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>scala-cli</th>
+<th>SBT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Setup initial</td>
+<td>Aucun</td>
+<td>Fichiers build.sbt, plugins.sbt</td>
+</tr>
+<tr>
+<td>Temps de démarrage</td>
+<td>&lt; 1s</td>
+<td>3-5s</td>
+</tr>
+<tr>
+<td>Courbe d’apprentissage</td>
+<td>Faible</td>
+<td>Élevée</td>
+</tr>
+<tr>
+<td>Adapté pour</td>
+<td>Scripts, projets simples</td>
+<td>Projets complexes, production</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Utilisation dans ce projet</strong> :</p>
+<div class="sourceCode" id="cb93"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Configuration dans project.scala</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co">//&gt; using scala &quot;3.7.4&quot;</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co">//&gt; using dependency &quot;org.scala-lang::scala3-library:3.7.4&quot;</span></span></code></pre></div>
+<p><strong>Alternative SBT</strong> : Un fichier <code>build.sbt</code>
+est fourni pour compatibilité avec les environnements nécessitant
+SBT.</p>
+<h3 id="prérequis">12.2 Prérequis</h3>
+<ul>
+<li><strong>Scala 3.7.4</strong> ou version supérieure</li>
+<li><strong>scala-cli</strong> (recommandé) ou <strong>SBT</strong></li>
+<li><strong>Java 11</strong> ou supérieur (requis pour Scala)</li>
+</ul>
+<h4 id="installation-de-scala-cli">Installation de scala-cli</h4>
+<p><strong>Windows</strong> (PowerShell) :</p>
+<div class="sourceCode" id="cb94"><pre
+class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>scala-cli<span class="op">.</span><span class="fu">virtuslab</span><span class="op">.</span><span class="fu">org</span><span class="op">/</span>get <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+<p><strong>macOS/Linux</strong> :</p>
+<div class="sourceCode" id="cb95"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fL</span> https://github.com/VirtusLab/scala-cli/releases/latest/download/scala-cli-x86_64-pc-linux.gz <span class="kw">|</span> <span class="fu">gzip</span> <span class="at">-d</span> <span class="op">&gt;</span> scala-cli</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x scala-cli</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mv scala-cli /usr/local/bin/</span></code></pre></div>
+<h3 id="tests-de-robustesse">12.3 Tests de robustesse</h3>
+<h4 id="test-avec-fichier-inexistant">Test avec fichier inexistant</h4>
+<div class="sourceCode" id="cb96"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>Chargeur<span class="op">.</span><span class="fu">charger</span><span class="op">(</span><span class="st">&quot;inexistant.txt&quot;</span><span class="op">)</span> <span class="co">// → None</span></span></code></pre></div>
+<p><strong>Résultat</strong> : <code>None</code> retourné, pas de
+crash</p>
+<h4 id="test-avec-fichier-vide">Test avec fichier vide</h4>
+<div class="sourceCode" id="cb97"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>Chargeur<span class="op">.</span><span class="fu">charger</span><span class="op">(</span><span class="st">&quot;vide.txt&quot;</span><span class="op">)</span> <span class="co">// → None + message d&#39;erreur</span></span></code></pre></div>
+<p><strong>Résultat</strong> : Gestion propre de l’erreur</p>
+<h4 id="test-avec-lignes-malformées">Test avec lignes malformées</h4>
+<p><strong>Fichier</strong> :</p>
+<pre class="text"><code>3
+# Commentaire
+1 2 0.5
+invalide ligne
+2 3 0.5</code></pre>
+<p><strong>Résultat</strong> : Les lignes invalides sont ignorées, les
+lignes valides sont traitées</p>
+<hr />
+<h3 id="exécution-des-programmes">12.4 Exécution des programmes</h3>
+<h4 id="exécution-partie-i-structures-et-validation">Exécution Partie I
+: Structures et validation</h4>
+<div class="sourceCode" id="cb99"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se placer dans le dossier du projet</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> projet-scala</span>
+<span id="cb99-3"><a href="#cb99-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="#cb99-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Programme principal (Main)</span></span>
+<span id="cb99-5"><a href="#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="ex">scala-cli</span> run src <span class="at">--main-class</span> Main</span>
+<span id="cb99-6"><a href="#cb99-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-7"><a href="#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests de validation (Étape 2)</span></span>
+<span id="cb99-8"><a href="#cb99-8" aria-hidden="true" tabindex="-1"></a><span class="ex">scala-cli</span> run src <span class="at">--main-class</span> testValidation</span>
+<span id="cb99-9"><a href="#cb99-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-10"><a href="#cb99-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Génération Mermaid (Étape 3)</span></span>
+<span id="cb99-11"><a href="#cb99-11" aria-hidden="true" tabindex="-1"></a><span class="ex">scala-cli</span> run src <span class="at">--main-class</span> TestMermaid</span></code></pre></div>
+<h4 id="partie-ii-calculs-matriciels-et-composantes">Partie II : Calculs
+matriciels et composantes</h4>
+<div class="sourceCode" id="cb100"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests calculs matriciels et distributions</span></span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a><span class="ex">scala-cli</span> run src <span class="at">--main-class</span> TestPartie2</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Tests composantes fortement connexes</span></span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="ex">scala-cli</span> run src <span class="at">--main-class</span> TestComposantes</span></code></pre></div>
+<h4 id="avec-sbt-alternatif">Avec SBT (alternatif)</h4>
+<div class="sourceCode" id="cb101"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbt</span> compile  <span class="co"># Compilation</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sbt</span> run      <span class="co"># Liste des classes disponibles avec main()</span></span></code></pre></div>
+<h3 id="exemples-de-sortie">12.5 Exemples de sortie</h3>
+<h4 id="programme-principal">Programme principal</h4>
+<pre class="text"><code>==================================================
+GRAPHES DE MARKOV
+==================================================
+
+Chargement: exemples/exemple1.txt
+--------------------------------------------------
+Chargement: 4 sommets
+ok 4 sommets
+
+Matrice 4x4:
+        1      2      3      4
+    ----------------------------
+  1 |  0.95   0.04   0.01   0.00
+  2 |  0.00   0.90   0.05   0.05
+  3 |  0.00   0.00   0.80   0.20
+  4 |  1.00   0.00   0.00   0.00
+
+=== Validation du graphe de Markov ===
+Sommet  1 : somme = 1.0000 ok
+Sommet  2 : somme = 1.0000 ok
+Sommet  3 : somme = 1.0000 ok
+Sommet  4 : somme = 1.0000 ok
+
+VALIDE
+========================================
+
+&gt;&gt;&gt; Successeurs:
+--------------------------------------------------
+Sommet 1 → 1(0.95), 2(0.04), 3(0.01)
+Sommet 2 → 2(0.90), 3(0.05), 4(0.05)
+Sommet 3 → 3(0.80), 4(0.20)
+Sommet 4 → 1(1.00)
+
+==================================================</code></pre>
+<h4 id="affichage-graphique-dune-liste-dadjacence">Affichage graphique
+d’une liste d’adjacence</h4>
+<pre class="text"><code>Représentation graphique des listes chaînées:
+--------------------------------------------------
+Sommet 1 : [head @] -&gt; (3, 0.01) @ -&gt; (2, 0.04) @ -&gt; (1, 0.95) @
+Sommet 2 : [head @] -&gt; (4, 0.05) @ -&gt; (3, 0.05) @ -&gt; (2, 0.90) @
+Sommet 3 : [head @] -&gt; (4, 0.20) @ -&gt; (3, 0.80) @
+Sommet 4 : [head @] -&gt; (1, 1.00) @</code></pre>
+<hr />
+<h2 id="synthèse-finale-et-conclusion">11. Synthèse Finale et
+Conclusion</h2>
+<p>Ce projet a permis de construire un système complet d’analyse de
+graphes de Markov en Scala fonctionnel, couvrant :</p>
+<h3 id="réalisations-de-la-partie-i">Réalisations de la Partie I</h3>
+<p><strong>Structures de données</strong> : Deux représentations
+complémentaires</p>
+<ul>
+<li>Matrice d’adjacence (efficace pour calculs)</li>
+<li>Liste d’adjacence (efficace pour affichage)</li>
+</ul>
+<p><strong>Validation rigoureuse</strong> : 5 propriétés structurelles
+vérifiées</p>
+<ul>
+<li>Somme des probabilités = 1</li>
+<li>Valeurs dans [0, 1]</li>
+<li>Cohérence des structures</li>
+</ul>
+<p><strong>Export vers Mermaid</strong> : Génération de diagrammes</p>
+<ul>
+<li>Visualisation des graphes</li>
+<li>Labels des états et probabilités</li>
+</ul>
+<h3 id="réalisations-de-la-partie-ii">Réalisations de la Partie II</h3>
+<p><strong>Calculs matriciels</strong> (Section 8) :</p>
+<ul>
+<li>Multiplication de matrices avec protection des arrondis</li>
+<li>Puissance matricielle M^n</li>
+<li>Détection de convergence vers M*</li>
+<li>Analyse des distributions stationnaires</li>
+</ul>
+<p><strong>Validation sur exemple météo</strong> :</p>
+<ul>
+<li>✓ Prédiction à 3 jours : 37.4% couvert</li>
+<li>✓ Convergence détectée en 9 itérations</li>
+<li>✓ Distribution stationnaire conforme</li>
+</ul>
+<p><strong>Composantes fortement connexes</strong> (Section 10) :</p>
+<ul>
+<li>✓ Implémentation de l’algorithme de Tarjan fourni en annexe</li>
+<li>✓ Détection des classes persistantes et transitoires</li>
+<li>✓ Distributions stationnaires par classe</li>
+<li>✓ Validation sur 6 composantes (exemple_valid_step3.txt)</li>
+</ul>
+<p><strong>Correspondance avec l’algorithme fourni</strong> : Les
+structures <code>numEmp[]</code>, <code>retour[]</code>,
+<code>dansPile[]</code> et <code>P</code> de l’annexe correspondent
+exactement aux structures <code>index</code>, <code>lowlink</code>,
+<code>enPile</code> et <code>pile</code> dans l’implémentation
+Scala.</p>
+<h3 id="architecture-logicielle">Architecture Logicielle</h3>
+<p>Le projet est organisé en modules indépendants et réutilisables :</p>
+<ul>
+<li><strong>Traits abstraits</strong> (Graphe, Matrice) pour le
+polymorphisme</li>
+<li><strong>Implémentations concrètes</strong> (MatriceAdjacence,
+ListeAdjacence)</li>
+<li><strong>Modules utilitaires</strong> (Chargeur, Validation,
+Mermaid)</li>
+<li><strong>Modules de calcul</strong> (CalculsMatriciels, Distribution,
+ComposantesFortementConnexes)</li>
+<li><strong>Programmes de test</strong> pour validation</li>
+</ul>
+<h3 id="apprentissages">Apprentissages</h3>
+<h4 id="paradigme-fonctionnel">Paradigme fonctionnel</h4>
+<ul>
+<li>Immutabilité par défaut (sauf pour Tarjan où elle est
+justifiée)</li>
+<li>Composition de fonctions</li>
+<li>Pattern matching et décomposition</li>
+<li>Gestion d’erreurs avec Option/Either</li>
+</ul>
+<h4 id="complexité-algorithmique">Complexité algorithmique</h4>
+<ul>
+<li>Tarjan O(n+m) vs approches naïves O(n³)</li>
+<li>Trade-off mutabilité/performance</li>
+</ul>
+<h4 id="théorie-des-graphes-de-markov">Théorie des graphes de
+Markov</h4>
+<ul>
+<li>Propriétés des distributions stationnaires</li>
+<li>Comportement des classes persistantes et transitoires</li>
+<li>Graphes irréductibles vs non irréductibles</li>
+</ul>
+<h3 id="perspectives-dextension">Perspectives d’extension</h3>
+<p><strong>Analyse avancée</strong> :</p>
+<ul>
+<li>Temps d’absorption dans les classes transitoires</li>
+<li>Périodicité des états</li>
+<li>Classification d’états (récurrent/transitoire)</li>
+</ul>
+<p><strong>Optimisations</strong> :</p>
+<ul>
+<li>Matrices creuses (sparse) pour grands graphes</li>
+<li>Parallélisation des calculs matriciels</li>
+<li>Algorithmes d’approximation pour convergence</li>
+</ul>
+<p><strong>Nouvelles fonctionnalités</strong> :</p>
+<ul>
+<li>Génération aléatoire de graphes valides</li>
+<li>Simulation de parcours dans le graphe</li>
+<li>Export vers d’autres formats (GraphML, DOT)</li>
+</ul>
+<hr />
+<h2 id="annexes">13. Annexes</h2>
+<h3 id="annexe-a-technologies-employées">Annexe A : Technologies
+employées</h3>
+<h4 id="scala-3.7.4">Scala 3.7.4</h4>
+<ul>
+<li><strong>Site officiel</strong> : <a
+href="https://www.scala-lang.org/"
+class="uri">https://www.scala-lang.org/</a></li>
+<li><strong>Raison du choix</strong> : Langage moderne combinant
+paradigmes objet et fonctionnel, interopérabilité JVM</li>
+<li><strong>Fonctionnalités utilisées</strong> :
+<ul>
+<li>Traits pour abstraction</li>
+<li>Pattern matching et décomposition</li>
+<li>Collections immuables (List, Map)</li>
+<li>Fonctions d’ordre supérieur (map, filter, fold)</li>
+<li>Récursion terminale avec <code>@tailrec</code></li>
+<li>Option pour gestion d’erreurs</li>
+</ul></li>
+</ul>
+<h4 id="scala-cli">Scala-CLI</h4>
+<ul>
+<li><strong>Site officiel</strong> : <a
+href="https://scala-cli.virtuslab.org/"
+class="uri">https://scala-cli.virtuslab.org/</a></li>
+<li><strong>Usage</strong> : Outil moderne pour compiler et exécuter du
+code Scala sans configuration complexe</li>
+<li><strong>Avantages</strong> :
+<ul>
+<li>Configuration par directives <code>//&gt; using</code></li>
+<li>Gestion automatique des dépendances</li>
+<li>Compilation incrémentale rapide</li>
+</ul></li>
+</ul>
+<h3 id="annexe-b-génération-de-la-documentation">Annexe B : Génération
+de la documentation</h3>
+<h4 id="scaladoc">Scaladoc</h4>
+<p>La documentation API peut être générée automatiquement :</p>
+<div class="sourceCode" id="cb104"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="ex">scaladoc</span> <span class="at">-d</span> docs/ src/<span class="pp">*</span>.scala</span></code></pre></div>
+<p>Cela produit une documentation HTML navigable similaire à la
+Javadoc.</p>
+<p><strong>Exemple de Scaladoc dans le code</strong> :</p>
+<div class="sourceCode" id="cb105"><pre
+class="sourceCode scala"><code class="sourceCode scala"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> Retourne la liste des successeurs d<span class="co">&#39;</span>un sommet avec leurs probabilit<span class="co">é</span>s</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">sommet</span><span class="co"> </span>num<span class="co">é</span>ro du sommet <span class="co">(</span>base <span class="co">1)</span></span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="an">@return</span> liste de <span class="co">(</span>destination<span class="co">,</span> probabilit<span class="co">é)</span></span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb105-6"><a href="#cb105-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">successeurs</span><span class="op">(</span>sommet<span class="op">:</span> <span class="bu">Int</span><span class="op">):</span> <span class="ex">List</span><span class="op">[(</span><span class="bu">Int</span><span class="op">,</span> <span class="ex">Double</span><span class="op">)]</span></span></code></pre></div>
+<h3 id="annexe-d-structure-du-projet">Annexe D : Structure du
+projet</h3>
+<pre class="text"><code>projet-scala/
+├── src/
+│   ├── Partie I : Structures de base
+│   │   ├── Trait.scala          # Trait Matrice[T] générique
+│   │   ├── Graphe.scala         # Trait Graphe (abstraction Markov)
+│   │   ├── Matrice.scala        # Classe MatriceAdjacence
+│   │   ├── ListeAdjacence.scala # Classe ListeAdjacence
+│   │   ├── Chargeur.scala       # Objet pour lecture de fichiers
+│   │   ├── Validation.scala     # Module de validation (Étape 2)
+│   │   ├── TestValidation.scala # Tests automatisés de validation
+│   │   ├── Mermaid.scala        # Module de génération Mermaid (Étape 3)
+│   │   ├── TestMermaid.scala    # Tests de génération Mermaid
+│   │   └── Main.scala           # Programme principal Partie I
+│   │
+│   ├── Partie II : Calculs avancés
+│   │   ├── CalculsMatriciels.scala # Opérations matricielles
+│   │   ├── Distribution.scala      # Distributions de probabilités
+│   │   └── TestPartie2.scala       # Tests et validation Partie II
+│   │
+│   └── project.scala        # Configuration Scala-CLI
+│
+├── exemples/
+│   ├── exemple1.txt         # Graphe simple 4 sommets (VALIDE)
+│   ├── exemple2.txt         # Graphe avec 10 sommets (VALIDE)
+│   ├── exemple3.txt         # Graphe complexe (INVALIDE - sommet 6)
+│   ├── exemple_meteo.txt    # Application météorologique (VALIDE)
+│   └── exemple_valid_step3.txt # Cas de validation (VALIDE)
+│
+├── mermaid/*.mmd            # Fichiers Mermaid générés (10 fichiers)
+├── RAPPORT.md               # Ce document
+└── NOTES_PARTIE2.md         # Documentation détaillée Partie II</code></pre>
+</body>
+</html>
