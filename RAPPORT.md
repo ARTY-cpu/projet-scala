@@ -2242,7 +2242,71 @@ Ce travail m'a permis de consolider mes compétences en Scala, de comprendre pro
 
 ## 12. Mode d'Emploi
 
-### 6.3 Tests de robustesse
+### 12.1 Choix de l'outil d'exécution : scala-cli
+
+Ce projet utilise **scala-cli** comme outil principal d'exécution et de compilation, plutôt que SBT traditionnel.
+
+#### Pourquoi scala-cli ?
+
+**Avantages principaux** :
+
+1. **Simplicité et rapidité** :
+   - Aucune configuration complexe nécessaire (pas de build.sbt détaillé)
+   - Exécution directe : `scala-cli run src --main-class Main`
+   - Compilation incrémentale très rapide
+
+2. **Configuration légère** :
+   - Configuration par directives dans les fichiers sources (`//> using`)
+   - Pas de fichiers de configuration séparés à maintenir
+   - Idéal pour les projets d'apprentissage et prototypes
+
+3. **Expérience développeur moderne** :
+   - Outil officiel Scala depuis 2022
+   - Syntaxe intuitive et messages d'erreur clairs
+   - Support natif de Scala 3
+
+4. **Comparaison avec SBT** :
+
+| Aspect | scala-cli | SBT |
+|--------|-----------|-----|
+| Setup initial | Aucun | Fichiers build.sbt, plugins.sbt |
+| Temps de démarrage | < 1s | 3-5s |
+| Courbe d'apprentissage | Faible | Élevée |
+| Adapté pour | Scripts, projets simples | Projets complexes, production |
+
+**Utilisation dans ce projet** :
+
+```scala
+// Configuration dans project.scala
+//> using scala "3.7.4"
+//> using dependency "org.scala-lang::scala3-library:3.7.4"
+```
+
+**Alternative SBT** : Un fichier `build.sbt` est fourni pour compatibilité avec les environnements nécessitant SBT.
+
+### 12.2 Prérequis
+
+- **Scala 3.7.4** ou version supérieure
+- **scala-cli** (recommandé) ou **SBT**
+- **Java 11** ou supérieur (requis pour Scala)
+
+#### Installation de scala-cli
+
+**Windows** (PowerShell) :
+
+```powershell
+irm https://scala-cli.virtuslab.org/get | iex
+```
+
+**macOS/Linux** :
+
+```bash
+curl -fL https://github.com/VirtusLab/scala-cli/releases/latest/download/scala-cli-x86_64-pc-linux.gz | gzip -d > scala-cli
+chmod +x scala-cli
+sudo mv scala-cli /usr/local/bin/
+```
+
+### 12.3 Tests de robustesse
 
 #### Test avec fichier inexistant
 
@@ -2276,39 +2340,42 @@ invalide ligne
 
 ---
 
-### Exécution du programme
+### 12.4 Exécution des programmes
 
-**Partie I** :
+#### Exécution Partie I : Structures et validation
 
 ```bash
 # Se placer dans le dossier du projet
 cd projet-scala
 
-# Exécuter le programme principal (Main)
+# Programme principal (Main)
 scala-cli run src --main-class Main
 
-# Exécuter les tests de validation (Étape 2)
+# Tests de validation (Étape 2)
 scala-cli run src --main-class testValidation
 
-# Générer les visualisations Mermaid (Étape 3)
+# Génération Mermaid (Étape 3)
 scala-cli run src --main-class TestMermaid
 ```
 
-**Partie II** :
+#### Partie II : Calculs matriciels et composantes
 
 ```bash
-# Exécuter les tests de la Partie 2 (calculs matriciels)
+# Tests calculs matriciels et distributions
 scala-cli run src --main-class TestPartie2
+
+# Tests composantes fortement connexes
+scala-cli run src --main-class TestComposantes
 ```
 
-**Avec SBT (alternatif)** :
+#### Avec SBT (alternatif)
 
 ```bash
 sbt compile  # Compilation
-sbt run      # Liste des classes disponibles
+sbt run      # Liste des classes disponibles avec main()
 ```
 
-### Exemples de sortie
+### 12.5 Exemples de sortie
 
 #### Programme principal
 
