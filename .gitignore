@@ -56,5 +56,6 @@ scaladoc/
 
 # Fichiers de sortie générés
 mermaid/*.mmd
+*.html
 *.png
 *.zip

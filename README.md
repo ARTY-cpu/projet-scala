@@ -258,6 +258,6 @@ Des exemples de validation sont fournis dans le répertoire `exemples/` :
 
 Pour plus de détails sur l'architecture, les choix de conception et l'analyse fonctionnelle, consultez :
 
-- [RAPPORT.md](RAPPORT.md) : Rapport technique complet
+- [RAPPORT.pdf](RAPPORT.pdf) : Rapport technique complet
 - [inventaire_des_notions.md](inventaire_des_notions.md) : Concepts Scala utilisés
 - `scaladoc/` : Documentation API générée

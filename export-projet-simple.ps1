@@ -60,9 +60,9 @@ if (Test-Path "RAPPORT.pdf") {
     Write-Host "  [WARN] RAPPORT.pdf manquant" -ForegroundColor Yellow
 }
 
-if (Test-Path "README") {
-    Copy-Item -Path "README" -Destination $exportDir -Force
-    Write-Host "  [OK] README" -ForegroundColor Green
+if (Test-Path "README.md") {
+    Copy-Item -Path "README.md" -Destination $exportDir -Force
+    Write-Host "  [OK] README.md" -ForegroundColor Green
 }
 
 if (Test-Path "inventaire_des_notions.md") {
